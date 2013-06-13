@@ -67,6 +67,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 		if (cl.GetSwitchValue(switches::kProcessMode) == switches::kMultiple){
 			GlobalSingleton::GetInstance()->SetProcessMode(EPM_MULTIPLE);
 		}
+		StartMainProcessHooks();
 		nRet = CBrowserThreadManager::GetInstance()->Run(lpstrCmdLine, nCmdShow);
 	}
 

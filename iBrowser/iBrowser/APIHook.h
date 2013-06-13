@@ -20,8 +20,6 @@ typedef LRESULT (CALLBACK *PFuncWindowProc)(HWND hWnd, UINT Msg, WPARAM wParam, 
 extern PFuncWindowProc g_DefWindowProcW;
 extern PFuncWindowProc g_DefWindowProcA;
 
-typedef DWORD (WINAPI* PFunGetTickCount)(void);
-
 
 LONG HookLibAndProc(IN LPCSTR LibName, IN LPCSTR FunctionName, IN PVOID pCallbackProc, IN PVOID *ppRealFuncProc);
 LRESULT WINAPI HOOK_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
@@ -32,5 +30,6 @@ LRESULT CALLBACK HOOK_CallDefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPA
 DWORD WINAPI HOOK_GetTickCount(void);
 
 bool StartCoreProcessHooks(void);
+bool StartMainProcessHooks(void);
 
 #endif //_API_HOOK_H__

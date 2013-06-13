@@ -71,6 +71,7 @@ protected:
 	HRESULT _Refresh(void);
 	HRESULT _GoBack(void);
 	HRESULT _GoForward(void);
+	HRESULT _Close(void);
 
 private:
 	friend class MouseGesture;

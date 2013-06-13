@@ -41,7 +41,30 @@ HRESULT STDMETHODCALLTYPE CustomClientSite::Exec(
 	VARIANT *pvaIn, 
 	VARIANT *pvaOut )
 {
-	return E_NOTIMPL;
+	if ((NULL != pguidCmdGroup) && InlineIsEqualGUID(*pguidCmdGroup, CGID_DocHostCommandHandler))
+	{
+		switch(nCmdID)
+		{
+		case OLECMDID_SHOWSCRIPTERROR:
+			{
+				// More Information: http://support.microsoft.com/kb/261003
+				(*pvaOut).vt = VT_BOOL;
+				(*pvaOut).boolVal = VARIANT_TRUE;
+				return S_OK;
+			}
+		default:
+			break;
+		}
+	}
+
+	if(OLECMDID_ONUNLOAD == nCmdID)
+	{
+		(*pvaOut).vt = VT_BOOL;
+		(*pvaOut).boolVal = VARIANT_TRUE;
+		return S_OK;
+	}
+
+	return OLECMDERR_E_NOTSUPPORTED;
 }
 
 CustomClientSite::CustomClientSite()

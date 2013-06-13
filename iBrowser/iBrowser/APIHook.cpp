@@ -8,6 +8,7 @@
 #include "UtilDebug.h"
 #include "BrowserThreadManager.h"
 #include "gamemode/accelerator.h"
+#include "core_cookie.h"
 
 PFuncSendMessage g_SendMessageA = NULL;
 PFuncSendMessage g_SendMessageW = NULL;
@@ -77,5 +78,12 @@ LRESULT CALLBACK HOOK_CallDefWindowProcA( HWND hWnd, UINT Msg, WPARAM wParam, LP
 
 bool StartCoreProcessHooks( void ){
 	HookLibAndProc("Kernel32.dll", "GetTickCount", (void*)&GameMode::Accelerator::HOOK_GetTickCount, (void**)&GameMode::Accelerator::Real_GetTickCount);
+	//HookLibAndProc("wininet.dll", "InternetGetCookieExW", (void*)CoreCookie::HOOK_InternetSetCookieExW, (void**)&CoreCookie::Real_InternetSetCookieExW);
+	//HookLibAndProc("wininet.dll", "InternetGetCookieExA", (void*)CoreCookie::HOOK_InternetSetCookieExA, (void**)&CoreCookie::Real_InternetSetCookieExA);
 	return true;	
+}
+
+bool StartMainProcessHooks( void ){
+	HookLibAndProc("Kernel32.dll", "GetTickCount", (void*)&GameMode::Accelerator::HOOK_GetTickCount, (void**)&GameMode::Accelerator::Real_GetTickCount);
+	return true;
 }

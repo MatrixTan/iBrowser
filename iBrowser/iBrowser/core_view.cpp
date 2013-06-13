@@ -162,6 +162,8 @@ LRESULT CoreView::OnDestory( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 	if (m_spIEEventDelegate && m_spWebBrowser2)
 	{
 		m_spIEEventDelegate->UnAdvise(m_spWebBrowser2);
+		m_spWebBrowser2 = NULL;
+		m_spIEEventDelegate = NULL;
 	}
 	m_hWnd = 0;
 	if (m_MouseGesture.IsWindow()){
@@ -347,4 +349,10 @@ LRESULT CoreView::OnGoForward( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 {
 	_GoForward();
 	return 0;
+}
+
+HRESULT CoreView::_Close( void )
+{
+
+	return S_OK;
 }

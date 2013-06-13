@@ -7,7 +7,9 @@
 #include "..\APIHook.h"
 
 namespace GameMode
-{
+{	
+
+	typedef DWORD (WINAPI* PFunGetTickCount)(void);
 	class Accelerator
 	{
 	public:

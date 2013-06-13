@@ -204,7 +204,7 @@ void MouseGesture::DrawTip(const CPoint& pt){
 		strText = L"Down Left";
 		break;
 	case EGT_DOWN_RIGHT:
-		strText = L"Down Right";
+		strText = L"Close";
 		break;
 	case EGT_DOWN_UP:
 		strText = L"Down Up";
