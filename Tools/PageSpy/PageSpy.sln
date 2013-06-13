@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PageSpy", "PageSpy\PageSpy.vcproj", "{15CB5531-89D2-43A1-84D8-AE6B12F6A080}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15CB5531-89D2-43A1-84D8-AE6B12F6A080}.Debug|Win32.ActiveCfg = Debug|Win32
+		{15CB5531-89D2-43A1-84D8-AE6B12F6A080}.Debug|Win32.Build.0 = Debug|Win32
+		{15CB5531-89D2-43A1-84D8-AE6B12F6A080}.Release|Win32.ActiveCfg = Release|Win32
+		{15CB5531-89D2-43A1-84D8-AE6B12F6A080}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

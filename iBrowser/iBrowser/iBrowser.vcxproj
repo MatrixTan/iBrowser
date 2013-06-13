@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{456014A7-462A-44ED-A240-EC7FB4F76B1D}</ProjectGuid>
+    <RootNamespace>iBrowser</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfAtl>Static</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfAtl>Static</UseOfAtl>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\..\Output\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\..\Output\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EmbedManifest>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <TypeLibraryName>$(IntDir)iBrowser.tlb</TypeLibraryName>
+      <HeaderFileName>iBrowser.h</HeaderFileName>
+      <DllDataFileName>
+      </DllDataFileName>
+      <InterfaceIdentifierFileName>iBrowser_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>iBrowser_p.c</ProxyFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\Include\WTL80;..\..\thirdParty;..\..\thirdParty\Detours2.1\src;..\..\thirdParty\icebreaker;..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;_WTL_NO_CSTRING;_CRT_RAND_S;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);..\..\include\wtl80;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;icebreaker.lib;Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\Lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <TypeLibraryName>$(IntDir)iBrowser.tlb</TypeLibraryName>
+      <HeaderFileName>iBrowser.h</HeaderFileName>
+      <DllDataFileName>
+      </DllDataFileName>
+      <InterfaceIdentifierFileName>iBrowser_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>iBrowser_p.c</ProxyFileName>
+    </Midl>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\Include\WTL80;..\..\thirdParty;..\..\thirdParty\Detours2.1\src;..\..\thirdParty\icebreaker;..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;_CRT_RAND_S;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);..\..\include\wtl80;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;icebreaker.lib;Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\Lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="BrowserThreadManager.cpp" />
+    <ClCompile Include="core_main_thread.cpp" />
+    <ClCompile Include="core_manager.cpp" />
+    <ClCompile Include="core_process.cpp" />
+    <ClCompile Include="CoreProxy.cpp" />
+    <ClCompile Include="core_process_host.cpp" />
+    <ClCompile Include="core_process_launcher.cpp" />
+    <ClCompile Include="core_process_manager.cpp" />
+    <ClCompile Include="custom_client_site.cpp" />
+    <ClCompile Include="gamemode\accelerator.cpp" />
+    <ClCompile Include="global_singleton.cpp" />
+    <ClCompile Include="iBrowser.cpp" />
+    <ClCompile Include="maskview.cpp" />
+    <ClCompile Include="mask_doc_host_ui_handler.cpp" />
+    <ClCompile Include="mask_external.cpp" />
+    <ClCompile Include="mouse_gesture.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="IEEventDelegate.cpp" />
+    <ClCompile Include="IIEEventDelegate.cpp" />
+    <ClCompile Include="core_view.cpp" />
+    <ClCompile Include="ConsoleWindow.cpp" />
+    <ClCompile Include="DocHostUIHandler.cpp" />
+    <ClCompile Include="MainEdit.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MaskWindow.cpp" />
+    <ClCompile Include="TabButton.cpp" />
+    <ClCompile Include="TabButtonAdd.cpp" />
+    <ClCompile Include="util_common.cpp" />
+    <ClCompile Include="XWindow.cpp" />
+    <ClCompile Include="APIHook.cpp" />
+    <ClCompile Include="UIUtil.cpp" />
+    <ClCompile Include="UtilIECore.cpp" />
+    <ClCompile Include="UtilURL.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BrowserThreadManager.h" />
+    <ClInclude Include="AboutDlg.h" />
+    <ClInclude Include="core_main_thread.h" />
+    <ClInclude Include="core_manager.h" />
+    <ClInclude Include="core_process.h" />
+    <ClInclude Include="CoreProxy.h" />
+    <ClInclude Include="core_process_host.h" />
+    <ClInclude Include="core_process_launcher.h" />
+    <ClInclude Include="core_process_manager.h" />
+    <ClInclude Include="custom_client_site.h" />
+    <ClInclude Include="gamemode\accelerator.h" />
+    <ClInclude Include="global_singleton.h" />
+    <ClInclude Include="maskview.h" />
+    <ClInclude Include="mask_doc_host_ui_handler.h" />
+    <ClInclude Include="mask_external.h" />
+    <ClInclude Include="mouse_gesture.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="IEEventDelegate.h" />
+    <ClInclude Include="IIEEventDelegate.h" />
+    <ClInclude Include="core_view.h" />
+    <ClInclude Include="ConsoleWindow.h" />
+    <ClInclude Include="DocHostUIHandler.h" />
+    <ClInclude Include="MainEdit.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MaskWindow.h" />
+    <ClInclude Include="MessageDef.h" />
+    <ClInclude Include="switches.h" />
+    <ClInclude Include="TabButton.h" />
+    <ClInclude Include="TabButtonAdd.h" />
+    <ClInclude Include="util_common.h" />
+    <ClInclude Include="XWindow.h" />
+    <ClInclude Include="APIHook.h" />
+    <ClInclude Include="UIUtil.h" />
+    <ClInclude Include="UtilDebug.h" />
+    <ClInclude Include="UtilIECore.h" />
+    <ClInclude Include="UtilURL.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\iBrowser.ico" />
+    <None Include="Penguins.bmp" />
+    <None Include="res\mask.html" />
+    <None Include="res\tabbutton.png" />
+    <None Include="res\tabbutton_add.png" />
+    <None Include="res\tabbutton_add_over.png" />
+    <None Include="res\tabbutton_over.png" />
+    <None Include="res\toolbar.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="iBrowser.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

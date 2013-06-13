@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "thirdParty", "thirdParty", "{77EDF6E6-F826-4C7D-AF64-F4459F4FB58C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iBrowser", "iBrowser\iBrowser.vcxproj", "{456014A7-462A-44ED-A240-EC7FB4F76B1D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A367BF91-94F2-4424-B770-DFE924C52FE4} = {A367BF91-94F2-4424-B770-DFE924C52FE4}
+		{ADA5E2D8-70CF-41BB-B970-24F2D241E756} = {ADA5E2D8-70CF-41BB-B970-24F2D241E756}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcxproj", "{D3488FF1-8D0D-43AC-8EFD-142F2CE882E6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Base", "Base\Base.vcxproj", "{ADA5E2D8-70CF-41BB-B970-24F2D241E756}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DetoursLib", "..\thirdParty\Detours2.1\dsp\DetoursLib.vcxproj", "{A367BF91-94F2-4424-B770-DFE924C52FE4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Profile|Win32 = Profile|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{456014A7-462A-44ED-A240-EC7FB4F76B1D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{456014A7-462A-44ED-A240-EC7FB4F76B1D}.Debug|Win32.Build.0 = Debug|Win32
+		{456014A7-462A-44ED-A240-EC7FB4F76B1D}.Profile|Win32.ActiveCfg = Release|Win32
+		{456014A7-462A-44ED-A240-EC7FB4F76B1D}.Profile|Win32.Build.0 = Release|Win32
+		{456014A7-462A-44ED-A240-EC7FB4F76B1D}.Release|Win32.ActiveCfg = Release|Win32
+		{456014A7-462A-44ED-A240-EC7FB4F76B1D}.Release|Win32.Build.0 = Release|Win32
+		{D3488FF1-8D0D-43AC-8EFD-142F2CE882E6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D3488FF1-8D0D-43AC-8EFD-142F2CE882E6}.Debug|Win32.Build.0 = Debug|Win32
+		{D3488FF1-8D0D-43AC-8EFD-142F2CE882E6}.Profile|Win32.ActiveCfg = Release|Win32
+		{D3488FF1-8D0D-43AC-8EFD-142F2CE882E6}.Profile|Win32.Build.0 = Release|Win32
+		{D3488FF1-8D0D-43AC-8EFD-142F2CE882E6}.Release|Win32.ActiveCfg = Release|Win32
+		{D3488FF1-8D0D-43AC-8EFD-142F2CE882E6}.Release|Win32.Build.0 = Release|Win32
+		{ADA5E2D8-70CF-41BB-B970-24F2D241E756}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ADA5E2D8-70CF-41BB-B970-24F2D241E756}.Debug|Win32.Build.0 = Debug|Win32
+		{ADA5E2D8-70CF-41BB-B970-24F2D241E756}.Profile|Win32.ActiveCfg = Release|Win32
+		{ADA5E2D8-70CF-41BB-B970-24F2D241E756}.Profile|Win32.Build.0 = Release|Win32
+		{ADA5E2D8-70CF-41BB-B970-24F2D241E756}.Release|Win32.ActiveCfg = Release|Win32
+		{ADA5E2D8-70CF-41BB-B970-24F2D241E756}.Release|Win32.Build.0 = Release|Win32
+		{A367BF91-94F2-4424-B770-DFE924C52FE4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A367BF91-94F2-4424-B770-DFE924C52FE4}.Debug|Win32.Build.0 = Debug|Win32
+		{A367BF91-94F2-4424-B770-DFE924C52FE4}.Profile|Win32.ActiveCfg = Profile|Win32
+		{A367BF91-94F2-4424-B770-DFE924C52FE4}.Profile|Win32.Build.0 = Profile|Win32
+		{A367BF91-94F2-4424-B770-DFE924C52FE4}.Release|Win32.ActiveCfg = Release|Win32
+		{A367BF91-94F2-4424-B770-DFE924C52FE4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ADA5E2D8-70CF-41BB-B970-24F2D241E756} = {77EDF6E6-F826-4C7D-AF64-F4459F4FB58C}
+		{A367BF91-94F2-4424-B770-DFE924C52FE4} = {77EDF6E6-F826-4C7D-AF64-F4459F4FB58C}
+	EndGlobalSection
+EndGlobal

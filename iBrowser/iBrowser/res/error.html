@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mask</title>
+</head>
+<script type="text/javascript">
+    function QueryString() {
+        var name, value, i;
+        var str = location.href;
+        var num = str.indexOf("?")
+        str = str.substr(num + 1);
+        var arrtmp = str.split("&");
+        for (i = 0; i < arrtmp.length; i++) {
+            num = arrtmp[i].indexOf("=");
+            if (num > 0) {
+                name = arrtmp[i].substring(0, num);
+                value = arrtmp[i].substr(num + 1);
+                this[name] = value;
+            }
+        }
+        return this;
+    }
+    var param = QueryString();
+    window.onload = function () {
+        
+        document.getElementById("url").innerHTML = param["url"];
+        document.getElementById("reason").innerHTML = param["reason"];
+    }
+
+    function reloadURL() {
+        location.href = param["url"];
+    }
+
+</script>
+<body>
+<div style="font-size:30px">
+    自定义错误页
+</div>
+<br />
+访问失败：<div id="url"></div><br />
+失败原因：<div id="reason"></div>
+<input type="submit" onclick="reloadURL();" value="重新加载" />
+</body>
+</html>

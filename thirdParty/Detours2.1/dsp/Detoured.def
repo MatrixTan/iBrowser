@@ -1,0 +1,3 @@
+LIBRARY   Detoured
+EXPORTS
+   Detoured   @1

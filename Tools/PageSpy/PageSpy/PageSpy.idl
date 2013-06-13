@@ -1,0 +1,52 @@
+// PageSpy.idl : type library source for ActiveX Control project.
+
+// This file will be processed by the MIDL compiler tool to
+// produce the type library (PageSpy.tlb) that will become a resource in
+// PageSpy.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(011A7F50-C241-40FC-BDC1-3FE41B590CCE), version(1.0),
+  helpfile("PageSpy.hlp"),
+  helpstring("PageSpy ActiveX Control module"),
+  control ]
+library PageSpyLib
+{
+	importlib(STDOLE_TLB);
+
+	//  Primary dispatch interface for CPageSpyCtrl
+
+	[ uuid(70E082FC-1A8B-4575-8CEE-B735A1CA2D97),
+	  helpstring("Dispatch interface for PageSpy Control")]
+	dispinterface _DPageSpy
+	{
+		properties:
+		methods:
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+	};
+
+	//  Event dispatch interface for CPageSpyCtrl
+
+	[ uuid(C347D226-682A-44DF-849E-3E7B9AC1680C),
+	  helpstring("Event interface for PageSpy Control") ]
+	dispinterface _DPageSpyEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+	};
+
+	//  Class information for CPageSpyCtrl
+
+	[ uuid(043E0E8F-F0AB-4583-A059-563FDBCDC84E),
+	  helpstring("PageSpy Control"), control ]
+	coclass PageSpy
+	{
+		[default] dispinterface _DPageSpy;
+		[default, source] dispinterface _DPageSpyEvents;
+	};
+
+};
