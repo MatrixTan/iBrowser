@@ -6,6 +6,7 @@
 #define _TAB_BUTTON_H__
 
 #include <Base\RefCounted.h>
+#include <GdiPlus.h>
 
 class CTabButton : public CWindowImpl<CTabButton, CAxWindow>
 	,public base::RefCounted<CTabButton>
@@ -26,6 +27,7 @@ public:
 		MESSAGE_HANDLER(WM_MOUSEHOVER, OnMouseHover)
 		MESSAGE_HANDLER(WM_MOUSELEAVE, OnMouseLeave)
 		MESSAGE_HANDLER(WM_MOUSEMOVE, OnMouseMove)
+		MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBKGnd)
 	END_MSG_MAP()
 
 	CTabButton();
@@ -43,11 +45,14 @@ protected:
 	LRESULT OnMouseHover(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnMouseLeave(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnMouseMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+	LRESULT OnEraseBKGnd(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 private:
 
 	HWND m_hParentWindow;
-	UINT m_nCurrentImageId;
 	BOOL m_bMouseTrack;
+	Gdiplus::Image *m_pNormalImage;
+	Gdiplus::Image *m_pHoverImage;
+	Gdiplus::Image *m_pCurrentImage;
 };
 
 #endif //_TAB_BUTTON_H__

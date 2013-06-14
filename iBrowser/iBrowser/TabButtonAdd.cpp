@@ -17,12 +17,16 @@ LRESULT CTabButtonAdd::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& b
 	PAINTSTRUCT paintStruct;
 	::BeginPaint(m_hWnd, &paintStruct);
 
-	Gdiplus::Image *pImage = NULL;
-	ImageFromIDResource(_Module.m_hInstResource, m_nCurrentImageId, L"PNG", pImage);
+	RECT rc;
+	GetClientRect(&rc);
+	Gdiplus::Bitmap bitmap(rc.right, rc.bottom);
+	Gdiplus::Graphics *mg = Gdiplus::Graphics::FromImage(&bitmap);
+	Gdiplus::SolidBrush bkBrush(Gdiplus::Color(255,255,255,255));
+	mg->FillRectangle(&bkBrush, rc.left, rc.top, rc.right-rc.left, rc.bottom-rc.top);
+	mg->DrawImage(m_pCurrentImage,0,0,m_pCurrentImage->GetWidth(),m_pCurrentImage->GetHeight());
 
 	Gdiplus::Graphics g(paintStruct.hdc);
-	g.DrawImage(pImage,0,0,pImage->GetWidth(),pImage->GetHeight());
-	delete pImage;
+	g.DrawImage(&bitmap,rc.left, rc.top, rc.right-rc.left ,rc.bottom-rc.top);
 
 	::EndPaint(m_hWnd, &paintStruct);
 	return 0;
@@ -31,14 +35,29 @@ LRESULT CTabButtonAdd::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& b
 CTabButtonAdd::CTabButtonAdd()
 :m_hParentWindow(NULL)
 ,m_bMouseTrack(TRUE)
-,m_nCurrentImageId(IDR_TAB_BUTTON_ADD)
+,m_pNormalImage(NULL)
+,m_pHoverImage(NULL)
+,m_pCurrentImage(NULL)
 {
 
 }
 
 CTabButtonAdd::~CTabButtonAdd()
 {
+	if (m_pNormalImage){
+		delete m_pNormalImage;
+		m_pNormalImage = NULL;
+	}
+	if (m_pHoverImage){
+		delete m_pHoverImage;
+		m_pHoverImage = NULL;
+	}
+	m_pCurrentImage = NULL;
 
+	if (IsWindow()){
+		DestroyWindow();
+		m_hWnd = NULL;
+	}
 }
 
 void CTabButtonAdd::SetParentHWND( HWND hParent )
@@ -48,6 +67,9 @@ void CTabButtonAdd::SetParentHWND( HWND hParent )
 
 LRESULT CTabButtonAdd::OnCreate( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
+	ImageFromIDResource(_Module.m_hInstResource, IDR_TAB_BUTTON_ADD, L"PNG", m_pNormalImage);
+	ImageFromIDResource(_Module.m_hInstResource, IDR_TAB_BUTTON_ADD_OVER, L"PNG", m_pHoverImage);
+	m_pCurrentImage = m_pNormalImage;
 	return 0;
 }
 
@@ -59,14 +81,14 @@ LRESULT CTabButtonAdd::OnLButtonUp( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
 LRESULT CTabButtonAdd::OnMouseHover( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
-	m_nCurrentImageId = IDR_TAB_BUTTON_ADD_OVER;
+	m_pCurrentImage = m_pHoverImage;
 	RedrawWindow();
 	return 0;
 }
 
 LRESULT CTabButtonAdd::OnMouseLeave( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
-	m_nCurrentImageId = IDR_TAB_BUTTON_ADD;
+	m_pCurrentImage = m_pHoverImage;
 	RedrawWindow();
 	m_bMouseTrack = TRUE;
 	return 0;
@@ -84,5 +106,10 @@ LRESULT CTabButtonAdd::OnMouseMove( UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 		::_TrackMouseEvent(&csTME); 
 		m_bMouseTrack=FALSE;
 	}
+	return 0;
+}
+
+LRESULT CTabButtonAdd::OnEraseBKGnd( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
 	return 0;
 }
