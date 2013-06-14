@@ -26,13 +26,13 @@ public:
 	CoreCookie();
 	~CoreCookie();
 
-	static DWORD HOOK_InternetSetCookieExW(__in LPCWSTR lpszUrl,
+	static DWORD WINAPI HOOK_InternetSetCookieExW(__in LPCWSTR lpszUrl,
 		__in_opt LPCWSTR lpszCookieName,
 		__in LPCWSTR lpszCookieData,
 		__in DWORD dwFlags,
 		__in_opt DWORD_PTR dwReserved);
 	
-	static DWORD HOOK_InternetSetCookieExA(__in LPCSTR lpszUrl,
+	static DWORD WINAPI HOOK_InternetSetCookieExA(__in LPCSTR lpszUrl,
 		__in_opt LPCSTR lpszCookieName,
 		__in LPCSTR lpszCookieData,
 		__in DWORD dwFlags,
