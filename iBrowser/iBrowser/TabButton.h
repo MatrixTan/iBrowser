@@ -34,9 +34,10 @@ public:
 	~CTabButton();
 	
 	const static int kDefaultWidth = 208;
-	const static int kDefaultHeight = 25;
+	const static int kDefaultHeight = 25;	
 
 	void SetParentHWND(HWND hParent);
+	void SetMaskColor(DWORD dwColor);
 protected:
 	LRESULT OnLButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnRButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
@@ -53,6 +54,8 @@ private:
 	Gdiplus::Image *m_pNormalImage;
 	Gdiplus::Image *m_pHoverImage;
 	Gdiplus::Image *m_pCurrentImage;
+	Gdiplus::Color m_colorMask;
+	float m_fMaskAlpha;
 };
 
 #endif //_TAB_BUTTON_H__

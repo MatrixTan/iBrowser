@@ -8,23 +8,10 @@
 
 #include <atlstr.h>
 
-namespace URL
+class URLUtil
 {
-	BOOL IsURL(const CStringW &strSource);
-
-#if 0
-
-	/// 把输入转化为合法的url. 
-	/// @param text 输入
-	/// @param desired_tld 如果不为空,代表着用户希望在后边自动补全后边.
-	///						如:com net 注意不要带上'.'
-	/// 如果没有scheme 会自动加上'www'
-	/// 如果|desired_tld| is non-empty, it represents the TLD the user wishes to
-	CStringW FixupURL(CStringW text, CStringW desired_tld = L"");
-	INT GetRegistryLength(CStringW host);
-	CStringW ReplaceDBC(CStringW text);
-#endif
-
-}
+public:
+	static CString GetHost(const CString &strURL);
+};
 
 #endif

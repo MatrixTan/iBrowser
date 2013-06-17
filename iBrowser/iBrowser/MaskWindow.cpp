@@ -88,7 +88,7 @@ LRESULT CMaskWindow::OnMainEditSubmit( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 	ShowWindow(SW_HIDE);
 	if (m_spCoreProxy.get())
 	{
-		if (URL::IsURL(strText))
+		if (true)
 		{
 
 		}

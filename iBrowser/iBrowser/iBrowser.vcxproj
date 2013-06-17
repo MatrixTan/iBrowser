@@ -161,6 +161,7 @@
     <ClCompile Include="MaskWindow.cpp" />
     <ClCompile Include="TabButton.cpp" />
     <ClCompile Include="TabButtonAdd.cpp" />
+    <ClCompile Include="tab_color_manager.cpp" />
     <ClCompile Include="util_common.cpp" />
     <ClCompile Include="XWindow.cpp" />
     <ClCompile Include="APIHook.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="switches.h" />
     <ClInclude Include="TabButton.h" />
     <ClInclude Include="TabButtonAdd.h" />
+    <ClInclude Include="tab_color_manager.h" />
     <ClInclude Include="util_common.h" />
     <ClInclude Include="XWindow.h" />
     <ClInclude Include="APIHook.h" />

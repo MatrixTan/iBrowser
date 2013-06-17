@@ -18,11 +18,27 @@ LRESULT CTabButton::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
 
 	RECT rc;
 	GetClientRect(&rc);
+	
+	Gdiplus::Bitmap tempBitMap(rc.right, rc.bottom);
+	Gdiplus::Graphics *tempMg = Gdiplus::Graphics::FromImage(&tempBitMap);
+	tempMg->DrawImage(m_pCurrentImage,0,0,m_pCurrentImage->GetWidth(),m_pCurrentImage->GetHeight());
+	for (int iRow = 0; iRow < tempBitMap.GetHeight(); ++iRow){
+		for (int iCollumn = 0; iCollumn<tempBitMap.GetWidth(); ++iCollumn){
+			Gdiplus::Color srcColor;
+			tempBitMap.GetPixel(iCollumn, iRow, &srcColor);
+			if (srcColor.GetAlpha() >200){
+				Gdiplus::Color destColor(255, srcColor.GetR()*(1 - m_fMaskAlpha) + m_colorMask.GetR()*m_fMaskAlpha
+					, srcColor.GetG()*(1 - m_fMaskAlpha) + m_colorMask.GetG()*m_fMaskAlpha
+					, srcColor.GetB()*(1 - m_fMaskAlpha) + m_colorMask.GetB()*m_fMaskAlpha);
+				tempBitMap.SetPixel(iCollumn, iRow, destColor);
+			}
+		}
+	}
 	Gdiplus::Bitmap bitmap(rc.right, rc.bottom);
 	Gdiplus::Graphics *mg = Gdiplus::Graphics::FromImage(&bitmap);
 	Gdiplus::SolidBrush bkBrush(Gdiplus::Color(255,255,255,255));
 	mg->FillRectangle(&bkBrush, rc.left, rc.top, rc.right-rc.left, rc.bottom-rc.top);
-	mg->DrawImage(m_pCurrentImage,0,0,m_pCurrentImage->GetWidth(),m_pCurrentImage->GetHeight());
+	mg->DrawImage(&tempBitMap, 0, 0, tempBitMap.GetWidth(), tempBitMap.GetHeight());
 
 	Gdiplus::Graphics g(paintStruct.hdc);
 	g.DrawImage(&bitmap,rc.left, rc.top, rc.right-rc.left ,rc.bottom-rc.top);
@@ -36,6 +52,8 @@ CTabButton::CTabButton()
 ,m_bMouseTrack(TRUE)
 ,m_pNormalImage(NULL)
 ,m_pCurrentImage(NULL)
+,m_colorMask(0,0,0,0)
+,m_fMaskAlpha(0.0f)
 {
 	
 }
@@ -116,4 +134,11 @@ LRESULT CTabButton::OnMouseMove( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 LRESULT CTabButton::OnEraseBKGnd( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	return 0;
+}
+
+void CTabButton::SetMaskColor( DWORD dwColor)
+{
+	m_colorMask = Gdiplus::Color(dwColor);
+	m_fMaskAlpha = 0.5f;
+	RedrawWindow();
 }

@@ -17,6 +17,9 @@
 #include "core_process_manager.h"
 #include "CoreProxy.h"
 #include "core_manager.h"
+#include "TabButton.h"
+#include "tab_color_manager.h"
+#include "UtilURL.h"
 
 #define CHECK_TIMER_ID 1843
 #define HEART_BEAT_TIME 100
@@ -101,10 +104,12 @@ LRESULT CXWindow::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 }
 
 
-void CXWindow::Initialize( E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL )
+void CXWindow::Initialize( E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL
+	, const base::CScopedRefPtr<CTabButton>& spButton)
 {
 	m_strURL = strURL;
 	m_nCreateFlag = flag;
+	m_spTabButton = spButton;
 }
 
 LRESULT CXWindow::OnCoreProcessHostReady( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
@@ -122,7 +127,11 @@ LRESULT CXWindow::OnBeforeNavigate( UINT msg, WPARAM wParam, LPARAM lParam, BOOL
 	CStringW *pURL = NULL;
 	Serialize<CStringW>::Read((void*)wParam, &pURL);
 	if (pURL){
-
-	}	
+		CString strHost = URLUtil::GetHost(*pURL);
+		if (!strHost.IsEmpty()){
+			DWORD dwTabColor = TabColorManager::GetInstance()->GetColor(strHost);
+			m_spTabButton->SetMaskColor(dwTabColor);
+		}	
+	}
 	return 0;
 }

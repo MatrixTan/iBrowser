@@ -13,10 +13,12 @@
 
 #include "MessageDef.h"
 #include <time.h>
-#include <Base\RefCounted.h>
+#include <Base/RefCounted.h>
 #include "Base/ipc_message.h"
 
+
 class CoreProxy;
+class CTabButton;
 
 class CXWindow :
 	public base::RefCounted<CXWindow>,
@@ -55,7 +57,8 @@ public:
 
 	CXWindow();
 	~CXWindow();
-	void Initialize(E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL);
+	void Initialize(E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL
+		, const base::CScopedRefPtr<CTabButton>& spButton);
 
 	static const DWORD kNormalStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|0x4c;
 	static const DWORD kFreezingStyle = WS_POPUP|WS_CLIPSIBLINGS|WS_DISABLED;
@@ -71,7 +74,8 @@ private:
 	BOOL m_bFreezing;
 	CString m_strURL;
 	UINT m_nCreateFlag;
-	base::CScopedRefPtr<CoreProxy> m_spCoreProxy;	
+	base::CScopedRefPtr<CoreProxy> m_spCoreProxy;
+	base::CScopedRefPtr<CTabButton> m_spTabButton;
 };
 
 #endif
