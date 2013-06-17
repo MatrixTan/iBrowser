@@ -62,6 +62,9 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
 		HWND hParent = ::GetParent(m_hWnd);
 		::PostMessage(hParent, WM_CHILD_WINDOW_CREATED,(WPARAM)m_hWnd, (LPARAM)m_nCreateFlag);
+		if (NULL == m_HostProxy){
+			m_HostProxy = new HostProxy(hParent);
+		}		
 	}
 	
 	return 0;
@@ -72,13 +75,17 @@ CoreView::CoreView()
 ,m_nCreateFlag(ECCF_CreateNew)
 ,m_MouseGesture(this)
 ,m_bBeforeGesture(false)
+,m_HostProxy(NULL)
 {
 
 }
 
 CoreView::~CoreView()
 {
-
+	if (m_HostProxy){
+		delete m_HostProxy;
+		m_HostProxy = NULL;
+	}
 }
 
 HRESULT CoreView::_Navegate( LPCWSTR strURL )
@@ -256,8 +263,22 @@ LRESULT CoreView::OnEventDelegateMessage( UINT /*uMsg*/, WPARAM wParam, LPARAM l
 		}		
 		break;
 	case EDM_DOCUMENT_COMPLETE:
-		
-		
+		break;
+	case EDM_NAVIGATE_COMPLETE:	
+		break;
+	case EDM_BEFORE_NAVIGATE:
+		{
+			BeforeNavigateParam *pParam = static_cast<BeforeNavigateParam*>((void*)lParam);
+			if (pParam){
+				if (pParam->bMainFrame && m_HostProxy){
+					m_HostProxy->NotifyBeforeNavigate(pParam->strURL);
+				}
+				delete pParam;
+				pParam = NULL;
+			}
+			break;
+		}		
+	default:
 		break;
 	}
 	return 0;

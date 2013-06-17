@@ -14,6 +14,7 @@
 #include "CoreProxy.h"
 #include <Base/ipc_message.h>
 #include "mouse_gesture.h"
+#include "host_proxy.h"
 
 
 class CoreView : public CWindowImpl<CoreView,CAxWindow>
@@ -82,6 +83,7 @@ private:
 	CString m_strURL;
 	MouseGesture m_MouseGesture;
 	bool m_bBeforeGesture;
+	HostProxy *m_HostProxy;
 
 public:
 	LRESULT OnKeyUp(TCHAR vk, UINT cRepeat, UINT flags);

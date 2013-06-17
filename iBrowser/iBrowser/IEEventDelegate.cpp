@@ -47,29 +47,6 @@ HRESULT CIEEventDelegate::UnAdvise( IWebBrowser2 * pWebBrowser2 )
 	return hr;
 }
 
-void STDMETHODCALLTYPE CIEEventDelegate::OnDocumentComplete( IDispatch *pDisp, VARIANT *URL )
-{
-	DEBUG_STR(L"Document Complete");
-	if (UtilIECore::IsMainFrame(pDisp)){
-		CComQIPtr<IWebBrowser2> spWebBrowser2 = pDisp;
-		CString strURL;
-		if (URL){
-			strURL = URL->bstrVal;
-		}
-		if (Util::IsCustomErrorPage(strURL)){
-			UtilIECore::RemoveRelativeTravelLog(spWebBrowser2, -1);
-		}
-
-		DocumentCompleteParam *pParam = new DocumentCompleteParam();
-		pParam->bsURL = ::SysAllocString(URL->bstrVal);
-		if (spWebBrowser2)
-		{
-			pParam->bMainFrame = TRUE;
-		}
-
-		::PostMessage(m_hCoreViewWindow, WM_EVENT_DELEGATE_MESSAGE, EDM_DOCUMENT_COMPLETE, (LPARAM)pParam);
-	}	
-}
 
 STDMETHODIMP CIEEventDelegate::Invoke(DISPID dispidMember, REFIID riid,
 										 LCID lcid, WORD wFlags, DISPPARAMS * pdispparams, VARIANT * pvarResult,
@@ -194,6 +171,15 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnBeforeNavigate2( IDispatch *pDisp
 	m_ErrorInfo.bError = false;
 	m_ErrorInfo.dwErrorCode = 0;
 	*Cancel = VARIANT_FALSE;
+
+	if (url){
+		CStringW strURL(url->bstrVal);
+		BeforeNavigateParam *param = new BeforeNavigateParam();
+		param->bMainFrame = UtilIECore::IsMainFrame(pDisp);
+		param->strURL = strURL;
+		::PostMessage(m_hCoreViewWindow, WM_EVENT_DELEGATE_MESSAGE, EDM_BEFORE_NAVIGATE, (LPARAM)param);
+	}
+
 	return;
 }
 
@@ -213,7 +199,8 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnNavigateError( IDispatch *pDisp
 
 void STDMETHODCALLTYPE CIEEventDelegate::OnNavigateComplete2( IDispatch *pDisp, VARIANT *url )
 {
-	if (UtilIECore::IsMainFrame(pDisp)){
+	bool bIsMainFrame = UtilIECore::IsMainFrame(pDisp);
+	if (bIsMainFrame){
 		CComQIPtr<IWebBrowser2> spWebBrowser2 = pDisp;
 		CComBSTR bsURL;
 		spWebBrowser2->get_LocationURL(&bsURL);
@@ -222,7 +209,44 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnNavigateComplete2( IDispatch *pDisp, 
 			strErrorPage.Format(L"%s?url=%s&reason=%d", Util::GetCustomErrorPage(), CString(bsURL), m_ErrorInfo.dwErrorCode);
 			spWebBrowser2->Stop();
 			spWebBrowser2->Navigate(strErrorPage.AllocSysString(), NULL, NULL, NULL, NULL);
+			return;
 		}
-	}	
+	}
+
+	if (url){
+		CString strURL(url->bstrVal);
+		NavigateCompleteParam *pParam = new NavigateCompleteParam();
+		pParam->bMainFrame = bIsMainFrame;
+		pParam->bsURL = strURL.AllocSysString();
+
+		::PostMessage(m_hCoreViewWindow, WM_EVENT_DELEGATE_MESSAGE, EDM_DOCUMENT_COMPLETE, (LPARAM)pParam);
+	}
+	
+
+
 	return;
+}
+
+void STDMETHODCALLTYPE CIEEventDelegate::OnDocumentComplete( IDispatch *pDisp, VARIANT *URL )
+{
+	DEBUG_STR(L"Document Complete");
+	if (UtilIECore::IsMainFrame(pDisp)){
+		CComQIPtr<IWebBrowser2> spWebBrowser2 = pDisp;
+		CString strURL;
+		if (URL){
+			strURL = URL->bstrVal;
+		}
+		if (Util::IsCustomErrorPage(strURL)){
+			UtilIECore::RemoveRelativeTravelLog(spWebBrowser2, -1);
+		}
+
+		DocumentCompleteParam *pParam = new DocumentCompleteParam();
+		pParam->bsURL = ::SysAllocString(URL->bstrVal);
+		if (spWebBrowser2)
+		{
+			pParam->bMainFrame = TRUE;
+		}
+
+		::PostMessage(m_hCoreViewWindow, WM_EVENT_DELEGATE_MESSAGE, EDM_DOCUMENT_COMPLETE, (LPARAM)pParam);
+	}	
 }

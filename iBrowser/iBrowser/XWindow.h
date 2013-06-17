@@ -14,6 +14,7 @@
 #include "MessageDef.h"
 #include <time.h>
 #include <Base\RefCounted.h>
+#include "Base/ipc_message.h"
 
 class CoreProxy;
 
@@ -31,6 +32,7 @@ public:
 	
 
 	BEGIN_MSG_MAP(CXWindow)
+		HANDLE_IPC_MSG(CXWindow)
 		MESSAGE_HANDLER(WM_CREATE, OnCreate)
 		MESSAGE_HANDLER(WM_DESTROY, OnDestory)
 		MESSAGE_HANDLER(WM_CLOSE, OnClose)
@@ -38,6 +40,7 @@ public:
 		MESSAGE_HANDLER(WM_SIZE, OnSize)
 		MESSAGE_HANDLER(WM_CHILD_WINDOW_CREATED, OnChildWindowCreated);
 		MESSAGE_HANDLER(WM_CORE_PROCESS_HOST_READY, OnCoreProcessHostReady);
+		MESSAGE_HANDLER(WM_BEFORE_NAVIGATE, OnBeforeNavigate);
 	END_MSG_MAP()
 
 	LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
@@ -48,6 +51,7 @@ public:
 	LRESULT OnChildWindowCreated(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 	LRESULT OnCoreProcessHostReady(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+	LRESULT OnBeforeNavigate(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 	CXWindow();
 	~CXWindow();

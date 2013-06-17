@@ -56,7 +56,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 			strText.Format(L"PID:%d", dwPid);
 			::MessageBox(NULL, L"Wait for debugger", strText, MB_OK);
 		}
-		
+		GlobalSingleton::GetInstance()->SetProcessMode(EPM_MULTIPLE);
 		GlobalSingleton::GetInstance()->SetProcessType(EPT_CORE);
 		StartCoreProcessHooks();
 		CoreProcess coreProcess;

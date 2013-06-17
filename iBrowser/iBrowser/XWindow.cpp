@@ -116,3 +116,13 @@ LRESULT CXWindow::OnCoreProcessHostReady( UINT msg, WPARAM wParam, LPARAM lParam
 	
 	return 0;
 }
+
+LRESULT CXWindow::OnBeforeNavigate( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+	CStringW *pURL = NULL;
+	Serialize<CStringW>::Read((void*)wParam, &pURL);
+	if (pURL){
+
+	}	
+	return 0;
+}

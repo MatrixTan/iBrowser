@@ -6,33 +6,11 @@
 #ifndef _I_IE_EVENT_DELEGATE_H__
 #define _I_IE_EVENT_DELEGATE_H__
 
+#include "ie_event_message.h"
 
 EXTERN_C const IID IID_IIEEventDelegate;
 
-enum EventDelegateMessage
-{
-	EDM_TRAVELLOG_MESSAGE = 0,
-	EDM_DOCUMENT_COMPLETE
-};
 
-class DocumentCompleteParam
-{
-public:
-	DocumentCompleteParam()
-		:bMainFrame(FALSE)
-	{}
-	~DocumentCompleteParam()
-	{
-		if (bsURL)
-		{
-			::SysFreeString(bsURL);
-			bsURL = NULL;
-		}
-	}
-
-	BSTR bsURL;
-	BOOL bMainFrame;
-};
 
 class IIEEventDelegate : public IUnknown
 {

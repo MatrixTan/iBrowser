@@ -141,6 +141,7 @@
     <ClCompile Include="custom_client_site.cpp" />
     <ClCompile Include="gamemode\accelerator.cpp" />
     <ClCompile Include="global_singleton.cpp" />
+    <ClCompile Include="host_proxy.cpp" />
     <ClCompile Include="iBrowser.cpp" />
     <ClCompile Include="maskview.cpp" />
     <ClCompile Include="mask_doc_host_ui_handler.cpp" />
@@ -182,6 +183,8 @@
     <ClInclude Include="custom_client_site.h" />
     <ClInclude Include="gamemode\accelerator.h" />
     <ClInclude Include="global_singleton.h" />
+    <ClInclude Include="host_proxy.h" />
+    <ClInclude Include="ie_event_message.h" />
     <ClInclude Include="maskview.h" />
     <ClInclude Include="mask_doc_host_ui_handler.h" />
     <ClInclude Include="mask_external.h" />

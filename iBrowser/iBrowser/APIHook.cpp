@@ -80,7 +80,7 @@ bool StartCoreProcessHooks( void ){
 	HookLibAndProc("Kernel32.dll", "GetTickCount", (void*)&GameMode::Accelerator::HOOK_GetTickCount, (void**)&GameMode::Accelerator::Real_GetTickCount);
 	HookLibAndProc("wininet.dll", "InternetSetCookieExW", (void*)CoreCookie::HOOK_InternetSetCookieExW, (void**)&CoreCookie::Real_InternetSetCookieExW);
 	HookLibAndProc("wininet.dll", "InternetSetCookieExA", (void*)CoreCookie::HOOK_InternetSetCookieExA, (void**)&CoreCookie::Real_InternetSetCookieExA);
-	return true;	
+	return true;
 }
 
 bool StartMainProcessHooks( void ){
