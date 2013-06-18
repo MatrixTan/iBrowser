@@ -50,6 +50,8 @@ public:
 		OnWindowSetHeight)
 		SINK_ENTRY_EX(0, DIID_DWebBrowserEvents2, DISPID_NAVIGATECOMPLETE2,
 		OnNavigateComplete2)
+		SINK_ENTRY_EX(0, DIID_DWebBrowserEvents2, DISPID_TITLECHANGE,
+		OnTitleChange)
 	END_SINK_MAP()
 	
 	CIEEventDelegate();
@@ -90,6 +92,7 @@ public:
 	void STDMETHODCALLTYPE OnWindowSetTop(LONG top);
 	void STDMETHODCALLTYPE OnWindowSetHeight(LONG height);
 	void STDMETHODCALLTYPE OnNavigateComplete2(IDispatch *pDisp, VARIANT *url);
+	void STDMETHODCALLTYPE OnTitleChange(BSTR bsTitle);
 
 private:
 

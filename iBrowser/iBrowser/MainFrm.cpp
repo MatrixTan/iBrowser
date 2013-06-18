@@ -269,7 +269,7 @@ LRESULT CMainFrame::OnClickTab( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/,
 		return 0;
 	}
 	TabPairMap::iterator iterOld = m_mapTabPairs.find(m_hCurrentTabButton);
-	::ShowWindow(iterOld->second.spContainerWindow->m_hWnd, SW_HIDE);
+	iterOld->second.spContainerWindow->ShowWindow(SW_HIDE);
 	_SwitchTo(hWnd);
 	return 0;
 }
@@ -431,7 +431,9 @@ void CMainFrame::_SwitchTo( HWND hTab )
 {
 	TabPairMap::iterator iterNew = m_mapTabPairs.find(hTab);
 	if (iterNew != m_mapTabPairs.end()){
-		::ShowWindow(iterNew->second.spContainerWindow->m_hWnd, SW_SHOW);
+		iterNew->second.spContainerWindow->ShowWindow(SW_SHOW);
+		CStringW strTitle = iterNew->second.spContainerWindow->GetTitle();
+		SetWindowText(strTitle);
 		m_hCurrentTabButton = hTab;
 		GlobalSingleton::GetInstance()->SetCurrentCoreProxy(iterNew->second.spCoreProxy);
 	}	

@@ -43,6 +43,7 @@ public:
 		MESSAGE_HANDLER(WM_CHILD_WINDOW_CREATED, OnChildWindowCreated);
 		MESSAGE_HANDLER(WM_CORE_PROCESS_HOST_READY, OnCoreProcessHostReady);
 		MESSAGE_HANDLER(WM_BEFORE_NAVIGATE, OnBeforeNavigate);
+		MESSAGE_HANDLER(WM_TITLE_CHANGE, OnTitleChange);
 	END_MSG_MAP()
 
 	LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
@@ -54,11 +55,13 @@ public:
 
 	LRESULT OnCoreProcessHostReady(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnBeforeNavigate(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+	LRESULT OnTitleChange(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 	CXWindow();
 	~CXWindow();
 	void Initialize(E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL
 		, const base::CScopedRefPtr<CTabButton>& spButton);
+	const CStringW& GetTitle(void) const;
 
 	static const DWORD kNormalStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|0x4c;
 	static const DWORD kFreezingStyle = WS_POPUP|WS_CLIPSIBLINGS|WS_DISABLED;
@@ -74,6 +77,7 @@ private:
 	BOOL m_bFreezing;
 	CString m_strURL;
 	UINT m_nCreateFlag;
+	CString m_strTitle;
 	base::CScopedRefPtr<CoreProxy> m_spCoreProxy;
 	base::CScopedRefPtr<CTabButton> m_spTabButton;
 };

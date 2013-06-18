@@ -135,3 +135,21 @@ LRESULT CXWindow::OnBeforeNavigate( UINT msg, WPARAM wParam, LPARAM lParam, BOOL
 	}
 	return 0;
 }
+
+LRESULT CXWindow::OnTitleChange( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+	CStringW *pTitle = NULL;
+	Serialize<CStringW>::Read((void*)wParam, &pTitle);
+	if (pTitle){
+		m_strTitle = *pTitle;
+		if (IsWindowVisible()){
+			::SetWindowText(m_hParentWindow, m_strTitle.GetBuffer());
+		}		
+	}
+	return 0;
+}
+
+const CStringW& CXWindow::GetTitle( void ) const
+{
+	return m_strTitle;
+}

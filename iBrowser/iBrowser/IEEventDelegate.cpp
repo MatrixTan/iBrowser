@@ -250,3 +250,8 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnDocumentComplete( IDispatch *pDisp, V
 		::PostMessage(m_hCoreViewWindow, WM_EVENT_DELEGATE_MESSAGE, EDM_DOCUMENT_COMPLETE, (LPARAM)pParam);
 	}	
 }
+
+void STDMETHODCALLTYPE CIEEventDelegate::OnTitleChange( BSTR bsTitle )
+{
+	::PostMessage(m_hCoreViewWindow, WM_EVENT_DELEGATE_MESSAGE, EDM_TITLE_CHANGE, (LPARAM)::SysAllocString(bsTitle));
+}

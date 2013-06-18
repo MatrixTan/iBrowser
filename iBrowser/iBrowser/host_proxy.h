@@ -11,11 +11,12 @@
 
 class HostProxy
 {
-public:
+public:;
 	HostProxy(HWND hHostWindow);
 	~HostProxy();
 
 	void NotifyBeforeNavigate(const CString& strURL);
+	void NotifyTitleChange(const CString& strTitle);
 protected:
 private:
 	HWND m_hHostWindow;

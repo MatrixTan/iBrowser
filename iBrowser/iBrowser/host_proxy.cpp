@@ -31,3 +31,16 @@ void HostProxy::NotifyBeforeNavigate(const CString& strURL)
 		::PostMessage(m_hHostWindow, WM_BEFORE_NAVIGATE, (WPARAM)pData, 0);
 	}
 }
+
+void HostProxy::NotifyTitleChange( const CString& strTitle )
+{
+	int type = GlobalSingleton::GetInstance()->GetProcessMode();
+	if(type == EPM_MULTIPLE){
+		IPC::PostIPCMessage<CStringW>(m_hHostWindow, WM_TITLE_CHANGE, strTitle);
+	}else if(type == EPM_SINGLE){
+		void* pData = NULL;
+		UINT nSize = 0;
+		Serialize<CStringW>::Write(&strTitle, &pData, &nSize);
+		::PostMessage(m_hHostWindow, WM_TITLE_CHANGE, (WPARAM)pData, 0);
+	}
+}

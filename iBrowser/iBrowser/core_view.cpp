@@ -283,9 +283,16 @@ LRESULT CoreView::OnEventDelegateMessage( UINT /*uMsg*/, WPARAM wParam, LPARAM l
 				}
 				delete pParam;
 				pParam = NULL;
-			}
-			break;
-		}		
+			}			
+		}
+		break;
+	case EDM_TITLE_CHANGE:
+		{
+			BSTR bsTitle = (BSTR)lParam;
+			m_HostProxy->NotifyTitleChange(CStringW(bsTitle));
+			::SysFreeString(bsTitle);
+		}
+		break;
 	default:
 		break;
 	}
