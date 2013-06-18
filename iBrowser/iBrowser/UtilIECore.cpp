@@ -148,9 +148,9 @@ BOOL UtilIECore::GetAllImagesFromDocument( IHTMLDocument2* pDocument, std::vecto
 	return TRUE;
 }
 
-bool UtilIECore::IsMainFrame( IDispatch* pDisp ){
+bool UtilIECore::IsMainFrame( IDispatch* pDisp ,IWebBrowser2* pMainBrowser2){
 	CComQIPtr<IWebBrowser2> spBrowser = pDisp;
-	if (spBrowser){
+	if (spBrowser && spBrowser == pMainBrowser2){
 		return true;
 	}
 	return false;

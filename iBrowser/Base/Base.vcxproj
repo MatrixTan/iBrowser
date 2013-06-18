@@ -78,6 +78,7 @@
     <ClCompile Include="RefCounted.cpp" />
     <ClCompile Include="serialize.cpp" />
     <ClCompile Include="TSingleton.cpp" />
+    <ClCompile Include="url_parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandLine.h" />
@@ -85,6 +86,7 @@
     <ClInclude Include="serialize.h" />
     <ClInclude Include="RefCounted.h" />
     <ClInclude Include="TSingleton.h" />
+    <ClInclude Include="url_parser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

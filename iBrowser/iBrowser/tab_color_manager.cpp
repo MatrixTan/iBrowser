@@ -7,7 +7,8 @@
 
 
 TabColorManager* TabColorManager::s_Instance = NULL;
-const DWORD TabColorManager::kColors[] = {0xFF990000, 0xFF009900, 0xFF000099, 0xFF999900, 0xFF009999, 0xFF990099};
+//color scheme: http://www.peise.net/2013/0617/3250.html
+const DWORD TabColorManager::kColors[] = {0xFFF09F0A, 0xFF98F046, 0xFFF078C0, 0xFF055387, 0xFF87C4ED};
 
 TabColorManager* TabColorManager::GetInstance()
 {

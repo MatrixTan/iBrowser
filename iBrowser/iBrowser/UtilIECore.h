@@ -24,7 +24,7 @@ public:
 	};
 	static BOOL GetTravelLogInfo(IWebBrowser2* pWebBrowser2, std::vector<IETravelLogItem> &travelLogList, BOOL &bHaveNew);
 	static BOOL GetAllImagesFromDocument(IHTMLDocument2* pDocument, std::vector<CComPtr<IHTMLImgElement> >& imageList);
-	static bool IsMainFrame(IDispatch* pDisp);
+	static bool IsMainFrame(IDispatch* pDisp, IWebBrowser2* pMainBrowser2);
 	static bool IsIEErrorPage(IWebBrowser2* pWebBrowser2);
 	static bool RemoveRelativeTravelLog(IWebBrowser2* pWebBrowser2, int nIndex);
 private:

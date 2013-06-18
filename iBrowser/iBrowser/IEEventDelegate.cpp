@@ -175,7 +175,7 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnBeforeNavigate2( IDispatch *pDisp
 	if (url){
 		CStringW strURL(url->bstrVal);
 		BeforeNavigateParam *param = new BeforeNavigateParam();
-		param->bMainFrame = UtilIECore::IsMainFrame(pDisp);
+		param->bMainFrame = UtilIECore::IsMainFrame(pDisp, m_spWebBrowser2);
 		param->strURL = strURL;
 		::PostMessage(m_hCoreViewWindow, WM_EVENT_DELEGATE_MESSAGE, EDM_BEFORE_NAVIGATE, (LPARAM)param);
 	}
@@ -199,7 +199,7 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnNavigateError( IDispatch *pDisp
 
 void STDMETHODCALLTYPE CIEEventDelegate::OnNavigateComplete2( IDispatch *pDisp, VARIANT *url )
 {
-	bool bIsMainFrame = UtilIECore::IsMainFrame(pDisp);
+	bool bIsMainFrame = UtilIECore::IsMainFrame(pDisp, m_spWebBrowser2);
 	if (bIsMainFrame){
 		CComQIPtr<IWebBrowser2> spWebBrowser2 = pDisp;
 		CComBSTR bsURL;
@@ -230,7 +230,7 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnNavigateComplete2( IDispatch *pDisp, 
 void STDMETHODCALLTYPE CIEEventDelegate::OnDocumentComplete( IDispatch *pDisp, VARIANT *URL )
 {
 	DEBUG_STR(L"Document Complete");
-	if (UtilIECore::IsMainFrame(pDisp)){
+	if (UtilIECore::IsMainFrame(pDisp, m_spWebBrowser2)){
 		CComQIPtr<IWebBrowser2> spWebBrowser2 = pDisp;
 		CString strURL;
 		if (URL){

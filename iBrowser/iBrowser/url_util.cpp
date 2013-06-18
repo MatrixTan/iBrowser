@@ -3,18 +3,19 @@
 // found in the LICENSE file.
 
 #include "stdafx.h"
-#include "UtilURL.h"
+#include "url_util.h"
+#include <Shlwapi.h>
+#include "Base/url_parser.h"
 
 
 CString URLUtil::GetHost( const CString &strURL )
 {
-	int index = strURL.Find(L"://");
-	if (index > 0){
-		int indexLeft = index + 3;
-		int indexRight = strURL.Find(L"/", indexLeft);
-		if (indexRight > indexLeft){
-			return strURL.Mid(indexLeft, indexRight-indexLeft);
-		}
-	}
+	Base::ParsedURL *parsedURL = Base::ParseUrl(strURL);
+	if (parsedURL){
+		CString strHost(parsedURL->host);
+		Base::FreeParsedURL(parsedURL);
+		parsedURL = NULL;
+		return strHost;
+	}	
 	return CString();
 }

@@ -27,7 +27,7 @@ private:
 
 	ColorMap m_mapColor;
 
-	static const int kAllColorCount = 6;
+	static const int kAllColorCount = 5;
 	static const DWORD kColors[];
 	int m_nNextIndex;
 };

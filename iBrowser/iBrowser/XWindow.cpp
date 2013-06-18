@@ -19,7 +19,7 @@
 #include "core_manager.h"
 #include "TabButton.h"
 #include "tab_color_manager.h"
-#include "UtilURL.h"
+#include "url_util.h"
 
 #define CHECK_TIMER_ID 1843
 #define HEART_BEAT_TIME 100

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "MaskWindow.h"
 #include "resource.h"
-#include "UtilURL.h"
+#include "url_util.h"
 #include "global_singleton.h"
 
 
