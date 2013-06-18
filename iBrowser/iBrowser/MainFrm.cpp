@@ -19,15 +19,16 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 {
 
 	BOOL bTranslated = FALSE;
-	///Ctrl + G
-	if (WM_KEYDOWN == pMsg->message && 0x47 == pMsg->wParam && (pMsg->lParam &0x00FF) <= 1)
-	{
-		if(::GetKeyState(VK_CONTROL)&0x8000)
-		{
+	///Ctrl + G or Ctrl+1
+	if(WM_KEYDOWN == pMsg->message
+		&&::GetKeyState(VK_CONTROL)&0x8000
+		&& (pMsg->lParam &0x00FF) <= 1){
+		if (0x47 == pMsg->wParam||0x31 == pMsg->wParam)	{
 			PostMessage(WM_SHOW_OPERATION_PANEL,0,0);
 			bTranslated = TRUE;
 		}
 	}
+	
 
 	if (FALSE == bTranslated)
 	{

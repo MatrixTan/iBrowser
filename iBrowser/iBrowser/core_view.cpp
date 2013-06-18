@@ -135,6 +135,14 @@ BOOL CoreView::PreTranslateMessage( MSG* pMsg )
 			NotifyHotKey(WM_HOTKEY_NOTIFY, HOTKEY_ShowMaskWindow, 0);
 		}
 	}
+	///Ctrl + 1
+	if (WM_KEYDOWN == Msg && 0x31 == wParam && (lParam &0x00FF) <= 1)
+	{
+		if(::GetKeyState(VK_CONTROL)&0x8000)
+		{
+			NotifyHotKey(WM_HOTKEY_NOTIFY, HOTKEY_ShowMaskWindow, 0);
+		}
+	}
 	///F5
 	if (WM_KEYDOWN == Msg && VK_F5 == wParam && (lParam &0x00FF) <= 1)
 	{
