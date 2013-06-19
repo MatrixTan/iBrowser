@@ -209,6 +209,7 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnNavigateComplete2( IDispatch *pDisp, 
 			strErrorPage.Format(L"%s?url=%s&reason=%d", Util::GetCustomErrorPage(), CString(bsURL), m_ErrorInfo.dwErrorCode);
 			spWebBrowser2->Stop();
 			spWebBrowser2->Navigate(strErrorPage.AllocSysString(), NULL, NULL, NULL, NULL);
+			m_ErrorInfo.bDeleteTravelEntry = true;
 			return;
 		}
 	}
@@ -236,8 +237,21 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnDocumentComplete( IDispatch *pDisp, V
 		if (URL){
 			strURL = URL->bstrVal;
 		}
-		if (Util::IsCustomErrorPage(strURL)){
+		if (Util::IsCustomErrorPage(strURL) && m_ErrorInfo.bDeleteTravelEntry){
 			UtilIECore::RemoveRelativeTravelLog(spWebBrowser2, -1);
+			CComPtr<ITravelLogEntry> spNextEntry;
+
+			//delete the previous entry, when 2 entries of custom error page were created by reload.
+			UtilIECore::GetTravelLogEntry(spWebBrowser2, -1, &spNextEntry);
+			if (spNextEntry){
+				WCHAR *wcsURL = NULL;
+				spNextEntry->GetURL(&wcsURL);
+				if (strURL == wcsURL){
+					UtilIECore::RemoveRelativeTravelLog(spWebBrowser2, -1);
+				}
+				::CoTaskMemFree(wcsURL);
+			}
+			m_ErrorInfo.bDeleteTravelEntry = false;
 		}
 
 		DocumentCompleteParam *pParam = new DocumentCompleteParam();

@@ -101,9 +101,14 @@ private:
 		NavigateErrorInfo()
 			:dwErrorCode(0)
 			,bError(false)
+			,bDeleteTravelEntry(false)
 		{}
 		DWORD dwErrorCode;
 		bool bError;
+		//redundant travel log entries of error page should be deleted when custom error page loaded.
+		//we delete the travel log entry with index -1. but it's should not happen sometime. go back or forward eg.
+		//so we need the flag for controlling the delete action.
+		bool bDeleteTravelEntry;
 	};
 
 	CComPtr<IWebBrowser2> m_spWebBrowser2;

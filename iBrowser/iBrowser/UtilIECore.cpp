@@ -204,3 +204,21 @@ void UtilIECore::GetTravelLog( IWebBrowser2* pWebBrowser2, ITravelLogStg** ppTra
 	}
 }
 
+bool UtilIECore::GetTravelLogEntry( IWebBrowser2* pWebBrowser2, int nIndex, ITravelLogEntry** ppEntry )
+{
+	if (!pWebBrowser2)
+		return false;
+
+	CComPtr<ITravelLogStg> spTravelLog;
+	GetTravelLog(pWebBrowser2, &spTravelLog);
+	if (spTravelLog){
+		CComPtr<ITravelLogEntry> spEntry;
+		spTravelLog->GetRelativeEntry(nIndex, &spEntry);
+		if (spEntry){
+			*ppEntry = spEntry.Detach();
+			return true;
+		}		
+	}	
+	return false;
+}
+
