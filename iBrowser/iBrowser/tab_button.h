@@ -17,6 +17,8 @@ public:
 
 	const static DWORD kStyle = WS_VISIBLE|WS_CHILDWINDOW;
 	const static DWORD kExStyle = WS_EX_LEFT|WS_EX_LTRREADING|WS_EX_RIGHTSCROLLBAR;
+	const static int kLeftWidth = 15;
+	const static int kRightWidth = 15;
 
 	BOOL PreTranslateMessage(MSG* pMsg);
 

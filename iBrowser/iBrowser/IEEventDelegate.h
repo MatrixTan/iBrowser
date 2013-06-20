@@ -2,11 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-///@file IEEventDelegate.h
-///@param 接管IE产生的Event
-///@author hongsong.tan@gmail.com
-///@date 2011.12.28'
 #pragma once
 
 #include <atlbase.h>

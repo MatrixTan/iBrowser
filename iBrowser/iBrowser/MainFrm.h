@@ -8,12 +8,13 @@
 #include <atlframe.h>
 #include <atlapp.h>
 #include <map>
+#include <vector>
 
 #include "resource.h"
 #include "core_view.h"
 #include "MaskWindow.h"
-#include "TabButton.h"
-#include "TabButtonAdd.h"
+#include "tab_button.h"
+#include "tab_button_add.h"
 #include "CoreProxy.h"
 
 class CMainFrame : 
@@ -82,10 +83,11 @@ public:
 	{
 	public:
 		CoreProxy *spCoreProxy; //由创建者View销毁
-		base::CScopedRefPtr<TabButton> spTabButton;
+		int nTabIndex;
 		base::CScopedRefPtr<CXWindow> spContainerWindow;
 		TabPair()
-			:spCoreProxy(NULL)			
+			:spCoreProxy(NULL)
+			,nTabIndex(-1)
 		{}
 
 		~TabPair()
@@ -106,8 +108,11 @@ protected:
 	
 private:
 	CMaskWindow m_wndMaskWindow;
-
 	CTabButtonAdd m_TabButtonAdd;
+	int m_nTabButtonWidth;
+	typedef std::vector<base::CScopedRefPtr<TabButton> > TabButtonVector;
+	TabButtonVector m_vTabButtons;
+	typedef TabButtonVector::iterator TabButtonIter;
 
 	BOOL m_bShowMask;
 	HWND m_hCurrentTabButton;

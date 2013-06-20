@@ -142,7 +142,7 @@ IDR_TAB_BUTTON_OVER     PNG                     "res\\tabbutton_over.png"
 //
 
 MASK.HTML               HTML                    "res\\mask.html"
-error.html              HTML                    "res\\error.html"
+ERROR.HTML              HTML                    "res\\error.html"
 #endif    // Chinese (Simplified, PRC) resources
 /////////////////////////////////////////////////////////////////////////////
 

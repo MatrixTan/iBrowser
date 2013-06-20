@@ -17,7 +17,7 @@
 #include "core_process_manager.h"
 #include "CoreProxy.h"
 #include "core_manager.h"
-#include "TabButton.h"
+#include "tab_button.h"
 #include "tab_color_manager.h"
 #include "url_util.h"
 

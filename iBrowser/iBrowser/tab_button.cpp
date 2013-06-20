@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #include "stdafx.h"
-#include "TabButton.h"
+#include "tab_button.h"
 #include "UIUtil.h"
 #include "resource.h"
 #include "MessageDef.h"
@@ -18,10 +18,19 @@ LRESULT TabButton::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 
 	RECT rc;
 	GetClientRect(&rc);
-	
-	Gdiplus::Bitmap tempBitMap(rc.right, rc.bottom);
+	int nHeight = rc.bottom - rc.top;
+	int nWidth = rc.right - rc.left;
+	Gdiplus::Bitmap tempBitMap(rc.right, nHeight);
 	Gdiplus::Graphics *tempMg = Gdiplus::Graphics::FromImage(&tempBitMap);
-	tempMg->DrawImage(m_pCurrentImage,0,0,m_pCurrentImage->GetWidth(),m_pCurrentImage->GetHeight());
+	//tempMg->DrawImage(m_pCurrentImage,0,0,m_pCurrentImage->GetWidth(),m_pCurrentImage->GetHeight());
+	Gdiplus::Rect destRect(0, 0, kLeftWidth, nHeight);
+	tempMg->DrawImage(m_pCurrentImage, destRect, 0, 0, kLeftWidth, nHeight,Gdiplus::UnitPixel);
+	destRect.X = kLeftWidth;
+	destRect.Width = nWidth - kLeftWidth - kRightWidth;
+	tempMg->DrawImage(m_pCurrentImage, destRect, kLeftWidth+1, 0, 5, nHeight, Gdiplus::UnitPixel);
+	destRect.X = nWidth - kRightWidth;
+	destRect.Width = kRightWidth;
+	tempMg->DrawImage(m_pCurrentImage, destRect, m_pCurrentImage->GetWidth()-kRightWidth, 0, kRightWidth, nHeight, Gdiplus::UnitPixel);
 	for (int iRow = 0; iRow < tempBitMap.GetHeight(); ++iRow){
 		for (int iCollumn = 0; iCollumn<tempBitMap.GetWidth(); ++iCollumn){
 			Gdiplus::Color srcColor;
@@ -41,9 +50,12 @@ LRESULT TabButton::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 	mg->DrawImage(&tempBitMap, 0, 0, tempBitMap.GetWidth(), tempBitMap.GetHeight());
 	
 	Gdiplus::Font font(L"Î¢ÈíÑÅºÚ", 10.0);
-	Gdiplus::PointF origin(12.0f, 4.0f);
-	Gdiplus::SolidBrush textBrush(Gdiplus::Color(255, 0, 0, 0));
-	mg->DrawString(m_strText, -1, &font, origin, NULL, &textBrush);
+	Gdiplus::RectF textDestRect(kLeftWidth, 4.0f, nWidth-kLeftWidth-kRightWidth, nHeight);
+	Gdiplus::SolidBrush textBrush(Gdiplus::Color(255, 255, 255, 255));
+
+	Gdiplus::StringFormat textFormat;
+	textFormat.SetTrimming(Gdiplus::StringTrimmingEllipsisCharacter);
+	mg->DrawString(m_strText, -1, &font, textDestRect, &textFormat, &textBrush);
 
 	Gdiplus::Graphics g(paintStruct.hdc);
 	g.DrawImage(&bitmap,rc.left, rc.top, rc.right-rc.left ,rc.bottom-rc.top);
