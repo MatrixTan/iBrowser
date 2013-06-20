@@ -341,27 +341,34 @@ LRESULT CMainFrame::OnCloseTab( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/,
 {
 	HWND hWnd = (HWND)wParam;	
 	TabPairMap::iterator iter = m_mapTabPairs.find(hWnd);
+	if (iter == m_mapTabPairs.end()){
+		return -1;
+	}
+	int nClosedIndex = iter->second.nTabIndex;
 	RECT rectClosed;
 	::GetWindowRect(hWnd,&rectClosed);
-	int nClosedIndex = iter->second.nTabIndex;
 	m_mapTabPairs.erase(iter);
 	m_vTabButtons.erase(m_vTabButtons.begin()+nClosedIndex);
 
-	for (int i = nClosedIndex; i < m_vTabButtons.size(); ++i){
-		RECT rect;
-		::GetWindowRect(m_vTabButtons[i]->m_hWnd,&rect);		
-		if (rect.left > rectClosed.left)
-		{
-			ScreenToClient(&rect);
-			::SetWindowPos(m_vTabButtons[i]->m_hWnd, HWND_TOP, rect.left-m_nTabButtonWidth, rect.top, m_nTabButtonWidth, TabButton::kDefaultHeight, SW_SHOWNORMAL);
-		}
+	RECT rect;
+	GetClientRect(&rect);
+	int nTabButtonWidth = (rect.right - rect.left - CTabButtonAdd::kDefaultWidth)/m_vTabButtons.size();
+	if (nTabButtonWidth < TabButton::kDefaultWidth){
+		m_nTabButtonWidth = nTabButtonWidth;
+	}
+
+	for (size_t i = 0; i < m_vTabButtons.size(); ++i){
+		m_vTabButtons[i]->SetWindowPos(HWND_TOP, m_nTabButtonWidth*i
+			, 0, m_nTabButtonWidth, TabButton::kDefaultHeight
+			, SWP_NOACTIVATE|SWP_NOZORDER);
+		m_vTabButtons[i]->RedrawWindow();
 	}
 
 	RECT rectAdd;
-	m_TabButtonAdd.GetWindowRect(&rectAdd);
-	rectAdd.left -= m_nTabButtonWidth;
-	rectAdd.right -= m_nTabButtonWidth;
-	ScreenToClient(&rectAdd);
+	rectAdd.left = m_nTabButtonWidth * m_mapTabPairs.size();
+	rectAdd.right = rectAdd.left + m_nTabButtonWidth;
+	rectAdd.top = 0;
+	rectAdd.bottom = rectAdd.top + CTabButtonAdd::kDefaultHeight;
 	m_TabButtonAdd.SetWindowPos(HWND_TOP, &rectAdd, SWP_SHOWWINDOW);
 
 	if (m_hCurrentTabButton == hWnd)

@@ -39,7 +39,7 @@ DWORD WINAPI CBrowserThreadManager::CreateMainFrame(LPVOID lpData)
 	int nRet = theLoop.Run();
 
 	_Module.RemoveMessageLoop();
-	return nRet;
+	return 0;
 }
 
 CBrowserThreadManager::CBrowserThreadManager() 
@@ -101,7 +101,7 @@ VOID CBrowserThreadManager::ProcessCmdLine(LPTSTR lpstrCmdLine)
 	{
 		_RunData *pStartRoutine = new _RunData;
 		pStartRoutine->lpstrCmdLine = lpstrCmdLine;
-		AddThread(CreateMainFrame, pStartRoutine);
+		CreateMainFrame(pStartRoutine);
 	}
 	else
 	{
@@ -118,33 +118,33 @@ int CBrowserThreadManager::Run(LPTSTR lpstrCmdLine, int nCmdShow)
 
 	ProcessCmdLine(lpstrCmdLine);
 
-	int nRet = m_dwCount;
-	DWORD dwRet;
-	while(m_dwCount > 0)
-	{
-		dwRet = ::MsgWaitForMultipleObjects(m_dwCount, m_arrThreadHandles, FALSE, INFINITE, QS_ALLINPUT);
+// 	int nRet = m_dwCount;
+// 	DWORD dwRet;
+// 	while(m_dwCount > 0)
+// 	{
+// 		dwRet = ::MsgWaitForMultipleObjects(m_dwCount, m_arrThreadHandles, FALSE, INFINITE, QS_ALLINPUT);
+// 
+// 		if(dwRet == 0xFFFFFFFF)
+// 		{
+// 			::MessageBox(NULL, _T("ERROR: Wait for multiple objects failed!!!"), _T("iBrowser"), MB_OK);
+// 		}
+// 		else if(dwRet >= WAIT_OBJECT_0 && dwRet <= (WAIT_OBJECT_0 + m_dwCount - 1))
+// 		{
+// 			RemoveThread(dwRet - WAIT_OBJECT_0);
+// 		}
+// 		else if(dwRet == (WAIT_OBJECT_0 + m_dwCount))
+// 		{
+// 			if(::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+// 			{
+// 			
+// 			}
+// 		}
+// 		else
+// 		{
+// 			::MessageBeep((UINT)-1);
+// 		}
+// 	}
 
-		if(dwRet == 0xFFFFFFFF)
-		{
-			::MessageBox(NULL, _T("ERROR: Wait for multiple objects failed!!!"), _T("iBrowser"), MB_OK);
-		}
-		else if(dwRet >= WAIT_OBJECT_0 && dwRet <= (WAIT_OBJECT_0 + m_dwCount - 1))
-		{
-			RemoveThread(dwRet - WAIT_OBJECT_0);
-		}
-		else if(dwRet == (WAIT_OBJECT_0 + m_dwCount))
-		{
-			if(::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-			{
-			
-			}
-		}
-		else
-		{
-			::MessageBeep((UINT)-1);
-		}
-	}
-
-	return nRet;
+	return 0;
 }
 
