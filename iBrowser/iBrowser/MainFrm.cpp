@@ -294,6 +294,7 @@ void CMainFrame::_CreateContainer(E_CHILEWINDOW_CREATE_FLAG flag,const CString& 
 		int nCurrentTabLeft = 0;
 		for (; iter != m_vTabButtons.end(); ++iter){
 			(*iter)->MoveWindow(nCurrentTabLeft, 0, m_nTabButtonWidth, TabButton::kDefaultHeight);
+			(*iter)->RedrawWindow();
 			nCurrentTabLeft += m_nTabButtonWidth;
 		}
 	}
