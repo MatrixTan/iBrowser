@@ -18,7 +18,7 @@
 
 
 class CoreProxy;
-class CTabButton;
+class TabButton;
 
 class CXWindow :
 	public base::RefCounted<CXWindow>,
@@ -60,8 +60,10 @@ public:
 	CXWindow();
 	~CXWindow();
 	void Initialize(E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL
-		, const base::CScopedRefPtr<CTabButton>& spButton);
+		, const base::CScopedRefPtr<TabButton>& spButton);
 	const CStringW& GetTitle(void) const;
+	const CStringW& GetURL(void) const;
+	BOOL ShowWindow(int nCmd);
 
 	static const DWORD kNormalStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|0x4c;
 	static const DWORD kFreezingStyle = WS_POPUP|WS_CLIPSIBLINGS|WS_DISABLED;
@@ -70,6 +72,10 @@ public:
 	static const DWORD kFreezingExStyle = kNormalExStyle;
 
 private:
+
+	void ShowURL(void)const;
+	void ShowTitle(void)const;
+
 	clock_t m_nLastHeartBeatClock;
 	HWND m_hChildWindow;
 	HWND m_hParentWindow;
@@ -77,9 +83,9 @@ private:
 	BOOL m_bFreezing;
 	CString m_strURL;
 	UINT m_nCreateFlag;
-	CString m_strTitle;
+	CStringW m_strTitle;
 	base::CScopedRefPtr<CoreProxy> m_spCoreProxy;
-	base::CScopedRefPtr<CTabButton> m_spTabButton;
+	base::CScopedRefPtr<TabButton> m_spTabButton;
 };
 
 #endif

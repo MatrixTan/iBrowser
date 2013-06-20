@@ -55,7 +55,7 @@ LRESULT CMainFrame::OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
 	TabPairMap::iterator iter = m_mapTabPairs.begin();
 	for (; iter != m_mapTabPairs.end(); ++iter)
 	{
-		::MoveWindow(iter->second.spContainerWindow->m_hWnd, rectClient.left, rectClient.top + CTabButton::kDefaultHeight, rectClient.Width(), rectClient.Height()-CTabButton::kDefaultHeight,FALSE);
+		::MoveWindow(iter->second.spContainerWindow->m_hWnd, rectClient.left, rectClient.top + TabButton::kDefaultHeight, rectClient.Width(), rectClient.Height()-TabButton::kDefaultHeight,FALSE);
 	}
 	bHandled = TRUE;
 	return 0;
@@ -284,13 +284,13 @@ void CMainFrame::_CreateContainer(E_CHILEWINDOW_CREATE_FLAG flag,const CString& 
 	TabPair pair;
 	RECT rectNewTab;
 	::GetClientRect(m_hWnd, &rectNewTab);
-	base::CScopedRefPtr<CTabButton> spTabButton;
+	base::CScopedRefPtr<TabButton> spTabButton;
 	spTabButton.CreateInstance();
-	rectNewTab.left = CTabButton::kDefaultWidth * m_mapTabPairs.size();
+	rectNewTab.left = TabButton::kDefaultWidth * m_mapTabPairs.size();
 	rectNewTab.top = 0;
-	rectNewTab.right = rectNewTab.left + CTabButton::kDefaultWidth;
-	rectNewTab.bottom = rectNewTab.top + CTabButton::kDefaultHeight;
-	HWND hTabButton = spTabButton->Create(m_hWnd, rectNewTab, L"",CTabButton::kStyle, CTabButton::kExStyle);
+	rectNewTab.right = rectNewTab.left + TabButton::kDefaultWidth;
+	rectNewTab.bottom = rectNewTab.top + TabButton::kDefaultHeight;
+	HWND hTabButton = spTabButton->Create(m_hWnd, rectNewTab, L"",TabButton::kStyle, TabButton::kExStyle);
 	spTabButton->SetParentHWND(m_hWnd);
 	pair.spTabButton = spTabButton;
 	spTabButton->ShowWindow(SW_SHOW);
@@ -302,7 +302,7 @@ void CMainFrame::_CreateContainer(E_CHILEWINDOW_CREATE_FLAG flag,const CString& 
 
 	RECT containerRect;
 	::GetClientRect(m_hWnd, &containerRect);
-	containerRect.top += CTabButton::kDefaultHeight;
+	containerRect.top += TabButton::kDefaultHeight;
 	HWND hContainedWnd = spContainerWindow->Create(m_hWnd, containerRect, _T("XWindow"),CXWindow::kNormalStyle	,CXWindow::kNormalExStyle);
 	ATLASSERT(hContainedWnd);
 	pair.spContainerWindow = spContainerWindow;
@@ -337,14 +337,14 @@ LRESULT CMainFrame::OnCloseTab( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/,
 		if (rect.left > rectClosed.left)
 		{
 			ScreenToClient(&rect);
-			::SetWindowPos(iter->second.spTabButton->m_hWnd, HWND_TOP, rect.left-CTabButton::kDefaultWidth, rect.top, CTabButton::kDefaultWidth, CTabButton::kDefaultHeight, SW_SHOWNORMAL);
+			::SetWindowPos(iter->second.spTabButton->m_hWnd, HWND_TOP, rect.left-TabButton::kDefaultWidth, rect.top, TabButton::kDefaultWidth, TabButton::kDefaultHeight, SW_SHOWNORMAL);
 		}
 	}
 	
 	RECT rectAdd;
 	m_TabButtonAdd.GetWindowRect(&rectAdd);
-	rectAdd.left -= CTabButton::kDefaultWidth;
-	rectAdd.right -= CTabButton::kDefaultWidth;
+	rectAdd.left -= TabButton::kDefaultWidth;
+	rectAdd.right -= TabButton::kDefaultWidth;
 	ScreenToClient(&rectAdd);
 	m_TabButtonAdd.SetWindowPos(HWND_TOP, &rectAdd, SWP_SHOWWINDOW);
 
@@ -432,8 +432,6 @@ void CMainFrame::_SwitchTo( HWND hTab )
 	TabPairMap::iterator iterNew = m_mapTabPairs.find(hTab);
 	if (iterNew != m_mapTabPairs.end()){
 		iterNew->second.spContainerWindow->ShowWindow(SW_SHOW);
-		CStringW strTitle = iterNew->second.spContainerWindow->GetTitle();
-		SetWindowText(strTitle);
 		m_hCurrentTabButton = hTab;
 		GlobalSingleton::GetInstance()->SetCurrentCoreProxy(iterNew->second.spCoreProxy);
 	}	

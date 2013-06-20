@@ -11,7 +11,7 @@
 extern CAppModule _Module;
 
 
-LRESULT CTabButton::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT TabButton::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	PAINTSTRUCT paintStruct;
 	::BeginPaint(m_hWnd, &paintStruct);
@@ -39,6 +39,11 @@ LRESULT CTabButton::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
 	Gdiplus::SolidBrush bkBrush(Gdiplus::Color(255,255,255,255));
 	mg->FillRectangle(&bkBrush, rc.left, rc.top, rc.right-rc.left, rc.bottom-rc.top);
 	mg->DrawImage(&tempBitMap, 0, 0, tempBitMap.GetWidth(), tempBitMap.GetHeight());
+	
+	Gdiplus::Font font(L"Î¢ÈíÑÅºÚ", 10.0);
+	Gdiplus::PointF origin(12.0f, 4.0f);
+	Gdiplus::SolidBrush textBrush(Gdiplus::Color(255, 0, 0, 0));
+	mg->DrawString(m_strText, -1, &font, origin, NULL, &textBrush);
 
 	Gdiplus::Graphics g(paintStruct.hdc);
 	g.DrawImage(&bitmap,rc.left, rc.top, rc.right-rc.left ,rc.bottom-rc.top);
@@ -47,7 +52,7 @@ LRESULT CTabButton::OnPaint( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
 	return 0;
 }
 
-CTabButton::CTabButton()
+TabButton::TabButton()
 :m_hParentWindow(NULL)
 ,m_bMouseTrack(TRUE)
 ,m_pNormalImage(NULL)
@@ -58,7 +63,7 @@ CTabButton::CTabButton()
 	
 }
 
-CTabButton::~CTabButton()
+TabButton::~TabButton()
 {
 	if (IsWindow()){
 		DestroyWindow();
@@ -75,12 +80,12 @@ CTabButton::~CTabButton()
 	m_pCurrentImage = NULL;
 }
 
-void CTabButton::SetParentHWND( HWND hParent )
+void TabButton::SetParentHWND( HWND hParent )
 {
 	m_hParentWindow = hParent;
 }
 
-LRESULT CTabButton::OnCreate( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT TabButton::OnCreate( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	ImageFromIDResource(_Module.m_hInstResource, IDR_TAB_BUTTON, L"PNG", m_pNormalImage);
 	ImageFromIDResource(_Module.m_hInstResource, IDR_TAB_BUTTON_OVER, L"PNG", m_pHoverImage);
@@ -89,26 +94,26 @@ LRESULT CTabButton::OnCreate( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
 	return 0;
 }
 
-LRESULT CTabButton::OnLButtonUp( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT TabButton::OnLButtonUp( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	::PostMessage(m_hParentWindow, WM_CLICK_TAB, (WPARAM)m_hWnd, NULL);
 	return 0;
 }
 
-LRESULT CTabButton::OnRButtonUp( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT TabButton::OnRButtonUp( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	::PostMessage(m_hParentWindow, WM_CLOSE_TAB, (WPARAM)m_hWnd, NULL);
 	return 0;
 }
 
-LRESULT CTabButton::OnMouseHover( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT TabButton::OnMouseHover( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	m_pCurrentImage = m_pHoverImage;
 	RedrawWindow();
 	return 0;
 }
 
-LRESULT CTabButton::OnMouseLeave( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT TabButton::OnMouseLeave( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	m_pCurrentImage = m_pNormalImage;
 	RedrawWindow();
@@ -116,7 +121,7 @@ LRESULT CTabButton::OnMouseLeave( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 	return 0;
 }
 
-LRESULT CTabButton::OnMouseMove( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT TabButton::OnMouseMove( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	if (m_bMouseTrack)
 	{
@@ -131,14 +136,19 @@ LRESULT CTabButton::OnMouseMove( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 	return 0;
 }
 
-LRESULT CTabButton::OnEraseBKGnd( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT TabButton::OnEraseBKGnd( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	return 0;
 }
 
-void CTabButton::SetMaskColor( DWORD dwColor)
+void TabButton::SetMaskColor( DWORD dwColor)
 {
 	m_colorMask = Gdiplus::Color(dwColor);
 	m_fMaskAlpha = 0.5f;
 	RedrawWindow();
+}
+
+void TabButton::SetText( const CStringW& text )
+{
+	m_strText = text;
 }

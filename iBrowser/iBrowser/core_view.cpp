@@ -389,6 +389,5 @@ LRESULT CoreView::OnGoForward( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
 HRESULT CoreView::_Close( void )
 {
-
 	return S_OK;
 }

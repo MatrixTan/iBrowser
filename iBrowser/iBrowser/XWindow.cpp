@@ -105,7 +105,7 @@ LRESULT CXWindow::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 
 
 void CXWindow::Initialize( E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL
-	, const base::CScopedRefPtr<CTabButton>& spButton)
+	, const base::CScopedRefPtr<TabButton>& spButton)
 {
 	m_strURL = strURL;
 	m_nCreateFlag = flag;
@@ -128,10 +128,14 @@ LRESULT CXWindow::OnBeforeNavigate( UINT msg, WPARAM wParam, LPARAM lParam, BOOL
 	Serialize<CStringW>::Read((void*)wParam, &pURL);
 	if (pURL){
 		CString strHost = URLUtil::GetHost(*pURL);
+		m_strURL = *pURL;
+		m_strTitle = m_strURL;
 		if (!strHost.IsEmpty()){
 			DWORD dwTabColor = TabColorManager::GetInstance()->GetColor(strHost);
 			m_spTabButton->SetMaskColor(dwTabColor);
-		}	
+			ShowURL();
+			ShowTitle();
+		}
 	}
 	return 0;
 }
@@ -142,9 +146,7 @@ LRESULT CXWindow::OnTitleChange( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& b
 	Serialize<CStringW>::Read((void*)wParam, &pTitle);
 	if (pTitle){
 		m_strTitle = *pTitle;
-		if (IsWindowVisible()){
-			::SetWindowText(m_hParentWindow, m_strTitle.GetBuffer());
-		}		
+		ShowTitle();
 	}
 	return 0;
 }
@@ -152,4 +154,28 @@ LRESULT CXWindow::OnTitleChange( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& b
 const CStringW& CXWindow::GetTitle( void ) const
 {
 	return m_strTitle;
+}
+
+const CStringW& CXWindow::GetURL( void ) const
+{
+	return m_strURL;
+}
+
+BOOL CXWindow::ShowWindow( int nCmd )
+{
+	if (nCmd == SW_SHOW){
+		ShowURL();
+	}	
+	return CWindow::ShowWindow(nCmd);
+}
+
+void CXWindow::ShowURL( void ) const
+{
+	::SetWindowText(m_hParentWindow, m_strURL);
+}
+
+void CXWindow::ShowTitle( void ) const
+{
+	m_spTabButton->SetText(m_strTitle);
+	m_spTabButton->RedrawWindow();
 }

@@ -7,9 +7,10 @@
 
 #include <Base\RefCounted.h>
 #include <GdiPlus.h>
+#include <atlstr.h>
 
-class CTabButton : public CWindowImpl<CTabButton, CAxWindow>
-	,public base::RefCounted<CTabButton>
+class TabButton : public CWindowImpl<TabButton, CAxWindow>
+	,public base::RefCounted<TabButton>
 {
 public:
 	DECLARE_WND_SUPERCLASS(NULL,CAxWindow::GetWndClassName())
@@ -19,7 +20,7 @@ public:
 
 	BOOL PreTranslateMessage(MSG* pMsg);
 
-	BEGIN_MSG_MAP(CTabButton)		
+	BEGIN_MSG_MAP(TabButton)		
 		MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp)
 		MESSAGE_HANDLER(WM_RBUTTONUP, OnRButtonUp)
 		MESSAGE_HANDLER(WM_PAINT, OnPaint)
@@ -30,14 +31,15 @@ public:
 		MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBKGnd)
 	END_MSG_MAP()
 
-	CTabButton();
-	~CTabButton();
+	TabButton();
+	~TabButton();
 	
 	const static int kDefaultWidth = 208;
 	const static int kDefaultHeight = 25;	
 
 	void SetParentHWND(HWND hParent);
 	void SetMaskColor(DWORD dwColor);
+	void SetText(const CStringW& text);
 protected:
 	LRESULT OnLButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnRButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
@@ -56,6 +58,7 @@ private:
 	Gdiplus::Image *m_pCurrentImage;
 	Gdiplus::Color m_colorMask;
 	float m_fMaskAlpha;
+	CStringW m_strText;
 };
 
 #endif //_TAB_BUTTON_H__

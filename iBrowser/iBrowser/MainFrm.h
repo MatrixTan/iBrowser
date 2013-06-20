@@ -82,7 +82,7 @@ public:
 	{
 	public:
 		CoreProxy *spCoreProxy; //由创建者View销毁
-		base::CScopedRefPtr<CTabButton> spTabButton;
+		base::CScopedRefPtr<TabButton> spTabButton;
 		base::CScopedRefPtr<CXWindow> spContainerWindow;
 		TabPair()
 			:spCoreProxy(NULL)			

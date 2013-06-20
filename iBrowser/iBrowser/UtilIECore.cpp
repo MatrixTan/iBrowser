@@ -158,6 +158,7 @@ bool UtilIECore::IsMainFrame( IDispatch* pDisp ,IWebBrowser2* pMainBrowser2){
 
 bool UtilIECore::IsIEErrorPage( IWebBrowser2* pWebBrowser2 )
 {
+	ATLASSERT(pWebBrowser2);
 	CComPtr<IDispatch> spDispatch;
 	pWebBrowser2->get_Document(&spDispatch);
 	CComQIPtr<IHTMLDocument2> spDocument = spDispatch;
@@ -165,7 +166,7 @@ bool UtilIECore::IsIEErrorPage( IWebBrowser2* pWebBrowser2 )
 		CComBSTR bsDomURL;
 		spDocument->get_URL(&bsDomURL);
 		CString strURL(bsDomURL);
-		if (strURL.Find(L"res://ieframe.dll") >= 0){
+		if (strURL.Find(L"res://ieframe.dll") == 0){
 			return true;
 		}
 	}
