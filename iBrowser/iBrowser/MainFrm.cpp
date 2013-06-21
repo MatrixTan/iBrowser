@@ -344,6 +344,12 @@ LRESULT CMainFrame::OnCloseTab( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/,
 	if (iter == m_mapTabPairs.end()){
 		return -1;
 	}
+
+	//don't close the last one!
+	if (m_mapTabPairs.size() <= 1){
+		return 0;
+	}
+
 	int nClosedIndex = iter->second.nTabIndex;
 	RECT rectClosed;
 	::GetWindowRect(hWnd,&rectClosed);
@@ -362,6 +368,8 @@ LRESULT CMainFrame::OnCloseTab( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/,
 			, 0, m_nTabButtonWidth, TabButton::kDefaultHeight
 			, SWP_NOACTIVATE|SWP_NOZORDER);
 		m_vTabButtons[i]->RedrawWindow();
+		TabPairMap::iterator iterCurrentTab = m_mapTabPairs.find(m_vTabButtons[i]->m_hWnd);
+		iterCurrentTab->second.nTabIndex = i;
 	}
 
 	RECT rectAdd;
