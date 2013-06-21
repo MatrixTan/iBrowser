@@ -30,8 +30,10 @@ void CMaskWindow::Ini( CoreProxy *pCoreProxy )
 
 BOOL CMaskWindow::PreTranslateMessage( MSG* pMsg )
 {
-	BOOL bIsTranslated = FALSE;
-	return bIsTranslated;
+	if (m_MaskView.IsWindow()){
+		return m_MaskView.PreTranslateMessage(pMsg);
+	}
+	return FALSE;
 }
 
 LRESULT CMaskWindow::OnPaint( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )

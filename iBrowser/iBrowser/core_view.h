@@ -45,7 +45,6 @@ public:
 		MESSAGE_HANDLER(WM_CORE_GOFORWARD, OnGoForward);
 
 		MESSAGE_HANDLER(WM_IE_FORTEST, OnForTest);
-		MSG_WM_KEYUP(OnKeyUp)
 		MESSAGE_HANDLER(WM_MOVE, OnMove)
 	END_MSG_MAP()
 
@@ -86,7 +85,6 @@ private:
 	HostProxy *m_HostProxy;
 
 public:
-	LRESULT OnKeyUp(TCHAR vk, UINT cRepeat, UINT flags);
 	LRESULT OnMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 };
 

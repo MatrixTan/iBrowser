@@ -42,6 +42,8 @@ void CoreManager::CreateCoreInProcess( HWND hParent ,const CString& strURL, UINT
 
 DWORD CoreManager::StartCore_CoreThread( void *pParam )
 {
+	::CoInitialize(NULL);
+
 	BrowserViewData *pData = (BrowserViewData *)pParam;
 	HWND hParent = pData->hParent;
 	CString strURL = pData->strURL;

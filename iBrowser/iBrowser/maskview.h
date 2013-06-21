@@ -15,7 +15,7 @@ public:
 	static const DWORD kStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS;
 	static const DWORD kExStyle = WS_EX_LEFT|WS_EX_LTRREADING|WS_EX_RIGHTSCROLLBAR|WS_EX_TOOLWINDOW;
 
-	BEGIN_MSG_MAP(MaskView)		
+	BEGIN_MSG_MAP(MaskView)
 		MESSAGE_HANDLER(WM_PAINT, OnPaint)
 		MESSAGE_HANDLER(WM_CREATE, OnCreate)
 		MESSAGE_HANDLER(WM_DESTROY, OnDestory)
@@ -26,6 +26,8 @@ public:
 
 	MaskView();
 	~MaskView();
+
+	BOOL PreTranslateMessage(MSG* pMsg);
 
 	LRESULT OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);

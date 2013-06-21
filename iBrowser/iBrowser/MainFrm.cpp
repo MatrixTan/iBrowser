@@ -19,16 +19,20 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 {
 
 	BOOL bTranslated = FALSE;
-	///Ctrl + G or Ctrl+1
-	if(WM_KEYDOWN == pMsg->message
-		&&::GetKeyState(VK_CONTROL)&0x8000
-		&& (pMsg->lParam &0x00FF) <= 1){
-		if (0x47 == pMsg->wParam||0x31 == pMsg->wParam)	{
-			PostMessage(WM_SHOW_OPERATION_PANEL,0,0);
-			bTranslated = TRUE;
+	//Ctrl + G or Ctrl+1
+	if(WM_KEYDOWN == pMsg->message){
+		if (::GetKeyState(VK_CONTROL)&0x8000 && (pMsg->lParam &0x00FF) <= 1){
+			if (0x47 == pMsg->wParam||0x31 == pMsg->wParam)	{
+				PostMessage(WM_SHOW_OPERATION_PANEL,0,0);
+				bTranslated = TRUE;
+			}
 		}
 	}
+
+	bTranslated = m_wndMaskWindow.PreTranslateMessage(pMsg);
 	
+	if(bTranslated && (pMsg->hwnd == m_hWnd || IsChild(pMsg->hwnd)))
+		bTranslated = SendMessage(WM_FORWARDMSG, 0, (LPARAM)pMsg);
 
 	if (FALSE == bTranslated)
 	{
@@ -466,4 +470,9 @@ void CMainFrame::_SwitchTo( HWND hTab )
 		m_hCurrentTabButton = hTab;
 		GlobalSingleton::GetInstance()->SetCurrentCoreProxy(iterNew->second.spCoreProxy);
 	}	
+}
+
+LRESULT CMainFrame::OnCommand( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+	return 0;
 }

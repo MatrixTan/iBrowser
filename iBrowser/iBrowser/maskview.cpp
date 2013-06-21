@@ -27,7 +27,7 @@ LRESULT MaskView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 		hr = pObjUIHandler->QueryInterface(&spUIHandler);
 		if (SUCCEEDED(hr) && spUIHandler){
 			SetExternalUIHandler(spUIHandler);
-		}		
+		}
 	}
 	
 	CString strModule = Util::GetCurrentModuleFileName();
@@ -62,4 +62,13 @@ LRESULT MaskView::OnLButtonUp( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 LRESULT MaskView::OnTimer( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
 	return 0;
+}
+
+BOOL MaskView::PreTranslateMessage( MSG* pMsg )
+{
+	BOOL bTranslated = FALSE;
+	if(pMsg->hwnd == m_hWnd || IsChild(pMsg->hwnd))
+		bTranslated = SendMessage(WM_FORWARDMSG, 0, (LPARAM)pMsg);
+
+	return bTranslated;
 }

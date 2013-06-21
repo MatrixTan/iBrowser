@@ -135,6 +135,15 @@ BOOL CoreView::PreTranslateMessage( MSG* pMsg )
 			NotifyHotKey(WM_HOTKEY_NOTIFY, HOTKEY_ShowMaskWindow, 0);
 		}
 	}
+	///Ctrl + V
+	if (WM_KEYDOWN == Msg && 0x56 == wParam && (lParam &0x00FF) <= 1)
+	{
+		if(::GetKeyState(VK_CONTROL)&0x8000)
+		{
+			//NotifyHotKey(WM_HOTKEY_NOTIFY, HOTKEY_ShowMaskWindow, 0);
+		}
+	}
+
 	///Ctrl + 1
 	if (WM_KEYDOWN == Msg && 0x31 == wParam && (lParam &0x00FF) <= 1)
 	{
@@ -169,6 +178,10 @@ BOOL CoreView::PreTranslateMessage( MSG* pMsg )
 			::PostMessage(m_hWnd, WM_HOTKEY_NOTIFY, 0, 0);
 		}
 	}
+
+	if(pMsg->hwnd == m_hWnd || IsChild(pMsg->hwnd))
+		bTranslated = SendMessage(WM_FORWARDMSG, 0, (LPARAM)pMsg);
+
 	return bTranslated;	
 }
 
@@ -200,15 +213,6 @@ LRESULT CoreView::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 	}
 	return 0;
 }
-
-
-LRESULT CoreView::OnKeyUp(TCHAR vk, UINT cRepeat, UINT flags)
-{
-	
-	return 0;
-}
-
-
 LRESULT CoreView::OnMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	CPoint Pt = CPoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
