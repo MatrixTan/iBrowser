@@ -59,7 +59,11 @@ LRESULT CMainFrame::OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
 	TabPairMap::iterator iter = m_mapTabPairs.begin();
 	for (; iter != m_mapTabPairs.end(); ++iter)
 	{
-		::MoveWindow(iter->second.spContainerWindow->m_hWnd, rectClient.left, rectClient.top + TabButton::kDefaultHeight, rectClient.Width(), rectClient.Height()-TabButton::kDefaultHeight,FALSE);
+		iter->second.spContainerWindow->MoveWindow(rectClient.left
+			, rectClient.top + TabButton::kDefaultHeight
+			, rectClient.Width()
+			, rectClient.Height()-TabButton::kDefaultHeight
+			,FALSE);
 	}
 	bHandled = TRUE;
 	return 0;
@@ -117,23 +121,6 @@ LRESULT CMainFrame::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 
 LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-
-	RECT rectTabAdd;
-	rectTabAdd.top = 0;
-	rectTabAdd.left = 0;
-	rectTabAdd.right = CTabButtonAdd::kDefaultWidth;
-	rectTabAdd.bottom = CTabButtonAdd::kDefaultHeight;
-
-	m_TabButtonAdd.Create(m_hWnd, rectTabAdd, L"", CTabButtonAdd::kStyle, CTabButtonAdd::kExStyle);
-	m_TabButtonAdd.SetParentHWND(m_hWnd);
-
-	CMessageLoop* pLoop = _Module.GetMessageLoop();
-	ATLASSERT(pLoop != NULL);
-	pLoop->AddMessageFilter(this);
-	pLoop->AddIdleHandler(this);
-
-	_AddNewTab(ECCF_CreateNew, L"");
-
 	return 0;
 }
 
@@ -475,4 +462,24 @@ void CMainFrame::_SwitchTo( HWND hTab )
 LRESULT CMainFrame::OnCommand( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	return 0;
+}
+
+void CMainFrame::Init()
+{
+	RECT rectTabAdd;
+	rectTabAdd.top = 0;
+	rectTabAdd.left = 0;
+	rectTabAdd.right = CTabButtonAdd::kDefaultWidth;
+	rectTabAdd.bottom = CTabButtonAdd::kDefaultHeight;
+
+	m_TabButtonAdd.Create(m_hWnd, rectTabAdd, L"", CTabButtonAdd::kStyle, CTabButtonAdd::kExStyle);
+	m_TabButtonAdd.SetParentHWND(m_hWnd);
+
+	CMessageLoop* pLoop = _Module.GetMessageLoop();
+	ATLASSERT(pLoop != NULL);
+	pLoop->AddMessageFilter(this);
+	pLoop->AddIdleHandler(this);
+
+	_AddNewTab(ECCF_CreateNew, L"");
+
 }

@@ -18,7 +18,8 @@ DWORD WINAPI CBrowserThreadManager::CreateMainFrame(LPVOID lpData)
 	_RunData* pData = (_RunData*)lpData;
 	CMainFrame wndFrame;
 
-	HWND hWnd = wndFrame.CreateEx();
+	HWND hWnd = wndFrame.CreateEx(NULL, 0, CMainFrame::kStyle, CMainFrame::kExStyle);
+	//HWND hWnd = wndFrame.CreateEx();
 	if(hWnd == NULL)
 	{
 		ATLTRACE(_T("Frame window creation failed!\n"));
@@ -26,8 +27,9 @@ DWORD WINAPI CBrowserThreadManager::CreateMainFrame(LPVOID lpData)
 	}
 	CBrowserThreadManager::GetInstance()->hMainFrame = hWnd;
 
-	wndFrame.ShowWindow(SW_SHOWNORMAL);
+	wndFrame.ShowWindow(SW_SHOWMAXIMIZED);
 	::SetForegroundWindow(wndFrame);	// Win95 needs this
+	wndFrame.Init();
 
 	if (pData != NULL)
 	{
