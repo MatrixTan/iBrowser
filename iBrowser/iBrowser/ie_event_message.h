@@ -72,14 +72,9 @@ public:
 		:bMainFrame(FALSE)
 	{}
 	~NavigateCompleteParam()
-	{
-		if (bsURL){
-			::SysFreeString(bsURL);
-			bsURL = NULL;
-		}
-	}
+	{}
 	BOOL bMainFrame;
-	BSTR bsURL;
+	CStringW strURL;
 };
 
 #endif //_IE_EVENT_MESSAGE_H__

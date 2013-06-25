@@ -44,6 +44,7 @@ public:
 		MESSAGE_HANDLER(WM_CORE_PROCESS_HOST_READY, OnCoreProcessHostReady);
 		MESSAGE_HANDLER(WM_BEFORE_NAVIGATE, OnBeforeNavigate);
 		MESSAGE_HANDLER(WM_TITLE_CHANGE, OnTitleChange);
+		MESSAGE_HANDLER(WM_NAVIGATE_COMPLETE, OnNavigateComplete)
 	END_MSG_MAP()
 
 	LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
@@ -56,6 +57,7 @@ public:
 	LRESULT OnCoreProcessHostReady(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnBeforeNavigate(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnTitleChange(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+	LRESULT OnNavigateComplete(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 	CXWindow();
 	~CXWindow();
@@ -75,6 +77,8 @@ private:
 
 	void ShowURL(void)const;
 	void ShowTitle(void)const;
+	void ReadStrFromIPC(void *pData, CStringW &str)const;
+	void UpdateTabColor(void);
 
 	clock_t m_nLastHeartBeatClock;
 	HWND m_hChildWindow;

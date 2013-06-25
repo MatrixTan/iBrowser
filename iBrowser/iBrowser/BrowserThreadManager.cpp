@@ -24,7 +24,6 @@ DWORD WINAPI CBrowserThreadManager::CreateMainFrame(LPVOID lpData)
 		ATLTRACE(_T("Frame window creation failed!\n"));
 		return 0;
 	}
-
 	CBrowserThreadManager::GetInstance()->hMainFrame = hWnd;
 
 	wndFrame.ShowWindow(SW_SHOWNORMAL);

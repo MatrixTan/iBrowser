@@ -124,28 +124,24 @@ LRESULT CXWindow::OnCoreProcessHostReady( UINT msg, WPARAM wParam, LPARAM lParam
 
 LRESULT CXWindow::OnBeforeNavigate( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
-	CStringW *pURL = NULL;
-	Serialize<CStringW>::Read((void*)wParam, &pURL);
-	if (pURL){
-		CString strHost = URLUtil::GetHost(*pURL);
-		m_strURL = *pURL;
+	CStringW strURL;
+	ReadStrFromIPC((void*)wParam, strURL);
+	if (!strURL.IsEmpty()){		
+		m_strURL = strURL;
 		m_strTitle = m_strURL;
-		if (!strHost.IsEmpty()){
-			DWORD dwTabColor = TabColorManager::GetInstance()->GetColor(strHost);
-			m_spTabButton->SetMaskColor(dwTabColor);
-			ShowURL();
-			ShowTitle();
-		}
+		ShowURL();
+		ShowTitle();
+		UpdateTabColor();
 	}
 	return 0;
 }
 
 LRESULT CXWindow::OnTitleChange( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
-	CStringW *pTitle = NULL;
-	Serialize<CStringW>::Read((void*)wParam, &pTitle);
-	if (pTitle){
-		m_strTitle = *pTitle;
+	CStringW strTitle;
+	ReadStrFromIPC((void*)wParam, strTitle);
+	if (!strTitle.IsEmpty()){
+		m_strTitle = strTitle;
 		ShowTitle();
 	}
 	return 0;
@@ -178,4 +174,32 @@ void CXWindow::ShowTitle( void ) const
 {
 	m_spTabButton->SetText(m_strTitle);
 	m_spTabButton->RedrawWindow();
+}
+
+LRESULT CXWindow::OnNavigateComplete( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+	CStringW strURL;
+	ReadStrFromIPC((void*)wParam, strURL);
+	UpdateTabColor();
+	return 0;
+}
+
+void CXWindow::ReadStrFromIPC( void *pData, CStringW &str ) const
+{
+	CStringW * pStr = NULL;
+	Serialize<CStringW>::Read(pData, &pStr);
+	if (pStr){
+		str = *pStr;
+		delete pStr;
+		pStr = NULL;
+	}
+}
+
+void CXWindow::UpdateTabColor( void )
+{
+	CString strHost = URLUtil::GetHost(m_strURL);		
+	if (!strHost.IsEmpty()){
+		DWORD dwTabColor = TabColorManager::GetInstance()->GetColor(strHost);
+		m_spTabButton->SetMaskColor(dwTabColor);			
+	}
 }

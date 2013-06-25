@@ -69,7 +69,6 @@ LRESULT CMaskWindow::OnDestory( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
 HRESULT CMaskWindow::ShowMaskWindow( RECT rect, HBITMAP hBmpBackGround)
 {
 	if (IsWindow()){
-		ShowWindow(SW_SHOW);
 		SetWindowPos(HWND_TOP,&rect,SWP_SHOWWINDOW);
 	}
 	return S_OK;

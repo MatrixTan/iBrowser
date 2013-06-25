@@ -21,26 +21,28 @@ HostProxy::~HostProxy()
 
 void HostProxy::NotifyBeforeNavigate(const CString& strURL)
 {
-	int type = GlobalSingleton::GetInstance()->GetProcessMode();
-	if(type == EPM_MULTIPLE){
-		IPC::PostIPCMessage<CStringW>(m_hHostWindow, WM_BEFORE_NAVIGATE, strURL);
-	}else if(type == EPM_SINGLE){
-		void* pData = NULL;
-		UINT nSize = 0;
-		Serialize<CStringW>::Write(&strURL, &pData, &nSize);
-		::PostMessage(m_hHostWindow, WM_BEFORE_NAVIGATE, (WPARAM)pData, 0);
-	}
+	PostStrToHost(WM_BEFORE_NAVIGATE, strURL);
 }
 
 void HostProxy::NotifyTitleChange( const CString& strTitle )
 {
+	PostStrToHost(WM_TITLE_CHANGE, strTitle);
+}
+
+void HostProxy::NotifyNavigateComplete( const CString& strURL )
+{
+	PostStrToHost(WM_NAVIGATE_COMPLETE, strURL);
+}
+
+void HostProxy::PostStrToHost( UINT msg, const CString& str )
+{
 	int type = GlobalSingleton::GetInstance()->GetProcessMode();
 	if(type == EPM_MULTIPLE){
-		IPC::PostIPCMessage<CStringW>(m_hHostWindow, WM_TITLE_CHANGE, strTitle);
+		IPC::PostIPCMessage<CStringW>(m_hHostWindow, msg, str);
 	}else if(type == EPM_SINGLE){
 		void* pData = NULL;
 		UINT nSize = 0;
-		Serialize<CStringW>::Write(&strTitle, &pData, &nSize);
-		::PostMessage(m_hHostWindow, WM_TITLE_CHANGE, (WPARAM)pData, 0);
+		Serialize<CStringW>::Write(&str, &pData, &nSize);
+		::PostMessage(m_hHostWindow, msg, (WPARAM)pData, 0);
 	}
 }

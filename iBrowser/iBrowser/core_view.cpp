@@ -276,7 +276,17 @@ LRESULT CoreView::OnEventDelegateMessage( UINT /*uMsg*/, WPARAM wParam, LPARAM l
 		break;
 	case EDM_DOCUMENT_COMPLETE:
 		break;
-	case EDM_NAVIGATE_COMPLETE:	
+	case EDM_NAVIGATE_COMPLETE:
+		{
+			NavigateCompleteParam *pParam = static_cast<NavigateCompleteParam*>((void*)lParam);
+			if (pParam){
+				if (pParam->bMainFrame && m_HostProxy){
+					m_HostProxy->NotifyNavigateComplete(pParam->strURL);
+				}
+				delete pParam;
+				pParam = NULL;
+			}
+		}
 		break;
 	case EDM_BEFORE_NAVIGATE:
 		{

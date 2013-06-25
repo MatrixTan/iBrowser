@@ -218,13 +218,10 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnNavigateComplete2( IDispatch *pDisp, 
 		CString strURL(url->bstrVal);
 		NavigateCompleteParam *pParam = new NavigateCompleteParam();
 		pParam->bMainFrame = bIsMainFrame;
-		pParam->bsURL = strURL.AllocSysString();
+		pParam->strURL = strURL;
 
-		::PostMessage(m_hCoreViewWindow, WM_EVENT_DELEGATE_MESSAGE, EDM_DOCUMENT_COMPLETE, (LPARAM)pParam);
+		::PostMessage(m_hCoreViewWindow, WM_EVENT_DELEGATE_MESSAGE, EDM_NAVIGATE_COMPLETE, (LPARAM)pParam);
 	}
-	
-
-
 	return;
 }
 
