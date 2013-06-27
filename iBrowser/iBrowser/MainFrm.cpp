@@ -14,6 +14,7 @@
 #include "global_singleton.h"
 #include "switches.h"
 #include "core_process_manager.h"
+#include "core_container_manager.h"
 
 BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 {
@@ -303,16 +304,10 @@ void CMainFrame::_CreateContainer(E_CHILEWINDOW_CREATE_FLAG flag,const CString& 
 	pair.nTabIndex = m_vTabButtons.size()-1;
 	spTabButton->ShowWindow(SW_SHOW);
 
-	base::CScopedRefPtr<CXWindow> spContainerWindow;
-	spContainerWindow.CreateInstance();
-	ATLASSERT(spContainerWindow);
-	spContainerWindow->Initialize(flag, strURL, spTabButton);
-
 	RECT containerRect;
 	::GetClientRect(m_hWnd, &containerRect);
 	containerRect.top += TabButton::kDefaultHeight;
-	HWND hContainedWnd = spContainerWindow->Create(m_hWnd, containerRect, _T("XWindow"),CXWindow::kNormalStyle	,CXWindow::kNormalExStyle);
-	ATLASSERT(hContainedWnd);
+	base::CScopedRefPtr<CXWindow> spContainerWindow = CoreContainerManager::GetInstance()->CreateContainer(m_hWnd, containerRect, flag, strURL, spTabButton.get());
 	pair.spContainerWindow = spContainerWindow;
 
 	rectNewTab.top = 0;
@@ -344,6 +339,7 @@ LRESULT CMainFrame::OnCloseTab( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/,
 	int nClosedIndex = iter->second.nTabIndex;
 	RECT rectClosed;
 	::GetWindowRect(hWnd,&rectClosed);
+	CoreContainerManager::GetInstance()->DeleteContainer(iter->second.spContainerWindow.get());
 	m_mapTabPairs.erase(iter);
 	m_vTabButtons.erase(m_vTabButtons.begin()+nClosedIndex);
 

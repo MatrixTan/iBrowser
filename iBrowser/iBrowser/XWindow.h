@@ -62,7 +62,8 @@ public:
 	CXWindow();
 	~CXWindow();
 	void Initialize(E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL
-		, const base::CScopedRefPtr<TabButton>& spButton);
+		, TabButton *pTabButton);
+	void Uninitialize(void);
 	const CStringW& GetTitle(void) const;
 	const CStringW& GetURL(void) const;
 	BOOL ShowWindow(int nCmd);
@@ -80,7 +81,6 @@ private:
 	void ReadStrFromIPC(void *pData, CStringW &str)const;
 	void UpdateTabColor(void);
 
-	clock_t m_nLastHeartBeatClock;
 	HWND m_hChildWindow;
 	HWND m_hParentWindow;
 	//HWND m_hTabButton;

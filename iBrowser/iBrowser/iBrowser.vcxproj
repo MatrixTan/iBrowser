@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="BrowserThreadManager.cpp" />
     <ClCompile Include="cookie_manager.cpp" />
+    <ClCompile Include="core_container_manager.cpp" />
     <ClCompile Include="core_cookie.cpp" />
     <ClCompile Include="core_main_thread.cpp" />
     <ClCompile Include="core_manager.cpp" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="BrowserThreadManager.h" />
     <ClInclude Include="AboutDlg.h" />
+    <ClInclude Include="core_container_manager.h" />
     <ClInclude Include="cookie_manager.h" />
     <ClInclude Include="core_cookie.h" />
     <ClInclude Include="core_main_thread.h" />

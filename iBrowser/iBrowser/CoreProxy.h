@@ -24,6 +24,8 @@ public:
 	void GoBack();
 	void GoForward();
 
+	void Destroy();
+
 protected:
 private:
 

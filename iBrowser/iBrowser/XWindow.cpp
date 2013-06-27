@@ -28,7 +28,6 @@
 CXWindow::CXWindow()
 :m_hChildWindow(NULL)
 ,m_hParentWindow(NULL)
-,m_nLastHeartBeatClock(0)
 ,m_bFreezing(FALSE)
 ,m_nCreateFlag(ECCF_CreateNew)
 {
@@ -104,12 +103,13 @@ LRESULT CXWindow::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 }
 
 
-void CXWindow::Initialize( E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL
-	, const base::CScopedRefPtr<TabButton>& spButton)
+void CXWindow::Initialize( E_CHILEWINDOW_CREATE_FLAG flag
+	, const CString& strURL
+	, TabButton* pTabButton)
 {
 	m_strURL = strURL;
 	m_nCreateFlag = flag;
-	m_spTabButton = spButton;
+	m_spTabButton = pTabButton;
 }
 
 LRESULT CXWindow::OnCoreProcessHostReady( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
@@ -202,4 +202,13 @@ void CXWindow::UpdateTabColor( void )
 		DWORD dwTabColor = TabColorManager::GetInstance()->GetColor(strHost);
 		m_spTabButton->SetMaskColor(dwTabColor);			
 	}
+}
+
+void CXWindow::Uninitialize( void )
+{
+	if (m_spCoreProxy.get()){
+		m_spCoreProxy->Destroy();
+		m_spCoreProxy = NULL;
+	}	
+	m_spTabButton = NULL;
 }

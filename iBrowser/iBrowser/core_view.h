@@ -43,6 +43,7 @@ public:
 		MESSAGE_HANDLER(WM_CORE_REFRESH, OnCoreRefresh);
 		MESSAGE_HANDLER(WM_CORE_GOBACK, OnGoBack);
 		MESSAGE_HANDLER(WM_CORE_GOFORWARD, OnGoForward);
+		MESSAGE_HANDLER(WM_CORE_DESTROY, OnCoreDestroy);
 
 		MESSAGE_HANDLER(WM_IE_FORTEST, OnForTest);
 		MESSAGE_HANDLER(WM_MOVE, OnMove)
@@ -62,6 +63,7 @@ public:
 	LRESULT OnCoreRefresh(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnGoBack(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnGoForward(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+	LRESULT OnCoreDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnForTest(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 	void Initialize(E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL);

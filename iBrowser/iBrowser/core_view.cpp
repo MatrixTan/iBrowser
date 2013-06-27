@@ -405,3 +405,9 @@ HRESULT CoreView::_Close( void )
 {
 	return S_OK;
 }
+
+LRESULT CoreView::OnCoreDestroy( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+{
+	DestroyWindow();
+	return 0;
+}

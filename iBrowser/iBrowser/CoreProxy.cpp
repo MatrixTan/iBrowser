@@ -64,3 +64,8 @@ UINT CoreProxy::GetFlag( void )
 {
 	return m_nFlag;
 }
+
+void CoreProxy::Destroy()
+{
+	::PostMessage(m_hCoreView, WM_CORE_DESTROY, 0, 0);
+}
