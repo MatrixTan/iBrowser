@@ -21,6 +21,7 @@
 #include "switches.h"
 #include "global_singleton.h"
 #include "core_process.h"
+#include "UtilIECore.h"
 
 CAppModule _Module;
 
@@ -46,6 +47,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 
 	AtlAxWinInit();
 
+	UtilIECore::SetUA();
 	int nRet = 0;
 	CommandLine cl;
 	cl.ParseFromString(::GetCommandLine());

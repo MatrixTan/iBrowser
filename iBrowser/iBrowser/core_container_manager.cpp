@@ -65,6 +65,7 @@ void CoreContainerManager::DestroyContainer( HWND hWnd )
 	for(; iter != m_DeletedContainers.end(); ++iter){
 		if ((*iter)->m_hWnd == hWnd){
 			m_DeletedContainers.erase(iter);
+			break;
 		}
 	}
 }

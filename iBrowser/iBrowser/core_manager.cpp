@@ -62,6 +62,7 @@ DWORD CoreManager::StartCore_CoreThread( void *pParam )
 
 	int nRet = theLoop.Run();
 
+	::PostMessage(hParent, WM_CORE_DESTROYED, 0, 0);
 	_Module.RemoveMessageLoop();
 	return 0;
 }

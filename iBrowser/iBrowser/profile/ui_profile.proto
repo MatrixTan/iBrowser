@@ -1,0 +1,6 @@
+message MainFrameRect {
+   required int32 left = 1;
+   required int32 top = 2;
+   required int32 right = 3;
+   required int32 buttom = 4;  
+}

@@ -20,6 +20,7 @@
 #include "tab_button.h"
 #include "tab_color_manager.h"
 #include "url_util.h"
+#include "core_container_manager.h"
 
 #define CHECK_TIMER_ID 1843
 #define HEART_BEAT_TIME 100
@@ -39,6 +40,7 @@ CXWindow::~CXWindow()
 	if (IsWindow())
 	{
 		DestroyWindow();
+		m_hWnd = NULL;
 	}	
 }
 
@@ -211,4 +213,10 @@ void CXWindow::Uninitialize( void )
 		m_spCoreProxy = NULL;
 	}	
 	m_spTabButton = NULL;
+}
+
+LRESULT CXWindow::OnCoreDestroyed( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+	::PostMessage(m_hParentWindow, WM_CORE_DESTROYED, (WPARAM)m_hWnd, 0);
+	return 0;
 }

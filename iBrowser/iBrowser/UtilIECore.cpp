@@ -223,3 +223,18 @@ bool UtilIECore::GetTravelLogEntry( IWebBrowser2* pWebBrowser2, int nIndex, ITra
 	return false;
 }
 
+void UtilIECore::SetUA( void )
+{
+	char buff[1024];
+	DWORD dwLength = 0;
+	::UrlMkGetSessionOption(URLMON_OPTION_USERAGENT, buff, sizeof(buff), &dwLength, 0);
+	int nLength = strlen(buff);
+	char *strUA = " ; iBrowser v1";
+	if (nLength + strlen(strUA) < 1024){
+		char *strBegin = buff+nLength;
+		strcat(strBegin, strUA);
+	}
+	int nBufferSize = sizeof(buff);
+	::UrlMkSetSessionOption(URLMON_OPTION_USERAGENT, buff, nBufferSize, 0);
+}
+

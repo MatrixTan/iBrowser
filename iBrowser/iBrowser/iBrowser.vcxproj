@@ -89,6 +89,10 @@
       <TargetMachine>MachineX86</TargetMachine>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
+    <PreBuildEvent />
+    <PreBuildEvent>
+      <Command>$(SolutionDir)\..\Tools\protoc\protoc.exe -I=$(ProjectDir)\profile --cpp_out=$(ProjectDir)\ $(ProjectDir)\profile\ui_profile.proto</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -126,6 +130,9 @@
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)\..\Tools\protoc\protoc.exe -I=$(SolutionDir)\..\Tools\protoc\ --cpp_out=$(ProjectDir)\ $(SolutionDir)\..\Tools\protoc\ui_profile.proto</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BrowserThreadManager.cpp" />
@@ -216,6 +223,7 @@
     <ClInclude Include="UtilIECore.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="profile\ui_profile.proto" />
     <None Include="res\error.html" />
     <None Include="res\iBrowser.ico" />
     <None Include="Penguins.bmp" />

@@ -28,6 +28,7 @@ public:
 	static bool IsIEErrorPage(IWebBrowser2* pWebBrowser2);
 	static bool RemoveRelativeTravelLog(IWebBrowser2* pWebBrowser2, int nIndex);
 	static bool GetTravelLogEntry(IWebBrowser2* pWebBrowser2, int nIndex, ITravelLogEntry** ppEntry);
+	static void SetUA(void);
 private:
 	static void GetTravelLog(IWebBrowser2* pWebBrowser2, ITravelLogStg** ppTravelLog);
 };
