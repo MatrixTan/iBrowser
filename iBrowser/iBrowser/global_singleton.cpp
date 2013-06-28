@@ -7,6 +7,7 @@
 #include "global_singleton.h"
 #include "CoreProxy.h"
 #include "core_process_manager.h"
+#include "profile.h"
 
 GlobalSingleton* GlobalSingleton::s_Instance = NULL;
 
@@ -15,8 +16,10 @@ GlobalSingleton::GlobalSingleton()
 	,m_nProcessType(EPT_NONE)
 	,m_nProcessMode(EPM_SINGLE)
 	,m_pCoreProcessManager(NULL)
+	,m_pProfile(NULL)
 {
 	m_pCoreProcessManager = new CoreProcessManager();
+	m_pProfile = new Profile();
 }
 
 GlobalSingleton* GlobalSingleton::GetInstance(){
@@ -70,10 +73,20 @@ GlobalSingleton::~GlobalSingleton()
 		delete m_pCoreProcessManager;
 		m_pCoreProcessManager = NULL;
 	}
+	if (m_pProfile){
+		delete m_pProfile;
+		m_pProfile = NULL;
+	}
+	
 }
 
 CoreProcessManager* GlobalSingleton::GetCoreProcessManager( void )
 {
 	return m_pCoreProcessManager;
+}
+
+Profile* GlobalSingleton::GetProfile( void )
+{
+	return m_pProfile;
 }
 

@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 #include "stdafx.h"
 #include "util_common.h"
+#include <ShlObj.h>
 
 namespace Util
 {
@@ -23,4 +24,22 @@ namespace Util
 	bool IsCustomErrorPage( const CString& strURL ){
 		return strURL.Find(GetCustomErrorPage()) == 0;
 	}
+
+	CString GetAppDataPath( void ){
+		WCHAR buffer[MAX_PATH] = {0};
+		if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, buffer))){
+			return buffer;
+		}
+		return L"";
+	}
+
+	CStringA GetAppDataPathA( void ){
+		CHAR buffer[MAX_PATH] = {0};
+		if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_APPDATA, NULL, 0, buffer))){
+			return buffer;
+		}
+		return "";
+	}
+
+
 }

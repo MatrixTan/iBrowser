@@ -20,6 +20,7 @@ enum E_PROCESS_MODE{
 
 class CoreProxy;
 class CoreProcessManager;
+class Profile;
 class GlobalSingleton
 {
 public:
@@ -39,6 +40,8 @@ public:
 
 	CoreProcessManager* GetCoreProcessManager(void);
 
+	Profile* GetProfile(void);
+
 protected:
 private:
 	GlobalSingleton();
@@ -49,5 +52,6 @@ private:
 	int m_nProcessType;
 	int m_nProcessMode;
 	CoreProcessManager* m_pCoreProcessManager;
+	Profile* m_pProfile;
 };
 #endif //_GLOBAL_SINGLETON_H__

@@ -82,7 +82,7 @@
       <AdditionalIncludeDirectories>$(IntDir);..\..\include\wtl80;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;Base.lib;leveldb.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\..\Lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -91,7 +91,7 @@
     </Link>
     <PreBuildEvent />
     <PreBuildEvent>
-      <Command>$(SolutionDir)\..\Tools\protoc\protoc.exe -I=$(ProjectDir)\profile --cpp_out=$(ProjectDir)\ $(ProjectDir)\profile\ui_profile.proto</Command>
+      <Command>copy $(SolutionDir)\..\thirdParty\leveldb\lib\$(Configuration)\leveldb.lib $(SolutionDir)\..\Lib\$(Configuration)\leveldb.lib</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,14 +124,14 @@
       <AdditionalIncludeDirectories>$(IntDir);..\..\include\wtl80;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;Base.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;Base.lib;leveldb.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\..\Lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)\..\Tools\protoc\protoc.exe -I=$(SolutionDir)\..\Tools\protoc\ --cpp_out=$(ProjectDir)\ $(SolutionDir)\..\Tools\protoc\ui_profile.proto</Command>
+      <Command>copy $(SolutionDir)\..\thirdParty\leveldb\lib\$(Configuration)\leveldb.lib $(SolutionDir)\..\Lib\$(Configuration)\leveldb.lib</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -155,6 +155,7 @@
     <ClCompile Include="mask_doc_host_ui_handler.cpp" />
     <ClCompile Include="mask_external.cpp" />
     <ClCompile Include="mouse_gesture.cpp" />
+    <ClCompile Include="profile.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -199,6 +200,7 @@
     <ClInclude Include="mask_doc_host_ui_handler.h" />
     <ClInclude Include="mask_external.h" />
     <ClInclude Include="mouse_gesture.h" />
+    <ClInclude Include="profile.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="IEEventDelegate.h" />
@@ -223,7 +225,6 @@
     <ClInclude Include="UtilIECore.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="profile\ui_profile.proto" />
     <None Include="res\error.html" />
     <None Include="res\iBrowser.ico" />
     <None Include="Penguins.bmp" />

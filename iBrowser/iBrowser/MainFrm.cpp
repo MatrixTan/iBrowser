@@ -15,6 +15,7 @@
 #include "switches.h"
 #include "core_process_manager.h"
 #include "core_container_manager.h"
+#include "profile.h"
 
 BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 {
@@ -131,6 +132,10 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 	ATLASSERT(pLoop != NULL);
 	pLoop->RemoveMessageFilter(this);
 	pLoop->RemoveIdleHandler(this);
+
+	RECT rect;
+	GetWindowRect(&rect);
+	GlobalSingleton::GetInstance()->GetProfile()->SetMainFrameRect(rect);
 
 	GlobalSingleton::GetInstance()->GetCoreProcessManager()->StopAll();
 

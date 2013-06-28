@@ -13,6 +13,8 @@ namespace Util
 	CString GetCurrentModuleFileName(void);
 	CString GetCustomErrorPage(void);
 	bool IsCustomErrorPage(const CString& strURL);
+	CString GetAppDataPath(void);
+	CStringA GetAppDataPathA(void);
 }
 
 
