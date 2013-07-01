@@ -5,6 +5,8 @@
 #ifndef _PROFILE_H__
 #define _PROFILE_H__
 
+#include <string>
+
 class Profile
 {
 public:
@@ -12,11 +14,14 @@ public:
 	Profile();
 	~Profile();
 
-	bool GetMainFrameRect(RECT *pRect);
-	bool SetMainFrameRect(RECT rect);
+	bool GetMainFrameRect(RECT *pRect , bool* pIsMax);
+	bool SetMainFrameProfile(RECT rect , bool bIsMax);
 
 protected:
 private:
+
+	bool SetValue(const char *db, const char* key, const char* value);
+	bool GetValue(const char *db, const char* key, std::string& strValue);
 };
 
 

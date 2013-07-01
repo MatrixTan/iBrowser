@@ -9,6 +9,8 @@
 #include "core_view.h"
 #include <Base/CommandLine.h>
 #include "switches.h"
+#include "global_singleton.h"
+#include "profile.h"
 
 DWORD WINAPI CBrowserThreadManager::CreateMainFrame(LPVOID lpData)
 {
@@ -18,8 +20,10 @@ DWORD WINAPI CBrowserThreadManager::CreateMainFrame(LPVOID lpData)
 	_RunData* pData = (_RunData*)lpData;
 	CMainFrame wndFrame;
 
-	HWND hWnd = wndFrame.CreateEx(NULL, 0, CMainFrame::kStyle, CMainFrame::kExStyle);
-	//HWND hWnd = wndFrame.CreateEx();
+	RECT rect = {0};
+	bool bMax = true;
+	GlobalSingleton::GetInstance()->GetProfile()->GetMainFrameRect(&rect, &bMax);
+	HWND hWnd = wndFrame.CreateEx(NULL, rect, CMainFrame::kStyle, CMainFrame::kExStyle);
 	if(hWnd == NULL)
 	{
 		ATLTRACE(_T("Frame window creation failed!\n"));
@@ -27,7 +31,12 @@ DWORD WINAPI CBrowserThreadManager::CreateMainFrame(LPVOID lpData)
 	}
 	CBrowserThreadManager::GetInstance()->hMainFrame = hWnd;
 
-	wndFrame.ShowWindow(SW_SHOWMAXIMIZED);
+	if (bMax){
+		wndFrame.ShowWindow(SW_SHOWMAXIMIZED);
+	}else{
+		wndFrame.ShowWindow(SW_SHOWNORMAL);
+	}
+	
 	::SetForegroundWindow(wndFrame);	// Win95 needs this
 	wndFrame.Init();
 

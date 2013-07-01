@@ -82,7 +82,7 @@
       <AdditionalIncludeDirectories>$(IntDir);..\..\include\wtl80;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;Base.lib;leveldb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;Base.lib;leveldb.lib;jsoncpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\..\Lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -91,7 +91,8 @@
     </Link>
     <PreBuildEvent />
     <PreBuildEvent>
-      <Command>copy $(SolutionDir)\..\thirdParty\leveldb\lib\$(Configuration)\leveldb.lib $(SolutionDir)\..\Lib\$(Configuration)\leveldb.lib</Command>
+      <Command>copy $(SolutionDir)\..\thirdParty\leveldb\lib\$(Configuration)\leveldb.lib $(SolutionDir)\..\Lib\$(Configuration)\leveldb.lib
+copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(SolutionDir)\..\Lib\$(Configuration)\jsoncpp.lib</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,14 +125,15 @@
       <AdditionalIncludeDirectories>$(IntDir);..\..\include\wtl80;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;Base.lib;leveldb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GDIPlus.lib;DetoursLib.lib;imm32.lib;Base.lib;leveldb.lib;jsoncpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\..\Lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PreBuildEvent>
-      <Command>copy $(SolutionDir)\..\thirdParty\leveldb\lib\$(Configuration)\leveldb.lib $(SolutionDir)\..\Lib\$(Configuration)\leveldb.lib</Command>
+      <Command>copy $(SolutionDir)\..\thirdParty\leveldb\lib\$(Configuration)\leveldb.lib $(SolutionDir)\..\Lib\$(Configuration)\leveldb.lib
+copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(SolutionDir)\..\Lib\$(Configuration)\jsoncpp.lib</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

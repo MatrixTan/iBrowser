@@ -135,7 +135,8 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 
 	RECT rect;
 	GetWindowRect(&rect);
-	GlobalSingleton::GetInstance()->GetProfile()->SetMainFrameRect(rect);
+	LONG lStyle = GetWindowLong(GWL_STYLE);
+	GlobalSingleton::GetInstance()->GetProfile()->SetMainFrameProfile(rect, (lStyle&WS_MAXIMIZE)!=0);
 
 	GlobalSingleton::GetInstance()->GetCoreProcessManager()->StopAll();
 
