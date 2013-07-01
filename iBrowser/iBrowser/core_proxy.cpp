@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #include "stdafx.h"
-#include "CoreProxy.h"
+#include "core_proxy.h"
 #include "MessageDef.h"
 #include "global_singleton.h"
 #include <Base/ipc_message.h>
@@ -68,4 +68,9 @@ UINT CoreProxy::GetFlag( void )
 void CoreProxy::Destroy()
 {
 	::PostMessage(m_hCoreView, WM_CORE_DESTROY, 0, 0);
+}
+
+void CoreProxy::Focus()
+{
+	::PostMessage(m_hCoreView, WM_CORE_FOCUS, 0, 0);
 }

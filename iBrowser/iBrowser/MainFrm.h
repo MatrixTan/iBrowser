@@ -15,7 +15,7 @@
 #include "MaskWindow.h"
 #include "tab_button.h"
 #include "tab_button_add.h"
-#include "CoreProxy.h"
+#include "core_proxy.h"
 
 class CMainFrame : 
 	public CFrameWindowImpl<CMainFrame>, 

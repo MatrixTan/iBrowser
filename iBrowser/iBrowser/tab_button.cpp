@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "tab_button.h"
-#include "UIUtil.h"
+#include "ui_util.h"
 #include "resource.h"
 #include "MessageDef.h"
 

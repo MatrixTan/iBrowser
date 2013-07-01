@@ -13,7 +13,7 @@
 
 #include "MainEdit.h"
 #include "XWindow.h"
-#include "CoreProxy.h"
+#include "core_proxy.h"
 #include "maskview.h"
 
 

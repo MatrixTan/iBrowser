@@ -12,6 +12,7 @@
 #include "mouse_gesture.h"
 #include "UtilIECore.h"
 #include "custom_client_site.h"
+#include "ui_util.h"
 
 
 LRESULT CoreView::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
@@ -409,5 +410,14 @@ HRESULT CoreView::_Close( void )
 LRESULT CoreView::OnCoreDestroy( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
 	DestroyWindow();
+	return 0;
+}
+
+LRESULT CoreView::OnCoreFocus( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+{
+	HWND hWnd = GetChildWindow(m_hWnd, L"Internet Explorer_Server");
+	if (hWnd){
+		::SetFocus(hWnd);
+	}	
 	return 0;
 }

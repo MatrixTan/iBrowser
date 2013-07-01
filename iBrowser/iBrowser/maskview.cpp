@@ -6,7 +6,14 @@
 #include "maskview.h"
 #include "mask_doc_host_ui_handler.h"
 #include "util_common.h"
+#include <wininet.h>
 
+#ifdef _DEBUG
+const WCHAR* kMaskURL = L"http://127.0.0.1/wantgame/1/ibrowser/mask.html";
+//const WCHAR* kMaskURL = L"http://wantgame.sinaapp.com/ibrowser/mask.html";
+#else
+const WCHAR* kMaskURL = L"http://wantgame.sinaapp.com/ibrowser/mask.html";
+#endif
 
 LRESULT MaskView::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
@@ -29,10 +36,16 @@ LRESULT MaskView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 			SetExternalUIHandler(spUIHandler);
 		}
 	}
+	CString strMaskURL;
 	
-	CString strModule = Util::GetCurrentModuleFileName();
-	CString strMaskURL = L"res://"+strModule+"/mask.html";
-	
+	BOOL bConnect = ::InternetCheckConnection(kMaskURL, FLAG_ICC_FORCE_CONNECTION, 0);
+	if (bConnect){
+		strMaskURL = kMaskURL;
+	}else{
+		CString strModule = Util::GetCurrentModuleFileName();
+		strMaskURL = L"res://"+strModule+"/mask.html";
+	}
+
 	hr = m_spWebBrowser2->Navigate(strMaskURL.AllocSysString(), NULL, NULL, NULL, NULL);
 	SetActiveWindow();
 	return 0;

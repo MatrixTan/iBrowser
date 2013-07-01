@@ -7,7 +7,7 @@
 #include "gamemode/accelerator.h"
 #include "global_singleton.h"
 #include "MessageDef.h"
-#include "CoreProxy.h"
+#include "core_proxy.h"
 
 MaskExternal::MaskExternal()
 {

@@ -3,7 +3,8 @@
 // found in the LICENSE file.
 
 #include "stdafx.h"
-#include "UIUtil.h"
+#include "ui_util.h"
+#include <atlstr.h>
 
 BOOL ImageFromIDResource(HINSTANCE hInstance, UINT nID, LPCTSTR sTR, Gdiplus::Image * &pImg)
 {
@@ -32,4 +33,38 @@ BOOL ImageFromIDResource(HINSTANCE hInstance, UINT nID, LPCTSTR sTR, Gdiplus::Im
 	pstm->Release();
 	FreeResource(lpRsrc);
 	return TRUE;
+}
+
+class WindowFinder
+{
+private:
+	static BOOL CALLBACK FindWindowInternal(HWND hParent, LPARAM lThis){
+		WindowFinder* pThis = (WindowFinder*)lThis;
+		ATLASSERT(pThis != NULL);
+
+		HWND hChild = ::FindWindowEx(hParent, NULL, pThis->strClassName, NULL);
+		if (hChild){
+			pThis->hwnd = hChild;
+			return FALSE;
+		}
+		
+		EnumChildWindows(hParent, FindWindowInternal, lThis);
+		return TRUE;
+	}
+public:
+	WindowFinder(HWND hWnd, const CStringW& strClassName)
+	:hwnd(NULL)
+	,strClassName(strClassName)
+	{
+		FindWindowInternal(hWnd, (LPARAM)this);
+	}
+
+	CStringW strClassName;
+	HWND hwnd;
+};
+
+HWND GetChildWindow( HWND hParent, const CStringW& strClassName )
+{
+	WindowFinder finder(hParent, strClassName);
+	return finder.hwnd;	
 }

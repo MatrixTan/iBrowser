@@ -23,7 +23,7 @@ public:
 	void Navigate(const CString& strURL);
 	void GoBack();
 	void GoForward();
-
+	void Focus();
 	void Destroy();
 
 protected:

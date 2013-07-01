@@ -8,6 +8,8 @@
 #include <GdiPlus.h>
 #include <GdiPlusHeaders.h>
 #include <GdiPlusImaging.h>
+#include <windows.h>
+#include <atlstr.h>
 
 class GdiplusInitializeTracker
 {
@@ -26,5 +28,6 @@ private:
 };
 
 BOOL ImageFromIDResource(HINSTANCE hInstance, UINT nID, LPCTSTR sTR, Gdiplus::Image * &pImg);
+HWND GetChildWindow(HWND hParent, const CStringW& strClassName);
 
 #endif //_UI_UTIL_H__

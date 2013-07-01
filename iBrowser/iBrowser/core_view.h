@@ -11,7 +11,7 @@
 #include "IIEEventDelegate.h"
 #include "ConsoleWindow.h"
 #include "MessageDef.h"
-#include "CoreProxy.h"
+#include "core_proxy.h"
 #include <Base/ipc_message.h>
 #include "mouse_gesture.h"
 #include "host_proxy.h"
@@ -44,6 +44,7 @@ public:
 		MESSAGE_HANDLER(WM_CORE_GOBACK, OnGoBack);
 		MESSAGE_HANDLER(WM_CORE_GOFORWARD, OnGoForward);
 		MESSAGE_HANDLER(WM_CORE_DESTROY, OnCoreDestroy);
+		MESSAGE_HANDLER(WM_CORE_FOCUS, OnCoreFocus);
 
 		MESSAGE_HANDLER(WM_IE_FORTEST, OnForTest);
 		MESSAGE_HANDLER(WM_MOVE, OnMove)
@@ -65,6 +66,7 @@ public:
 	LRESULT OnGoForward(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnCoreDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnForTest(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+	LRESULT OnCoreFocus(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 	void Initialize(E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL);
 	void NotifyHotKey(UINT uMsg, WPARAM wParam, LPARAM lParam);

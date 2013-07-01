@@ -5,7 +5,7 @@
 
 #include "stdafx.h"
 #include "global_singleton.h"
-#include "CoreProxy.h"
+#include "core_proxy.h"
 #include "core_process_manager.h"
 #include "profile.h"
 

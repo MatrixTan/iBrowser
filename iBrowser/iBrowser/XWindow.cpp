@@ -15,7 +15,7 @@
 #include "switches.h"
 #include "core_process_host.h"
 #include "core_process_manager.h"
-#include "CoreProxy.h"
+#include "core_proxy.h"
 #include "core_manager.h"
 #include "tab_button.h"
 #include "tab_color_manager.h"
@@ -219,4 +219,9 @@ LRESULT CXWindow::OnCoreDestroyed( UINT msg, WPARAM wParam, LPARAM lParam, BOOL&
 {
 	::PostMessage(m_hParentWindow, WM_CORE_DESTROYED, (WPARAM)m_hWnd, 0);
 	return 0;
+}
+
+void CXWindow::Focus( void )
+{
+	m_spCoreProxy->Focus();
 }

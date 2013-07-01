@@ -456,6 +456,7 @@ void CMainFrame::_SwitchTo( HWND hTab )
 	TabPairMap::iterator iterNew = m_mapTabPairs.find(hTab);
 	if (iterNew != m_mapTabPairs.end()){
 		iterNew->second.spContainerWindow->ShowWindow(SW_SHOW);
+		iterNew->second.spContainerWindow->Focus();
 		m_hCurrentTabButton = hTab;
 		GlobalSingleton::GetInstance()->SetCurrentCoreProxy(iterNew->second.spCoreProxy);
 	}	

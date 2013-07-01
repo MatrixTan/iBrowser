@@ -15,7 +15,7 @@
 #include "aboutdlg.h"
 #include "MainFrm.h"
 #include "BrowserThreadManager.h"
-#include "UIUtil.h"
+#include "ui_util.h"
 #include "APIHook.h"
 #include <Base/CommandLine.h>
 #include "switches.h"
