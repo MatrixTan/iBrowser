@@ -55,7 +55,9 @@ private:
 		ID_setMaskAlpha,
 		ID_goBack,
 		ID_goForward,
-		ID_Count
+		ID_getCurrentURL,
+		///add items before this
+		ID_Count,
 	};
 	
 	std::vector<std::wstring> m_mapIDs;

@@ -85,3 +85,24 @@ BOOL MaskView::PreTranslateMessage( MSG* pMsg )
 
 	return bTranslated;
 }
+
+void MaskView::OnShow( void )
+{
+	CComPtr<IDispatch> spDispatch;
+	m_spWebBrowser2->get_Document(&spDispatch);
+	CComQIPtr<IHTMLDocument2> spDocument = spDispatch;
+	if (spDocument){
+		spDispatch = NULL;
+		spDocument->get_Script(&spDispatch);
+		DISPID id = 0;
+		CComBSTR bsFun(L"onEventShow");
+		HRESULT hr = spDispatch->GetIDsOfNames(IID_NULL, &bsFun, 1, LOCALE_SYSTEM_DEFAULT, &id);
+		if (SUCCEEDED(hr)){
+			DISPPARAMS param = {0};
+			CComVariant vRet;
+			EXCEPINFO exInfo;
+			UINT nErr;
+			spDispatch->Invoke(id, IID_NULL, 0, DISPATCH_METHOD, &param, &vRet, &exInfo, &nErr);
+		}
+	}
+}

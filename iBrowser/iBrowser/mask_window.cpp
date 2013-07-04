@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #include "stdafx.h"
-#include "MaskWindow.h"
+#include "mask_window.h"
 #include "resource.h"
 #include "url_util.h"
 #include "global_singleton.h"
@@ -11,24 +11,24 @@
 
 HMODULE gRichEditDll = ::LoadLibrary(CRichEditCtrl::GetLibraryName());
 
-CMaskWindow::CMaskWindow()
+MaskWindow::MaskWindow()
 {
 
 }
 
-CMaskWindow::~CMaskWindow()
+MaskWindow::~MaskWindow()
 {
 
 }
 
-void CMaskWindow::Ini( CoreProxy *pCoreProxy )
+void MaskWindow::Ini( CoreProxy *pCoreProxy )
 {
 	m_spCoreProxy = pCoreProxy;
 	GlobalSingleton::GetInstance()->SetMaskHWND(m_hWnd);
 }
 
 
-BOOL CMaskWindow::PreTranslateMessage( MSG* pMsg )
+BOOL MaskWindow::PreTranslateMessage( MSG* pMsg )
 {
 	if (m_MaskView.IsWindow()){
 		return m_MaskView.PreTranslateMessage(pMsg);
@@ -36,7 +36,7 @@ BOOL CMaskWindow::PreTranslateMessage( MSG* pMsg )
 	return FALSE;
 }
 
-LRESULT CMaskWindow::OnPaint( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+LRESULT MaskWindow::OnPaint( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
 	CRect rect;
 	GetWindowRect(&rect);
@@ -50,7 +50,7 @@ LRESULT CMaskWindow::OnPaint( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 	return 0;
 }
 
-LRESULT CMaskWindow::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+LRESULT MaskWindow::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
 	CRect maskViewRect(0, 0, 200, 600);
 	GetWindowRect(&maskViewRect);
@@ -61,20 +61,21 @@ LRESULT CMaskWindow::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	return 0;
 }
 
-LRESULT CMaskWindow::OnDestory( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+LRESULT MaskWindow::OnDestory( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
 	return 0;
 }
 
-HRESULT CMaskWindow::ShowMaskWindow( RECT rect, HBITMAP hBmpBackGround)
+HRESULT MaskWindow::ShowMaskWindow( RECT rect, HBITMAP hBmpBackGround)
 {
 	if (IsWindow()){
 		SetWindowPos(HWND_TOP,&rect,SWP_SHOWWINDOW);
+		m_MaskView.OnShow();
 	}
 	return S_OK;
 }
 
-LRESULT CMaskWindow::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+LRESULT MaskWindow::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
 	CRect rect;
 	GetClientRect(&rect);
@@ -82,7 +83,7 @@ LRESULT CMaskWindow::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 	return 0;
 }
 
-LRESULT CMaskWindow::OnMainEditSubmit( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
+LRESULT MaskWindow::OnMainEditSubmit( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled )
 {
 	BSTR bsURL = (BSTR)lParam;
 	CString strText(bsURL);
@@ -105,13 +106,13 @@ LRESULT CMaskWindow::OnMainEditSubmit( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 	return 0;
 }
 
-BOOL CMaskWindow::_IsUrl( const CString& strURL )
+BOOL MaskWindow::_IsUrl( const CString& strURL )
 {
 	return TRUE;	
 }
 
 
-LRESULT CMaskWindow::OnKeyUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT MaskWindow::OnKeyUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	TCHAR vk = (TCHAR)wParam;
 	UINT cRepeat = (UINT)LOWORD(lParam);
@@ -121,18 +122,18 @@ LRESULT CMaskWindow::OnKeyUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
 }
 
 
-LRESULT CMaskWindow::OnLButtonDown( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/ )
+LRESULT MaskWindow::OnLButtonDown( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/ )
 {
 	return 0;
 }
 
-LRESULT CMaskWindow::OnLButtonUp( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT MaskWindow::OnLButtonUp( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	bHandled = FALSE;
 	return 0;
 }
 
-LRESULT CMaskWindow::OnLButtonDbClick( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+LRESULT MaskWindow::OnLButtonDbClick( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	return 0;
 }

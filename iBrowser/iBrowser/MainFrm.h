@@ -12,7 +12,7 @@
 
 #include "resource.h"
 #include "core_view.h"
-#include "MaskWindow.h"
+#include "mask_window.h"
 #include "tab_button.h"
 #include "tab_button_add.h"
 #include "core_proxy.h"
@@ -112,7 +112,7 @@ protected:
 	
 	
 private:
-	CMaskWindow m_wndMaskWindow;
+	MaskWindow m_wndMaskWindow;
 	CTabButtonAdd m_TabButtonAdd;
 	int m_nTabButtonWidth;
 	typedef std::vector<base::CScopedRefPtr<TabButton> > TabButtonVector;

@@ -17,14 +17,14 @@
 #include "maskview.h"
 
 
-class CMaskWindow : public CWindowImpl<CMaskWindow,CAxWindow>
+class MaskWindow : public CWindowImpl<MaskWindow,CAxWindow>
 {
 public:
 	DECLARE_WND_SUPERCLASS(NULL,CAxWindow::GetWndClassName())
 
 	BOOL PreTranslateMessage(MSG* pMsg);
 
-	BEGIN_MSG_MAP(CMaskWindow)		
+	BEGIN_MSG_MAP(MaskWindow)		
 		MESSAGE_HANDLER(WM_PAINT, OnPaint)
 		MESSAGE_HANDLER(WM_CREATE, OnCreate)
 		MESSAGE_HANDLER(WM_DESTROY, OnDestory)
@@ -37,8 +37,8 @@ public:
 		MESSAGE_HANDLER(WM_MAINEDIT_SUBMIT, OnMainEditSubmit)
 	END_MSG_MAP()
 
-	CMaskWindow();
-	~CMaskWindow();
+	MaskWindow();
+	~MaskWindow();
 		
 	void Ini(CoreProxy *pCoreProxy);
 

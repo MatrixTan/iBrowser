@@ -19,6 +19,7 @@ MaskExternal::MaskExternal()
 	m_mapIDs[ID_setMaskAlpha] = L"setMaskAlpha";
 	m_mapIDs[ID_goBack] = L"goBack";
 	m_mapIDs[ID_goForward] = L"goForward";
+	m_mapIDs[ID_getCurrentURL] = L"getCurrentURL";
 }
 
 MaskExternal::~MaskExternal()
@@ -103,6 +104,12 @@ HRESULT STDMETHODCALLTYPE MaskExternal::Invoke(DISPID dispIdMember
 			}
 			return S_OK;
 		}else if (dispIdMember == ID_goForward){
+			CoreProxy* pProxy = GlobalSingleton::GetInstance()->GetCurrentCoreProxy();
+			if (pProxy){
+				pProxy->GoForward();
+			}
+			return S_OK;
+		}else if (dispIdMember == ID_getCurrentURL){
 			CoreProxy* pProxy = GlobalSingleton::GetInstance()->GetCurrentCoreProxy();
 			if (pProxy){
 				pProxy->GoForward();

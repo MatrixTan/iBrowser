@@ -74,3 +74,8 @@ void CoreProxy::Focus()
 {
 	::PostMessage(m_hCoreView, WM_CORE_FOCUS, 0, 0);
 }
+
+void CoreProxy::GetURL( CStringW& strURL )
+{
+
+}

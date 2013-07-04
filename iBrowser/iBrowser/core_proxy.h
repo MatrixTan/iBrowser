@@ -25,6 +25,7 @@ public:
 	void GoForward();
 	void Focus();
 	void Destroy();
+	void GetURL(CStringW& strURL);
 
 protected:
 private:
