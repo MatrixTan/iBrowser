@@ -89,7 +89,7 @@ LRESULT CXWindow::OnChildWindowCreated( UINT /*uMsg*/, WPARAM wParam, LPARAM lPa
 {
 	m_hChildWindow = (HWND)wParam;
 	UINT nFlag = (UINT)lParam;
-	m_spCoreProxy.Reset(new CoreProxy(m_hChildWindow, m_hWnd, nFlag));
+	m_spCoreProxy.Reset(new CoreProxy(m_hChildWindow, this, nFlag));
 	m_spCoreProxy->AddRef();
 
 	::PostMessage(m_hParentWindow,WM_CHILD_WINDOW_CREATED, wParam, (LPARAM)m_spCoreProxy.get());
@@ -182,6 +182,7 @@ LRESULT CXWindow::OnNavigateComplete( UINT msg, WPARAM wParam, LPARAM lParam, BO
 {
 	CStringW strURL;
 	ReadStrFromIPC((void*)wParam, strURL);
+	m_strURL = strURL;
 	UpdateTabColor();
 	return 0;
 }

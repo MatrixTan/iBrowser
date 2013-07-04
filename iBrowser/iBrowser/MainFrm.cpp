@@ -165,7 +165,6 @@ LRESULT CMainFrame::OnForTest( UINT uMsg, WPARAM /*wParam*/, LPARAM /*lParam*/, 
 
 HRESULT CMainFrame::_ShowOprationPanel( void )
 {
-
 	m_bShowMask = TRUE;
 	CRect rectClient;
 	GetClientRect(&rectClient);

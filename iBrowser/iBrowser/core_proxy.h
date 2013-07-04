@@ -9,10 +9,11 @@
 #include <atlstr.h>
 #include <Base\RefCounted.h>
 
+class CXWindow;
 class CoreProxy : public base::RefCounted<CoreProxy>
 {
 public:
-	CoreProxy(HWND hCoreView, HWND hContainer, UINT flag);
+	explicit CoreProxy(HWND hCoreView, CXWindow* pContainer, UINT flag);
 	~CoreProxy();
 
 	HWND GetCoreHWND(void);
@@ -29,9 +30,8 @@ public:
 
 protected:
 private:
-
+	CXWindow *m_pContainer;
 	HWND m_hCoreView;
-	HWND m_hCortainer;
 	UINT m_nFlag;
 };
 

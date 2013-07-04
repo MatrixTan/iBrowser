@@ -7,10 +7,11 @@
 #include "MessageDef.h"
 #include "global_singleton.h"
 #include <Base/ipc_message.h>
+#include "XWindow.h"
 
-CoreProxy::CoreProxy( HWND hCoreView, HWND hContainer, UINT flag)
+CoreProxy::CoreProxy( HWND hCoreView, CXWindow *pContainer, UINT flag)
 	:m_hCoreView(hCoreView)
-	,m_hCortainer(hContainer)
+	,m_pContainer(pContainer)
 	,m_nFlag(flag)
 {
 
@@ -28,7 +29,7 @@ HWND CoreProxy::GetCoreHWND( void )
 
 HWND CoreProxy::GetContainerHWND( void )
 {
-	return m_hCortainer;
+	return m_pContainer->m_hWnd;
 }
 
 void CoreProxy::Refresh( void )
@@ -77,5 +78,5 @@ void CoreProxy::Focus()
 
 void CoreProxy::GetURL( CStringW& strURL )
 {
-
+	strURL = m_pContainer->GetURL();
 }

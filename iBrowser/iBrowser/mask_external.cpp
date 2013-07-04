@@ -112,9 +112,14 @@ HRESULT STDMETHODCALLTYPE MaskExternal::Invoke(DISPID dispIdMember
 		}else if (dispIdMember == ID_getCurrentURL){
 			CoreProxy* pProxy = GlobalSingleton::GetInstance()->GetCurrentCoreProxy();
 			if (pProxy){
-				pProxy->GoForward();
+				CStringW strURL;
+				pProxy->GetURL(strURL);
+				ATLASSERT(pVarResult);
+				pVarResult->vt = VT_BSTR;
+				pVarResult->bstrVal = strURL.AllocSysString();
+				return S_OK;
 			}
-			return S_OK;
+			return E_FAIL;
 		}
 	}
     return E_NOTIMPL;
