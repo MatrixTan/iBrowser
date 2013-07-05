@@ -8,6 +8,7 @@
 #include "global_singleton.h"
 #include "MessageDef.h"
 #include "core_proxy.h"
+#include "bookmark_manager.h"
 
 MaskExternal::MaskExternal()
 {
@@ -20,6 +21,7 @@ MaskExternal::MaskExternal()
 	m_mapIDs[ID_goBack] = L"goBack";
 	m_mapIDs[ID_goForward] = L"goForward";
 	m_mapIDs[ID_getCurrentURL] = L"getCurrentURL";
+	m_mapIDs[ID_addCurrentBookmark] = L"addCurrentBookmark";
 }
 
 MaskExternal::~MaskExternal()
@@ -117,6 +119,18 @@ HRESULT STDMETHODCALLTYPE MaskExternal::Invoke(DISPID dispIdMember
 				ATLASSERT(pVarResult);
 				pVarResult->vt = VT_BSTR;
 				pVarResult->bstrVal = strURL.AllocSysString();
+				return S_OK;
+			}
+			return E_FAIL;
+		}else if (dispIdMember == ID_addCurrentBookmark){
+			CoreProxy* pProxy = GlobalSingleton::GetInstance()->GetCurrentCoreProxy();
+			if (pProxy){
+				bool bRet = pProxy->AddCurrentBookmark();
+				CComVariant vRet;
+				vRet.vt = VT_BOOL;
+				vRet.boolVal = bRet?VARIANT_TRUE:VARIANT_FALSE;
+				ATLASSERT(pVarResult);
+				*pVarResult = vRet;
 				return S_OK;
 			}
 			return E_FAIL;

@@ -27,6 +27,7 @@ public:
 	void Focus();
 	void Destroy();
 	void GetURL(CStringW& strURL);
+	bool AddCurrentBookmark(void);
 
 protected:
 private:

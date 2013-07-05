@@ -80,3 +80,8 @@ void CoreProxy::GetURL( CStringW& strURL )
 {
 	strURL = m_pContainer->GetURL();
 }
+
+bool CoreProxy::AddCurrentBookmark( void )
+{
+	return m_pContainer->AddCurrentBookmark();
+}

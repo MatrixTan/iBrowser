@@ -21,6 +21,8 @@ enum E_PROCESS_MODE{
 class CoreProxy;
 class CoreProcessManager;
 class Profile;
+class BookmarkManager;
+
 class GlobalSingleton
 {
 public:
@@ -39,8 +41,8 @@ public:
 	void SetProcessMode(int nMode);
 
 	CoreProcessManager* GetCoreProcessManager(void);
-
 	Profile* GetProfile(void);
+	BookmarkManager* GetBookmarkManager(void);
 
 protected:
 private:
@@ -53,5 +55,6 @@ private:
 	int m_nProcessMode;
 	CoreProcessManager* m_pCoreProcessManager;
 	Profile* m_pProfile;
+	BookmarkManager* m_pBookmarkManager;
 };
 #endif //_GLOBAL_SINGLETON_H__

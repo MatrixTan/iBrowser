@@ -137,6 +137,8 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bookmark.cpp" />
+    <ClCompile Include="bookmark_manager.cpp" />
     <ClCompile Include="BrowserThreadManager.cpp" />
     <ClCompile Include="cookie_manager.cpp" />
     <ClCompile Include="core_container_manager.cpp" />
@@ -181,6 +183,8 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClCompile Include="UtilIECore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bookmark.h" />
+    <ClInclude Include="bookmark_manager.h" />
     <ClInclude Include="BrowserThreadManager.h" />
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="core_container_manager.h" />

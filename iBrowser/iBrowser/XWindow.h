@@ -70,6 +70,7 @@ public:
 	const CStringW& GetURL(void) const;
 	BOOL ShowWindow(int nCmd);
 	void Focus(void);
+	bool AddCurrentBookmark(void);
 
 	static const DWORD kNormalStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|0x4c;
 	static const DWORD kFreezingStyle = WS_POPUP|WS_CLIPSIBLINGS|WS_DISABLED;

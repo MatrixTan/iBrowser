@@ -21,6 +21,8 @@
 #include "tab_color_manager.h"
 #include "url_util.h"
 #include "core_container_manager.h"
+#include "global_singleton.h"
+#include "bookmark_manager.h"
 
 #define CHECK_TIMER_ID 1843
 #define HEART_BEAT_TIME 100
@@ -225,4 +227,9 @@ LRESULT CXWindow::OnCoreDestroyed( UINT msg, WPARAM wParam, LPARAM lParam, BOOL&
 void CXWindow::Focus( void )
 {
 	m_spCoreProxy->Focus();
+}
+
+bool CXWindow::AddCurrentBookmark( void )
+{
+	return GlobalSingleton::GetInstance()->GetBookmarkManager()->AddBookmark(m_strURL, m_strTitle, L"");
 }

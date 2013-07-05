@@ -56,6 +56,7 @@ private:
 		ID_goBack,
 		ID_goForward,
 		ID_getCurrentURL,
+		ID_addCurrentBookmark,
 		///add items before this
 		ID_Count,
 	};

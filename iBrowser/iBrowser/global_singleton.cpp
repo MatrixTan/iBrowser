@@ -8,6 +8,7 @@
 #include "core_proxy.h"
 #include "core_process_manager.h"
 #include "profile.h"
+#include "bookmark_manager.h"
 
 GlobalSingleton* GlobalSingleton::s_Instance = NULL;
 
@@ -17,9 +18,11 @@ GlobalSingleton::GlobalSingleton()
 	,m_nProcessMode(EPM_SINGLE)
 	,m_pCoreProcessManager(NULL)
 	,m_pProfile(NULL)
+	,m_pBookmarkManager(NULL)
 {
 	m_pCoreProcessManager = new CoreProcessManager();
 	m_pProfile = new Profile();
+	m_pBookmarkManager = new BookmarkManager();
 }
 
 GlobalSingleton* GlobalSingleton::GetInstance(){
@@ -77,7 +80,10 @@ GlobalSingleton::~GlobalSingleton()
 		delete m_pProfile;
 		m_pProfile = NULL;
 	}
-	
+	if (m_pBookmarkManager){
+		delete m_pBookmarkManager;
+		m_pBookmarkManager = NULL;
+	}
 }
 
 CoreProcessManager* GlobalSingleton::GetCoreProcessManager( void )
@@ -90,3 +96,7 @@ Profile* GlobalSingleton::GetProfile( void )
 	return m_pProfile;
 }
 
+BookmarkManager* GlobalSingleton::GetBookmarkManager( void )
+{
+	return m_pBookmarkManager;
+}
