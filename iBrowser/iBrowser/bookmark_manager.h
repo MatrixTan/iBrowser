@@ -2,6 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#ifndef _BOOKMARK_MANAGER_H__
+#define _BOOKMARK_MANAGER_H__
+
+
 #include <atlstr.h>
 #include <vector>
 #include <map>
@@ -13,6 +17,7 @@ public:
 	bool AddBookmark(const CStringW& strURL, const CStringW& strTitle, const CStringW& strFaviconURL);
 	void DeleteBookmark(const CStringW& strURL);
 	bool CheckIsAdded(const CStringW& strURL);
+	void GetBookmarksJson(CStringW& strBookmarks);
 protected:
 private:
 
@@ -21,3 +26,6 @@ private:
 	typedef std::pair<CStringW, Bookmark> BookmarkPair;
 	BookmarkMap m_Bookmarks;
 };
+
+
+#endif //_BOOKMARK_MANAGER_H__

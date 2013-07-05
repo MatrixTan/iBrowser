@@ -32,17 +32,12 @@ public:
 
 	// thread proc
 	static DWORD WINAPI CreateMainFrame(LPVOID lpData);
-	//static DWORD WINAPI AddContainerWindow(LPVOID lpData);
-
 	CBrowserThreadManager();
 
 	// Operations
 	DWORD AddThread(LPTHREAD_START_ROUTINE pStartRoutine ,LPVOID param);
 	void RemoveThread(DWORD dwIndex);
 	int Run(LPTSTR lpstrCmdLine, int nCmdShow);
-	//VOID CreateCotainer(HWND hParent, const CString &bsURL);
-	//VOID CreateCotainerInOtherProcess(HWND hParent);
-
 	HWND hMainFrame;
 
 protected:

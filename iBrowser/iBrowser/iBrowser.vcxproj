@@ -178,6 +178,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClCompile Include="ui_util.cpp" />
     <ClCompile Include="url_util.cpp" />
     <ClCompile Include="util_common.cpp" />
+    <ClCompile Include="util_str.cpp" />
     <ClCompile Include="XWindow.cpp" />
     <ClCompile Include="APIHook.cpp" />
     <ClCompile Include="UtilIECore.cpp" />
@@ -225,6 +226,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClInclude Include="ui_util.h" />
     <ClInclude Include="url_util.h" />
     <ClInclude Include="util_common.h" />
+    <ClInclude Include="util_str.h" />
     <ClInclude Include="XWindow.h" />
     <ClInclude Include="APIHook.h" />
     <ClInclude Include="UtilDebug.h" />

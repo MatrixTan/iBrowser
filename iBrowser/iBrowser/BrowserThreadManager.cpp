@@ -127,34 +127,6 @@ int CBrowserThreadManager::Run(LPTSTR lpstrCmdLine, int nCmdShow)
 	::PeekMessage(&msg, NULL, WM_USER, WM_USER, PM_NOREMOVE);
 
 	ProcessCmdLine(lpstrCmdLine);
-
-// 	int nRet = m_dwCount;
-// 	DWORD dwRet;
-// 	while(m_dwCount > 0)
-// 	{
-// 		dwRet = ::MsgWaitForMultipleObjects(m_dwCount, m_arrThreadHandles, FALSE, INFINITE, QS_ALLINPUT);
-// 
-// 		if(dwRet == 0xFFFFFFFF)
-// 		{
-// 			::MessageBox(NULL, _T("ERROR: Wait for multiple objects failed!!!"), _T("iBrowser"), MB_OK);
-// 		}
-// 		else if(dwRet >= WAIT_OBJECT_0 && dwRet <= (WAIT_OBJECT_0 + m_dwCount - 1))
-// 		{
-// 			RemoveThread(dwRet - WAIT_OBJECT_0);
-// 		}
-// 		else if(dwRet == (WAIT_OBJECT_0 + m_dwCount))
-// 		{
-// 			if(::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-// 			{
-// 			
-// 			}
-// 		}
-// 		else
-// 		{
-// 			::MessageBeep((UINT)-1);
-// 		}
-// 	}
-
 	return 0;
 }
 

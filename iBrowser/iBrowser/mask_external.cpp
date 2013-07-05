@@ -9,6 +9,7 @@
 #include "MessageDef.h"
 #include "core_proxy.h"
 #include "bookmark_manager.h"
+#include "BrowserThreadManager.h"
 
 MaskExternal::MaskExternal()
 {
@@ -22,6 +23,9 @@ MaskExternal::MaskExternal()
 	m_mapIDs[ID_goForward] = L"goForward";
 	m_mapIDs[ID_getCurrentURL] = L"getCurrentURL";
 	m_mapIDs[ID_addCurrentBookmark] = L"addCurrentBookmark";
+	m_mapIDs[ID_getBookmarks] = L"getBookmarks";
+	m_mapIDs[ID_newWindow] = L"newWindow";
+	m_mapIDs[ID_hideMask] = L"hideMask";
 }
 
 MaskExternal::~MaskExternal()
@@ -134,6 +138,23 @@ HRESULT STDMETHODCALLTYPE MaskExternal::Invoke(DISPID dispIdMember
 				return S_OK;
 			}
 			return E_FAIL;
+		}else if (dispIdMember == ID_getBookmarks){
+			CStringW strBookmarkJson;
+			GlobalSingleton::GetInstance()->GetBookmarkManager()->GetBookmarksJson(strBookmarkJson);
+			ATLASSERT(pVarResult);
+			pVarResult->vt = VT_BSTR;
+			pVarResult->bstrVal = strBookmarkJson.AllocSysString();
+			return S_OK;
+		}else if (dispIdMember == ID_newWindow){
+			ATLASSERT(pDispParams);
+			BSTR bsURL = ::SysAllocString(pDispParams->rgvarg->bstrVal);
+			HWND hMainFrame = CBrowserThreadManager::GetInstance()->hMainFrame;
+			::PostMessage(hMainFrame, WM_EVENT_NOTIFY, EVENT_NewWindow3, (LPARAM)bsURL);
+			return S_OK;
+		}else if (dispIdMember == ID_hideMask){
+			HWND hMainFrame = CBrowserThreadManager::GetInstance()->hMainFrame;
+			::PostMessage(hMainFrame, WM_SHOW_OPERATION_PANEL, 0, 0);
+			return S_OK;
 		}
 	}
     return E_NOTIMPL;

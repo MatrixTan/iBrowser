@@ -109,7 +109,6 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnNewWindow3( IDispatch **ppDisp, VARIA
 {
 	DEBUG_STR(L"New Window3");
 	*Cancel = VARIANT_TRUE;
-	IDispatch *test = *ppDisp;
 	*ppDisp = NULL;
 		
 	CString strURL(bstrUrl);

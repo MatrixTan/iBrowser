@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "bookmark_manager.h"
+#include "util_str.h"
 
 
 bool BookmarkManager::AddBookmark( const CStringW& strURL, const CStringW& strTitle, const CStringW& strFaviconURL )
@@ -28,4 +29,28 @@ void BookmarkManager::DeleteBookmark( const CStringW& strURL )
 	if (iter != m_Bookmarks.end()){
 		m_Bookmarks.erase(iter);
 	}
+}
+
+void BookmarkManager::GetBookmarksJson( CStringW& strBookmarks )
+{
+	strBookmarks =L"[";
+	BookmarkMap::iterator iter = m_Bookmarks.begin();
+	for (; iter != m_Bookmarks.end(); ++iter){
+		CStringW strURL, strTitle, strFaviconURL;
+		Util::Stringify(iter->second.m_strURL, strURL);
+		Util::Stringify(iter->second.m_strTitle, strTitle);
+		Util::Stringify(iter->second.m_strFaviconURL, strFaviconURL);
+		if (iter != m_Bookmarks.begin()){
+			strBookmarks += L",";
+		}
+		
+		strBookmarks += L"{\"url\":\"";
+		strBookmarks += strURL;
+		strBookmarks += L"\", \"title\":\"";
+		strBookmarks += strTitle;
+		strBookmarks += L"\", \"icon\":\"";
+		strBookmarks += strFaviconURL;
+		strBookmarks += L"\"}";
+	}
+	strBookmarks += L"]";
 }
