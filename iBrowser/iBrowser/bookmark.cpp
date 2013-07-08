@@ -3,3 +3,14 @@
 // found in the LICENSE file.
 #include "stdafx.h"
 #include "bookmark.h"
+
+Bookmark::Bookmark()
+	:m_nUseCount(0)
+{
+
+}
+
+Bookmark::~Bookmark()
+{
+
+}

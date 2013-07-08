@@ -7,7 +7,10 @@
 class Bookmark
 {
 public:
+	Bookmark();
+	~Bookmark();
 	CStringW m_strURL;
 	CStringW m_strTitle;
 	CStringW m_strFaviconURL;
+	unsigned int m_nUseCount;
 };

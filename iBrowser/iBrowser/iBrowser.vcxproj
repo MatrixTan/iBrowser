@@ -139,6 +139,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
   <ItemGroup>
     <ClCompile Include="bookmark.cpp" />
     <ClCompile Include="bookmark_manager.cpp" />
+    <ClCompile Include="bookmark_storage.cpp" />
     <ClCompile Include="BrowserThreadManager.cpp" />
     <ClCompile Include="cookie_manager.cpp" />
     <ClCompile Include="core_container_manager.cpp" />
@@ -172,6 +173,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClCompile Include="DocHostUIHandler.cpp" />
     <ClCompile Include="MainEdit.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="storage.cpp" />
     <ClCompile Include="tab_button.cpp" />
     <ClCompile Include="tab_button_add.cpp" />
     <ClCompile Include="tab_color_manager.cpp" />
@@ -186,6 +188,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
   <ItemGroup>
     <ClInclude Include="bookmark.h" />
     <ClInclude Include="bookmark_manager.h" />
+    <ClInclude Include="bookmark_storage.h" />
     <ClInclude Include="BrowserThreadManager.h" />
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="core_container_manager.h" />
@@ -203,6 +206,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClInclude Include="global_singleton.h" />
     <ClInclude Include="host_proxy.h" />
     <ClInclude Include="ie_event_message.h" />
+    <ClInclude Include="storage.h" />
     <ClInclude Include="maskview.h" />
     <ClInclude Include="mask_doc_host_ui_handler.h" />
     <ClInclude Include="mask_external.h" />

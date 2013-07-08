@@ -6,8 +6,10 @@
 #define _PROFILE_H__
 
 #include <string>
+#include "storage.h"
 
 class Profile
+	:public Storage
 {
 public:
 
@@ -16,12 +18,6 @@ public:
 
 	bool GetMainFrameRect(RECT *pRect , bool* pIsMax);
 	bool SetMainFrameProfile(RECT rect , bool bIsMax);
-
-protected:
-private:
-
-	bool SetValue(const char *db, const char* key, const char* value);
-	bool GetValue(const char *db, const char* key, std::string& strValue);
 };
 
 
