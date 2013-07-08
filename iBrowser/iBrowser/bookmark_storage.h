@@ -6,7 +6,8 @@
 #define _BOOKMARK_STORAGE_H__
 
 #include "storage.h"
-#include <vector>
+#include <map>
+#include "bookmark.h"
 
 class Bookmark;
 class BookmarkStorage : public Storage
@@ -17,7 +18,7 @@ public:
 
 	bool AddBookmark(const Bookmark* pBookmark);
 	bool DeleteBookmark(const Bookmark* pBookmark);
-	void GetBookmarks(std::vector<Bookmark*>& bookmarks);
+	void GetBookmarks(BookmarkMap& bookmarks);
 
 protected:
 private:

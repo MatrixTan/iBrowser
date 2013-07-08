@@ -6,6 +6,7 @@
 #define _STORAGE_H__
 
 #include <string>
+#include <leveldb/leveldb.h>
 
 class Storage
 {
@@ -17,6 +18,7 @@ protected:
 	bool SetValue(const char *db, const char* key, const char* value);
 	bool GetValue(const char *db, const char* key, std::string& strValue);
 	bool DeleteValue(const char*db, const char* key);
+	leveldb::DB* GetDB(const char* db);
 
 private:
 };

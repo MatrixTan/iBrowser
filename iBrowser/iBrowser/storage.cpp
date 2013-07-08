@@ -6,7 +6,6 @@
 #include <fstream>
 
 #include <atlstr.h>
-#include <leveldb/leveldb.h>
 #include <jsoncpp/json.h>
 #include "util_common.h"
 
@@ -98,4 +97,21 @@ bool Storage::DeleteValue( const char*db, const char* key )
 	delete database;
 	database = NULL;
 	return bRet;
+}
+
+leveldb::DB* Storage::GetDB( const char* db )
+{
+	std::string strPath = Util::GetAppDataPathA().GetBuffer();
+	strPath += kProfilePath;
+	strPath += db;
+
+	leveldb::DB* database = NULL;
+	leveldb::Options options;
+	options.create_if_missing = false;
+
+	leveldb::Status s = leveldb::DB::Open(options, strPath.c_str(), &database);
+	if (NULL == database || !s.ok()){
+		return NULL;
+	}
+	return database;
 }
