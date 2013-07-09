@@ -279,6 +279,9 @@ void MouseGesture::DoCommand( void )
 	case EGT_DOWN_UP:
 		
 		break;
+	case EGT_RIGHT_DOWN_RIGHT:
+		m_pCore->_ShowMaskWindow();
+		break;
 	default:
 		break;
 	}

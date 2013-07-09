@@ -13,6 +13,7 @@
 #include "UtilIECore.h"
 #include "custom_client_site.h"
 #include "ui_util.h"
+#include "BrowserThreadManager.h"
 
 
 LRESULT CoreView::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
@@ -22,7 +23,7 @@ LRESULT CoreView::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 	return 0;
 }
 
-LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled )
 {
 	AtlAxWinInit();
 
@@ -46,7 +47,6 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 		}
 	}	
 
-	//this->DefWindowProc();
 	HRESULT hr = QueryControl(&m_spWebBrowser2);
 	if (m_spWebBrowser2){
 		m_spWebBrowser2.p->AddRef();
@@ -124,7 +124,9 @@ BOOL CoreView::PreTranslateMessage( MSG* pMsg )
 	}
 
 	if (WM_RBUTTONUP == Msg){
-		m_MouseGesture.Stop();
+		if (m_MouseGesture.GetStarted()){
+			m_MouseGesture.Stop();
+		}		
 		m_bBeforeGesture = false;
 	}
 
@@ -420,4 +422,10 @@ LRESULT CoreView::OnCoreFocus( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 		::SetFocus(hWnd);
 	}	
 	return 0;
+}
+
+HRESULT CoreView::_ShowMaskWindow( void )
+{
+	::PostMessage(CBrowserThreadManager::GetInstance()->hMainFrame, WM_SHOW_OPERATION_PANEL, 0, 0);
+	return S_OK;
 }

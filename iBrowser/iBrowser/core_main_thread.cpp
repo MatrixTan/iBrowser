@@ -5,6 +5,7 @@
 #include "core_main_thread.h"
 #include <atlstr.h>
 #include "core_manager.h"
+#include "BrowserThreadManager.h"
 
 
 int CoreMainThread::Run( void )
@@ -39,6 +40,8 @@ CoreMainThread::~CoreMainThread()
 LRESULT CoreMainThread::OnCreateCore( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	HWND hParent = *(HWND*)wParam;
+	HWND hMainFrame = ::GetAncestor(hParent, GA_ROOTOWNER);
+	CBrowserThreadManager::GetInstance()->hMainFrame = hMainFrame;
 	CoreManager::GetInstance()->CreateCoreInProcess(hParent, CString(L""), 0);
 	return 0;
 }
