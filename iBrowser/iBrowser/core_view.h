@@ -24,7 +24,7 @@ class CoreView : public CWindowImpl<CoreView,CAxWindow>
 public:
 	DECLARE_WND_SUPERCLASS(NULL,CAxWindow::GetWndClassName())
 
-	static const DWORD kStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS;
+	static const DWORD kStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN;
 	static const DWORD kExStyle = WS_EX_LEFT|WS_EX_LTRREADING|WS_EX_RIGHTSCROLLBAR|WS_EX_TOOLWINDOW;
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -76,6 +76,7 @@ protected:
 	HRESULT _GoBack(void);
 	HRESULT _GoForward(void);
 	HRESULT _Close(void);
+	HRESULT _ShowMaskWindow(void);	
 
 private:
 	friend class MouseGesture;
@@ -87,6 +88,10 @@ private:
 	MouseGesture m_MouseGesture;
 	bool m_bBeforeGesture;
 	HostProxy *m_HostProxy;
+
+	HRESULT _CreateCoreServer(void);
+	CComPtr<IOleObject>             m_spOleObject ;
+	CComPtr<IOleInPlaceObjectWindowless> m_spWindowless ;
 
 public:
 	LRESULT OnMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

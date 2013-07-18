@@ -23,11 +23,12 @@ int CoreProcess::Run( LPTSTR lpCmdLine ){
 	cl.ParseFromString(lpCmdLine);
 	CString strHostHWND = cl.GetSwitchValue(switches::kProcessHostHWND);
 	HWND hHost = (HWND)_wtoi(strHostHWND.GetBuffer());
+
+	CoreMainThread mainThread;
 	CString strEvent = cl.GetSwitchValue(switches::kProcessStartEvent);	
 	HANDLE hEvent = ::OpenEvent(EVENT_MODIFY_STATE, FALSE, strEvent.GetBuffer());
-	::SetEvent(hEvent);
+	::SetEvent(hEvent);	
 	
-	CoreMainThread mainThread;
 	::PostMessage(hHost, WM_CORE_PROCESS_CREATED, (WPARAM)mainThread.m_hWnd, 0);	
 	mainThread.Run();
 	return 0;

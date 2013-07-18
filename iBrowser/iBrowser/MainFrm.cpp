@@ -268,7 +268,9 @@ LRESULT CMainFrame::OnClickTab( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/,
 		return 0;
 	}
 	TabPairMap::iterator iterOld = m_mapTabPairs.find(m_hCurrentTabButton);
-	iterOld->second.spContainerWindow->ShowWindow(SW_HIDE);
+	if (iterOld != m_mapTabPairs.end()){
+		iterOld->second.spContainerWindow->ShowWindow(SW_HIDE);
+	}	
 	_SwitchTo(hWnd);
 	return 0;
 }
