@@ -29,25 +29,28 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
 	CString strWindowName;
 	GetWindowText(strWindowName);
+	_CreateCoreServer();
 
-	CComObject<CustomClientSite> *pCustomSite;
-	CComObject<CustomClientSite>::CreateInstance(&pCustomSite);
-	if (pCustomSite){
-		CComPtr<IUnknown> spCustomSite;
-		pCustomSite->QueryInterface(&spCustomSite);
-		
-		CComQIPtr<IAxWinHostWindowLic> spHostWindow = spCustomSite;
-		if (spHostWindow){
-			CComPtr<IUnknown> spControl;
-			spHostWindow->CreateControlLicEx(CComBSTR(strWindowName), m_hWnd, NULL, &spControl, IID_NULL, NULL, NULL);
+	//CComObject<CustomClientSite> *pCustomSite;
+	//CComObject<CustomClientSite>::CreateInstance(&pCustomSite);
+	//if (pCustomSite){
+	//	pCustomSite->Init(m_hWnd);
+	//	CComPtr<IUnknown> spCustomSite;
+	//	pCustomSite->QueryInterface(&spCustomSite);
 
-			IAxWinHostWindowLic * pAxWindow;
-			spHostWindow->QueryInterface(&pAxWindow);
-			::SetWindowLongPtr(m_hWnd, GWLP_USERDATA, (DWORD_PTR)pAxWindow);
-		}
-	}	
+	//	CComQIPtr<IAxWinHostWindowLic> spHostWindow = spCustomSite;
+	//	if (spHostWindow){
+	//		CComPtr<IUnknown> spControl;
+	//		spHostWindow->CreateControlLicEx(CComBSTR(strWindowName), m_hWnd, NULL, &spControl, IID_NULL, NULL, NULL);
 
-	HRESULT hr = QueryControl(&m_spWebBrowser2);
+	//		IAxWinHostWindowLic * pAxWindow;
+	//		spHostWindow->QueryInterface(&pAxWindow);
+	//		::SetWindowLongPtr(m_hWnd, GWLP_USERDATA, (DWORD_PTR)pAxWindow);
+	//	}
+	//}	
+
+	//HRESULT hr = QueryControl(&m_spWebBrowser2);
+	HRESULT hr = E_FAIL;
 	if (m_spWebBrowser2){
 		m_spWebBrowser2.p->AddRef();
 
@@ -427,5 +430,65 @@ LRESULT CoreView::OnCoreFocus( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 HRESULT CoreView::_ShowMaskWindow( void )
 {
 	::PostMessage(CBrowserThreadManager::GetInstance()->hMainFrame, WM_SHOW_OPERATION_PANEL, 0, 0);
+	return S_OK;
+}
+
+HRESULT CoreView::_CreateCoreServer( void )
+{
+	HRESULT hr = S_OK;
+	::OleInitialize(NULL) ;
+
+	CComPtr<IClassFactory> spClassFactory ;
+	if (FAILED(::CoGetClassObject(CLSID_WebBrowser
+		, CLSCTX_INPROC_SERVER | CLSCTX_INPROC_HANDLER
+		, NULL
+		, IID_IClassFactory
+		, (void**)&spClassFactory)) || 0 == spClassFactory)
+		return S_FALSE ;
+	
+	hr = spClassFactory->CreateInstance(NULL, IID_IOleObject, (void**)&m_spOleObject);
+	if (FAILED(hr) || 0 == m_spOleObject)
+	{
+		ATLTRACE("spClassFactory->CreateInstance hr = %x\r\n", hr);
+		return S_FALSE ;
+	}
+
+	//CComObject<CustomClientSite> *pCustomSite;
+	//CComObject<CustomClientSite>::CreateInstance(&pCustomSite);
+	CustomClientSite* pCustomSite = new CustomClientSite();
+	pCustomSite->Init(m_hWnd);
+	pCustomSite->AddRef();
+	CComPtr<IOleClientSite> spCustomSite;
+	pCustomSite->QueryInterface(IID_IOleClientSite, (void**)&spCustomSite);
+	hr = m_spOleObject->SetClientSite(spCustomSite);
+	if (FAILED(hr))
+	 	return S_FALSE ;
+
+	if (FAILED(::OleSetContainedObject(m_spOleObject, TRUE)))
+		return S_FALSE ;
+
+	RECT rc ;
+	GetClientRect(&rc) ;
+	hr = m_spOleObject->DoVerb(OLEIVERB_INPLACEACTIVATE, NULL, spCustomSite, -1, m_hWnd, &rc);
+	if (FAILED(hr))
+		return S_FALSE ;
+
+	CComPtr<IWebBrowser2> spWebBrowser2;
+	if (FAILED(m_spOleObject->QueryInterface(IID_IWebBrowser2, (void**)&spWebBrowser2)) || 0 == spWebBrowser2)
+		return S_FALSE ;
+
+	spWebBrowser2->put_RegisterAsBrowser(VARIANT_TRUE) ;
+	spWebBrowser2->put_RegisterAsDropTarget(VARIANT_TRUE) ;
+
+
+	if (FAILED(m_spOleObject->QueryInterface(__uuidof(IOleInPlaceObject), (void**)&m_spWindowless)) || 0 == m_spWindowless)
+		return S_FALSE ;
+
+	SIZE sz = { rc.right, rc.bottom } ;
+	SIZE sz2 ;
+	AtlPixelToHiMetric(&sz, &sz2) ;
+	m_spOleObject->SetExtent(DVASPECT_CONTENT, &sz2) ;
+	m_spWindowless->SetObjectRects(&rc, &rc) ;
+	m_spWebBrowser2 = spWebBrowser2 ;
 	return S_OK;
 }

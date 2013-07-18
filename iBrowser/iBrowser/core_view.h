@@ -76,7 +76,7 @@ protected:
 	HRESULT _GoBack(void);
 	HRESULT _GoForward(void);
 	HRESULT _Close(void);
-	HRESULT _ShowMaskWindow(void);
+	HRESULT _ShowMaskWindow(void);	
 
 private:
 	friend class MouseGesture;
@@ -88,6 +88,10 @@ private:
 	MouseGesture m_MouseGesture;
 	bool m_bBeforeGesture;
 	HostProxy *m_HostProxy;
+
+	HRESULT _CreateCoreServer(void);
+	CComPtr<IOleObject>             m_spOleObject ;
+	CComPtr<IOleInPlaceObjectWindowless> m_spWindowless ;
 
 public:
 	LRESULT OnMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

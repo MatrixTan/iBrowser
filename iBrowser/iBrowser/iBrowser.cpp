@@ -26,7 +26,7 @@
 CAppModule _Module;
 
 
-int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lpstrCmdLine, int nCmdShow)
+int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int nCmdShow)
 {
 	HRESULT hRes = ::CoInitialize(NULL);
 // If you are running on NT 4.0 or higher you can use the following call instead to 
@@ -50,7 +50,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 	UtilIECore::SetUA();
 	int nRet = 0;
 	CommandLine cl;
-	cl.ParseFromString(::GetCommandLine());
+	CStringW strCommandLine = ::GetCommandLine();
+	cl.ParseFromString(strCommandLine);
 	if (cl.GetSwitchValue(switches::kProcessType) == switches::kProcessTypeCore){
 		if (cl.GetSwitchValue(switches::kCoreWaitDebugger) == switches::kTrue){
 			DWORD dwPid = ::GetCurrentProcessId();
@@ -58,11 +59,12 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 			strText.Format(L"PID:%d", dwPid);
 			::MessageBox(NULL, L"Wait for debugger", strText, MB_OK);
 		}
+
 		GlobalSingleton::GetInstance()->SetProcessMode(EPM_MULTIPLE);
 		GlobalSingleton::GetInstance()->SetProcessType(EPT_CORE);
 		StartCoreProcessHooks();
 		CoreProcess coreProcess;
-		coreProcess.Run(lpstrCmdLine);
+		coreProcess.Run(strCommandLine.GetBuffer());
 
 	}else{
 		GlobalSingleton::GetInstance()->SetProcessType(EPT_MAIN);
@@ -70,7 +72,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 			GlobalSingleton::GetInstance()->SetProcessMode(EPM_MULTIPLE);
 		}
 		StartMainProcessHooks();
-		nRet = CBrowserThreadManager::GetInstance()->Run(lpstrCmdLine, nCmdShow);
+		nRet = CBrowserThreadManager::GetInstance()->Run(strCommandLine.GetBuffer(), nCmdShow);
 	}
 
 	_Module.Term();
