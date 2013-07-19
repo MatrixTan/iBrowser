@@ -33,6 +33,7 @@ public:
 	static const DWORD kExStyle = WS_EX_LEFT|WS_EX_LTRREADING|WS_EX_RIGHTSCROLLBAR|WS_EX_WINDOWEDGE|WS_EX_APPWINDOW;
 
 	BEGIN_MSG_MAP(CMainFrame)
+		HANDLE_IPC_MSG(CMainFrame)
 		MESSAGE_HANDLER(WM_CREATE, OnCreate)
 		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
 		MESSAGE_HANDLER(WM_EVENT_NOTIFY, OnEventNotify)
@@ -50,6 +51,7 @@ public:
 		MESSAGE_HANDLER(WM_TIMER, OnTimer)
 		MESSAGE_HANDLER(WM_IME_SETCONTEXT, OnSetContext)
 		MESSAGE_HANDLER(WM_COMMAND, OnCommand)
+		MESSAGE_HANDLER(WM_CORE_NEWWINDOW, OnCoreNewWindow)
 		CHAIN_MSG_MAP(CUpdateUI<CMainFrame>)
 		CHAIN_MSG_MAP(CFrameWindowImpl<CMainFrame>)
 		//CHAIN_MSG_MAP_MEMBER(m_wndMaskWindow)
@@ -75,6 +77,7 @@ public:
 	LRESULT OnTimer(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 	LRESULT OnSetContext(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+	LRESULT OnCoreNewWindow(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	
 	CMainFrame();
 	~CMainFrame();
@@ -125,8 +128,6 @@ private:
 	typedef std::map<HWND, TabPair> TabPairMap;
 	TabPairMap m_mapTabPairs;
 	typedef std::pair<HWND, TabPair> TabPairPair;
-
-	CString m_strHomeURL;
 };
 
 #endif //_MAIN_FRM_H__

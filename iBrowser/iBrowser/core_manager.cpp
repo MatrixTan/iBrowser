@@ -31,12 +31,11 @@ CoreManager::CoreManager()
 
 }
 
-void CoreManager::CreateCoreInProcess( HWND hParent ,const CString& strURL, UINT flag)
+void CoreManager::CreateCoreInProcess( HWND hParent ,const CString& strURL)
 {
 	BrowserViewData *pData = new BrowserViewData();
 	pData->hParent = hParent;
 	pData->strURL = strURL;
-	pData->nCreateFlag = flag;
 	CBrowserThreadManager::GetInstance()->AddThread(StartCore_CoreThread, (void*)pData);
 }
 
@@ -52,7 +51,7 @@ DWORD CoreManager::StartCore_CoreThread( void *pParam )
 	_Module.AddMessageLoop(&theLoop);	
 
 	CoreView view;
-	view.Initialize((E_CHILEWINDOW_CREATE_FLAG)pData->nCreateFlag, strURL);
+	view.Initialize(strURL);
 
 	RECT rect;
 	::GetClientRect(hParent, &rect);
@@ -68,7 +67,7 @@ DWORD CoreManager::StartCore_CoreThread( void *pParam )
 	return 0;
 }
 
-void CoreManager::CreateCore( HWND hParent, const CString& strURL, UINT flag )
+void CoreManager::CreateCore( HWND hParent, const CString& strURL)
 {
 	CoreProcessStartContext *pContext = new CoreProcessStartContext();
 	pContext->strURL = strURL;

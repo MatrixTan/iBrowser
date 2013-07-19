@@ -6,10 +6,10 @@
 #include "profile.h"
 #include <fstream>
 
-#include <atlstr.h>
 #include <leveldb/leveldb.h>
 #include <jsoncpp/json.h>
 #include "util_common.h"
+#include "resource.h"
 
 static const char *kUIProfile = "ui.profile";
 
@@ -61,4 +61,11 @@ bool Profile::SetMainFrameProfile( RECT rect , bool bIsMax)
 	std::string strProfile = writer.write(jsonValue);
 	return SetValue(kUIProfile, "main_frame_profile", strProfile.c_str());
 }
+
+bool Profile::GetHomeURL( CStringW &strURL )
+{
+	strURL.LoadString(IDS_HOME_URL);
+	return true;
+}
+
 

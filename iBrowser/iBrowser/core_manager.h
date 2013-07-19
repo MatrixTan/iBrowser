@@ -15,8 +15,8 @@ public:
 	static CoreManager* GetInstance();
 	~CoreManager();
 
-	void CreateCoreInProcess(HWND hParent, const CString& strURL, UINT flag);
-	void CreateCore(HWND hParent, const CString& strURL, UINT flag);
+	void CreateCoreInProcess(HWND hParent, const CString& strURL);
+	void CreateCore(HWND hParent, const CString& strURL);
 protected:
 private:
 	static DWORD WINAPI StartCore_CoreThread(void *pParam);
@@ -29,10 +29,9 @@ private:
 	public:
 		BrowserViewData()
 			:hParent(NULL)
-			, nCreateFlag(ECCF_CreateNew){}
+			{}
 		HWND hParent;
 		CString strURL;
-		UINT nCreateFlag;
 	};
 };
 

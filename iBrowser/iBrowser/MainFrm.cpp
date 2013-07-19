@@ -201,8 +201,7 @@ CMainFrame::CMainFrame()
 ,m_hCurrentTabButton(NULL)
 ,m_nTabButtonWidth(0)
 {
-	m_nTabButtonWidth = TabButton::kDefaultWidth;
-	m_strHomeURL.LoadString(IDS_HOME_URL);	
+	m_nTabButtonWidth = TabButton::kDefaultWidth;	
 }
 
 CMainFrame::~CMainFrame()
@@ -214,7 +213,7 @@ LRESULT CMainFrame::OnChildCreated( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam,
 {
 	CoreProxy *pCoreProxy = (CoreProxy*)lParam;
 	HWND hContainer = pCoreProxy->GetContainerHWND();
-	UINT nFlag = pCoreProxy->GetFlag();
+
 	TabPairMap::iterator iter = m_mapTabPairs.begin();
 	for (; iter != m_mapTabPairs.end(); ++iter)
 	{
@@ -225,27 +224,6 @@ LRESULT CMainFrame::OnChildCreated( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam,
 		}		
 	}
 	_ShowCurrentContainer();
-	if(nFlag == ECCF_CreateNew)
-	{
-		CString strFirstNavigate = m_strHomeURL;
-		//第一次打开时如果没有命令行，就用默认的主页。
-		if(m_mapTabPairs.empty())
-		{
-			//the first
-			CommandLine cl;
-			cl.ParseFromString(::GetCommandLineW());
-			CStringW strUrl = cl.GetSwitchValue(switches::kURL);
-			if(FALSE == strUrl.IsEmpty())
-			{
-				strFirstNavigate = strUrl;
-			}
-		}
-		pCoreProxy->Navigate(strFirstNavigate);
-	}
-	else if (nFlag == ECCF_NewWindow)
-	{
-		pCoreProxy->Navigate(L"");
-	}
 	return 0;
 }
 
@@ -256,7 +234,9 @@ LRESULT CMainFrame::OnLButtonDown( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 
 LRESULT CMainFrame::OnAddTab( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
-	_AddNewTab(ECCF_CreateNew, m_strHomeURL);
+	CStringW strHomeURL;
+	GlobalSingleton::GetInstance()->GetProfile()->GetHomeURL(strHomeURL);
+	_AddNewTab(ECCF_CreateNew, strHomeURL);
 	return 0;
 }
 
@@ -425,9 +405,7 @@ LRESULT CMainFrame::OnEventNotify(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, B
 	{
 	case EVENT_NewWindow3:
 		{
-			BSTR bsURL = (BSTR)lParam;
-			_AddNewTab(ECCF_NewWindow, CString(bsURL));
-			::SysFreeString(bsURL);
+			
 		}
 		break;
 	default:
@@ -484,6 +462,24 @@ void CMainFrame::Init()
 	pLoop->AddMessageFilter(this);
 	pLoop->AddIdleHandler(this);
 
-	_AddNewTab(ECCF_CreateNew, L"");
+	CommandLine cl;
+	cl.ParseFromString(::GetCommandLineW());
+	CStringW strUrl = cl.GetSwitchValue(switches::kURL);
+	if(TRUE == strUrl.IsEmpty()){
+		GlobalSingleton::GetInstance()->GetProfile()->GetHomeURL(strUrl);
+	}
+	_AddNewTab(ECCF_CreateNew, strUrl);
 
+}
+
+LRESULT CMainFrame::OnCoreNewWindow( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/ )
+{
+	CStringW *pStrURL = NULL;
+	Serialize<CStringW>::Read((void*)wParam, &pStrURL);
+	if (pStrURL){
+		_AddNewTab(ECCF_NewWindow, *pStrURL);
+		delete pStrURL;
+		pStrURL = NULL;
+	}
+	return 0;
 }

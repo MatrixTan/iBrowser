@@ -51,10 +51,9 @@ LRESULT CXWindow::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
 	int nProcessMode = GlobalSingleton::GetInstance()->GetProcessMode();
 	if (nProcessMode == EPM_SINGLE){
-		CoreManager::GetInstance()->CreateCoreInProcess(m_hWnd, m_strURL, m_nCreateFlag);
+		CoreManager::GetInstance()->CreateCoreInProcess(m_hWnd, m_strURL);
 	}else if (nProcessMode == EPM_MULTIPLE){
-
-		CoreManager::GetInstance()->CreateCore(m_hWnd, m_strURL, m_nCreateFlag);
+		CoreManager::GetInstance()->CreateCore(m_hWnd, m_strURL);
 	}
 
 	m_hParentWindow = GetParent().m_hWnd;
@@ -90,11 +89,32 @@ LRESULT CXWindow::OnTimer( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& bH
 LRESULT CXWindow::OnChildWindowCreated( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/ )
 {
 	m_hChildWindow = (HWND)wParam;
-	UINT nFlag = (UINT)lParam;
-	m_spCoreProxy.Reset(new CoreProxy(m_hChildWindow, this, nFlag));
+	m_spCoreProxy.Reset(new CoreProxy(m_hChildWindow, this, m_nCreateFlag));
 	m_spCoreProxy->AddRef();
+	::SendMessage(m_hParentWindow,WM_CHILD_WINDOW_CREATED, wParam, (LPARAM)m_spCoreProxy.get());
+	m_spCoreProxy->Navigate(m_strURL);
 
-	::PostMessage(m_hParentWindow,WM_CHILD_WINDOW_CREATED, wParam, (LPARAM)m_spCoreProxy.get());
+	//if(m_nCreateFlag == ECCF_CreateNew)
+	//{
+	//	CString strFirstNavigate = m_strHomeURL;
+	//	//第一次打开时如果没有命令行，就用默认的主页。
+	//	if(m_mapTabPairs.empty())
+	//	{
+	//		//the first
+	//		CommandLine cl;
+	//		cl.ParseFromString(::GetCommandLineW());
+	//		CStringW strUrl = cl.GetSwitchValue(switches::kURL);
+	//		if(FALSE == strUrl.IsEmpty())
+	//		{
+	//			strFirstNavigate = strUrl;
+	//		}
+	//	}
+	//	pCoreProxy->Navigate(strFirstNavigate);
+	//}
+	//else if (nFlag == ECCF_NewWindow)
+	//{
+	//	pCoreProxy->Navigate(m_strURL);
+	//}
 	return 0;
 }
 

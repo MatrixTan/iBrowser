@@ -65,7 +65,7 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 		SetExternalUIHandler(NULL);
 
 		HWND hParent = ::GetParent(m_hWnd);
-		::PostMessage(hParent, WM_CHILD_WINDOW_CREATED,(WPARAM)m_hWnd, (LPARAM)m_nCreateFlag);
+		::PostMessage(hParent, WM_CHILD_WINDOW_CREATED,(WPARAM)m_hWnd, 0);
 		if (NULL == m_HostProxy){
 			m_HostProxy = new HostProxy(hParent);
 		}		
@@ -76,7 +76,6 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
 CoreView::CoreView()
 :m_spWebBrowser2(NULL)
-,m_nCreateFlag(ECCF_CreateNew)
 ,m_MouseGesture(this)
 ,m_bBeforeGesture(false)
 ,m_HostProxy(NULL)
@@ -350,9 +349,8 @@ void CoreView::NotifyHotKey(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	::PostMessage(hMainFrame, uMsg, wParam, lParam);
 }
 
-void CoreView::Initialize( E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL )
+void CoreView::Initialize(const CString& strURL )
 {
-	m_nCreateFlag = flag;
 	m_strURL = strURL;
 }
 

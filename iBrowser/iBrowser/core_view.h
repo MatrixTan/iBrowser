@@ -68,7 +68,7 @@ public:
 	LRESULT OnForTest(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnCoreFocus(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
-	void Initialize(E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL);
+	void Initialize(const CString& strURL);
 	void NotifyHotKey(UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	HRESULT _Navegate(LPCWSTR strURL);
@@ -83,7 +83,6 @@ private:
 	CComPtr<IWebBrowser2> m_spWebBrowser2;
 	CComPtr<IIEEventDelegate> m_spIEEventDelegate;
 	CConsoleWindow m_wndConsole;
-	UINT m_nCreateFlag;
 	CString m_strURL;
 	MouseGesture m_MouseGesture;
 	bool m_bBeforeGesture;

@@ -42,6 +42,6 @@ LRESULT CoreMainThread::OnCreateCore( UINT uMsg, WPARAM wParam, LPARAM lParam, B
 	HWND hParent = *(HWND*)wParam;
 	HWND hMainFrame = ::GetAncestor(hParent, GA_ROOTOWNER);
 	CBrowserThreadManager::GetInstance()->hMainFrame = hMainFrame;
-	CoreManager::GetInstance()->CreateCoreInProcess(hParent, CString(L""), 0);
+	CoreManager::GetInstance()->CreateCoreInProcess(hParent, CString(L""));
 	return 0;
 }

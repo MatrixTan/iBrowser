@@ -6,6 +6,7 @@
 #define _PROFILE_H__
 
 #include <string>
+#include <atlstr.h>
 #include "storage.h"
 
 class Profile
@@ -18,6 +19,7 @@ public:
 
 	bool GetMainFrameRect(RECT *pRect , bool* pIsMax);
 	bool SetMainFrameProfile(RECT rect , bool bIsMax);
+	bool GetHomeURL(CStringW &strURL);
 };
 
 

@@ -30,7 +30,8 @@
 #define WM_CHILD_WINDOW_CREATED WM_CUSTOM_BASE+21
 enum E_CHILEWINDOW_CREATE_FLAG
 {
-	ECCF_CreateNew =0,
+	ECCF_None = 0,
+	ECCF_CreateNew,
 	ECCF_NewWindow
 };
 
@@ -50,6 +51,8 @@ enum E_CHILEWINDOW_CREATE_FLAG
 ///IE内核通知给主Frame的时间
 #define WM_EVENT_NOTIFY WM_CUSTOM_BASE+41
 #define EVENT_NewWindow3 1
+
+#define WM_CORE_NEWWINDOW WM_CUSTOM_BASE+42
 
 
 /////////////////////

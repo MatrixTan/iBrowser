@@ -11,6 +11,8 @@
 #include "UtilIECore.h"
 #include "MessageDef.h"
 #include "util_common.h"
+#include "Base/ipc_message.h"
+#include "global_singleton.h"
 
 
 CIEEventDelegate::CIEEventDelegate()
@@ -112,7 +114,12 @@ void STDMETHODCALLTYPE CIEEventDelegate::OnNewWindow3( IDispatch **ppDisp, VARIA
 	*ppDisp = NULL;
 		
 	CString strURL(bstrUrl);
-	::PostMessage(CBrowserThreadManager::GetInstance()->hMainFrame, WM_EVENT_NOTIFY, EVENT_NewWindow3, (LPARAM)strURL.AllocSysString());
+	if (GlobalSingleton::GetInstance()->GetProcessMode() == EPM_MULTIPLE){
+		IPC::PostIPCMessage<CStringW>(CBrowserThreadManager::GetInstance()->hMainFrame
+			, WM_CORE_NEWWINDOW, strURL);
+	}else{
+		
+	}
 	return;
 }
 
