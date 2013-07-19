@@ -211,6 +211,9 @@ LRESULT CoreView::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 {
 	CRect rectClient;
 	GetClientRect(&rectClient);
+	SIZE size = {rectClient.right-rectClient.left, rectClient.bottom-rectClient.top};
+	m_spOleObject->SetExtent(DVASPECT_CONTENT, &size);
+	m_spWindowless->SetObjectRects(&rectClient, &rectClient);
 	ClientToScreen(&rectClient);
 	if (m_wndConsole.IsWindow())
 	{
@@ -451,8 +454,6 @@ HRESULT CoreView::_CreateCoreServer( void )
 		return S_FALSE ;
 	}
 
-	//CComObject<CustomClientSite> *pCustomSite;
-	//CComObject<CustomClientSite>::CreateInstance(&pCustomSite);
 	CustomClientSite* pCustomSite = new CustomClientSite();
 	pCustomSite->Init(m_hWnd);
 	pCustomSite->AddRef();
