@@ -138,6 +138,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cross_process_render_helper.cpp" />
     <ClCompile Include="bookmark.cpp" />
     <ClCompile Include="bookmark_manager.cpp" />
     <ClCompile Include="bookmark_storage.cpp" />
@@ -152,6 +153,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClCompile Include="core_process_launcher.cpp" />
     <ClCompile Include="core_process_manager.cpp" />
     <ClCompile Include="core_proxy.cpp" />
+    <ClCompile Include="core_window.cpp" />
     <ClCompile Include="custom_client_site.cpp" />
     <ClCompile Include="gamemode\accelerator.cpp" />
     <ClCompile Include="global_singleton.cpp" />
@@ -187,6 +189,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClCompile Include="UtilIECore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cross_process_render_helper.h" />
     <ClInclude Include="bookmark.h" />
     <ClInclude Include="bookmark_manager.h" />
     <ClInclude Include="bookmark_storage.h" />
@@ -202,6 +205,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClInclude Include="core_process_launcher.h" />
     <ClInclude Include="core_process_manager.h" />
     <ClInclude Include="core_proxy.h" />
+    <ClInclude Include="core_window.h" />
     <ClInclude Include="custom_client_site.h" />
     <ClInclude Include="gamemode\accelerator.h" />
     <ClInclude Include="global_singleton.h" />

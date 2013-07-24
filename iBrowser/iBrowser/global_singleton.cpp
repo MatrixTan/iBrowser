@@ -19,6 +19,7 @@ GlobalSingleton::GlobalSingleton()
 	,m_pCoreProcessManager(NULL)
 	,m_pProfile(NULL)
 	,m_pBookmarkManager(NULL)
+	,m_bEnableCrossProcessRender(false)
 {
 	m_pCoreProcessManager = new CoreProcessManager();
 	m_pProfile = new Profile();
@@ -99,4 +100,14 @@ Profile* GlobalSingleton::GetProfile( void )
 BookmarkManager* GlobalSingleton::GetBookmarkManager( void )
 {
 	return m_pBookmarkManager;
+}
+
+bool GlobalSingleton::GetCrossProcessRender( void )
+{
+	return m_bEnableCrossProcessRender;
+}
+
+void GlobalSingleton::SetCrossProcessRender( bool bEnable )
+{
+	m_bEnableCrossProcessRender = bEnable;
 }

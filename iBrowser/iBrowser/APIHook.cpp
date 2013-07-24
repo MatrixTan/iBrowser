@@ -9,12 +9,17 @@
 #include "BrowserThreadManager.h"
 #include "gamemode/accelerator.h"
 #include "core_cookie.h"
+#include "MessageDef.h"
+#include "Base/ipc_message.h"
+#include "global_singleton.h"
+#include "cross_process_render_helper.h"
 
 PFuncSendMessage g_SendMessageA = NULL;
 PFuncSendMessage g_SendMessageW = NULL;
 PFunSetFocus g_SetFocus = NULL;
 PFuncWindowProc g_DefWindowProcW = NULL;
 PFuncWindowProc g_DefWindowProcA = NULL;
+PFuncBitBlt g_BitBlt = NULL;
 
 LRESULT WINAPI HOOK_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
@@ -80,10 +85,21 @@ bool StartCoreProcessHooks( void ){
 	HookLibAndProc("Kernel32.dll", "GetTickCount", (void*)&GameMode::Accelerator::HOOK_GetTickCount, (void**)&GameMode::Accelerator::Real_GetTickCount);
 	HookLibAndProc("wininet.dll", "InternetSetCookieExW", (void*)CoreCookie::HOOK_InternetSetCookieExW, (void**)&CoreCookie::Real_InternetSetCookieExW);
 	HookLibAndProc("wininet.dll", "InternetSetCookieExA", (void*)CoreCookie::HOOK_InternetSetCookieExA, (void**)&CoreCookie::Real_InternetSetCookieExA);
+	HookLibAndProc("gdi32.dll", "BitBlt", (void*)HOOK_BitBlt, (void**)&g_BitBlt);
 	return true;
 }
 
 bool StartMainProcessHooks( void ){
 	HookLibAndProc("Kernel32.dll", "GetTickCount", (void*)&GameMode::Accelerator::HOOK_GetTickCount, (void**)&GameMode::Accelerator::Real_GetTickCount);
 	return true;
+}
+
+BOOL WINAPI HOOK_BitBlt( HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop )
+{
+	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+		CrossProcessRenderHelper::GetInstance()->CustomBitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop, g_BitBlt);
+	}else{
+		return g_BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop);
+	}
+	
 }

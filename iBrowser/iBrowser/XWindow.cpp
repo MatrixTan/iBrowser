@@ -5,6 +5,7 @@
 #include "stdafx.h"
 
 #include <Base/CommandLine.h>
+#include <GdiPlus.h>
 
 #include "XWindow.h"
 #include "BrowserThreadManager.h"
@@ -93,28 +94,6 @@ LRESULT CXWindow::OnChildWindowCreated( UINT /*uMsg*/, WPARAM wParam, LPARAM lPa
 	m_spCoreProxy->AddRef();
 	::SendMessage(m_hParentWindow,WM_CHILD_WINDOW_CREATED, wParam, (LPARAM)m_spCoreProxy.get());
 	m_spCoreProxy->Navigate(m_strURL);
-
-	//if(m_nCreateFlag == ECCF_CreateNew)
-	//{
-	//	CString strFirstNavigate = m_strHomeURL;
-	//	//第一次打开时如果没有命令行，就用默认的主页。
-	//	if(m_mapTabPairs.empty())
-	//	{
-	//		//the first
-	//		CommandLine cl;
-	//		cl.ParseFromString(::GetCommandLineW());
-	//		CStringW strUrl = cl.GetSwitchValue(switches::kURL);
-	//		if(FALSE == strUrl.IsEmpty())
-	//		{
-	//			strFirstNavigate = strUrl;
-	//		}
-	//	}
-	//	pCoreProxy->Navigate(strFirstNavigate);
-	//}
-	//else if (nFlag == ECCF_NewWindow)
-	//{
-	//	pCoreProxy->Navigate(m_strURL);
-	//}
 	return 0;
 }
 
@@ -252,4 +231,24 @@ void CXWindow::Focus( void )
 bool CXWindow::AddCurrentBookmark( void )
 {
 	return GlobalSingleton::GetInstance()->GetBookmarkManager()->AddBookmark(m_strURL, m_strTitle, L"");
+}
+
+LRESULT CXWindow::OnRenderBackStore( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+		DWORD *pData = (DWORD*)wParam;
+		DWORD x = *pData;
+		DWORD y = *(pData+1);
+		DWORD cx = *(pData+2);
+		DWORD cy = *(pData+3);
+		HDC h = GetDC();
+		HBITMAP hBitmap = ::CreateCompatibleBitmap(h, cx, cy);
+		::SetBitmapBits(hBitmap, sizeof(DWORD)*cx*cy, (void*)(pData+4));
+		Gdiplus::Graphics g(h);
+		Gdiplus::Bitmap bitmap(hBitmap, NULL);
+		g.DrawImage(&bitmap, (INT)x, (INT)y, (INT)cx, (INT)cy);
+		::DeleteObject(hBitmap);
+		ReleaseDC(h);
+	}
+	return 0;
 }

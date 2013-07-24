@@ -20,5 +20,7 @@ static const WCHAR* kMultiple = L"multiple";
 static const WCHAR* kProcessStartEvent = L"process_start_event";
 static const WCHAR* kCoreProcessHostThread = L"host_thread";
 static const WCHAR* kProcessHostHWND = L"host_hwnd";
+
+static const WCHAR* kCrossProcessRender = L"cross_process_render";
 }
 #endif //_SWITCHES_H__

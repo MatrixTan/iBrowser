@@ -46,6 +46,7 @@ public:
 		MESSAGE_HANDLER(WM_TITLE_CHANGE, OnTitleChange);
 		MESSAGE_HANDLER(WM_NAVIGATE_COMPLETE, OnNavigateComplete)
 		MESSAGE_HANDLER(WM_CORE_DESTROYED, OnCoreDestroyed)
+		MESSAGE_HANDLER(WM_RENDER_BACK_STORE, OnRenderBackStore)
 	END_MSG_MAP()
 
 	LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
@@ -60,6 +61,7 @@ public:
 	LRESULT OnTitleChange(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnNavigateComplete(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnCoreDestroyed(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+	LRESULT OnRenderBackStore(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 	CXWindow();
 	~CXWindow();

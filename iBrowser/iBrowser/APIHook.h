@@ -20,6 +20,8 @@ typedef LRESULT (CALLBACK *PFuncWindowProc)(HWND hWnd, UINT Msg, WPARAM wParam, 
 extern PFuncWindowProc g_DefWindowProcW;
 extern PFuncWindowProc g_DefWindowProcA;
 
+typedef BOOL (WINAPI *PFuncBitBlt)(HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop);
+extern PFuncBitBlt g_BitBlt;
 
 LONG HookLibAndProc(IN LPCSTR LibName, IN LPCSTR FunctionName, IN PVOID pCallbackProc, IN PVOID *ppRealFuncProc);
 LRESULT WINAPI HOOK_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
@@ -28,6 +30,8 @@ HWND WINAPI HOOK_SetFocus(HWND hWnd);
 LRESULT CALLBACK HOOK_CallDefWindowProcW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK HOOK_CallDefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 DWORD WINAPI HOOK_GetTickCount(void);
+BOOL WINAPI HOOK_BitBlt(HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop);
+
 
 bool StartCoreProcessHooks(void);
 bool StartMainProcessHooks(void);

@@ -14,7 +14,7 @@
 #include "custom_client_site.h"
 #include "ui_util.h"
 #include "BrowserThreadManager.h"
-
+#include "cross_process_render_helper.h"
 
 LRESULT CoreView::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
@@ -30,26 +30,6 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 	CString strWindowName;
 	GetWindowText(strWindowName);
 	_CreateCoreServer();
-
-	//CComObject<CustomClientSite> *pCustomSite;
-	//CComObject<CustomClientSite>::CreateInstance(&pCustomSite);
-	//if (pCustomSite){
-	//	pCustomSite->Init(m_hWnd);
-	//	CComPtr<IUnknown> spCustomSite;
-	//	pCustomSite->QueryInterface(&spCustomSite);
-
-	//	CComQIPtr<IAxWinHostWindowLic> spHostWindow = spCustomSite;
-	//	if (spHostWindow){
-	//		CComPtr<IUnknown> spControl;
-	//		spHostWindow->CreateControlLicEx(CComBSTR(strWindowName), m_hWnd, NULL, &spControl, IID_NULL, NULL, NULL);
-
-	//		IAxWinHostWindowLic * pAxWindow;
-	//		spHostWindow->QueryInterface(&pAxWindow);
-	//		::SetWindowLongPtr(m_hWnd, GWLP_USERDATA, (DWORD_PTR)pAxWindow);
-	//	}
-	//}	
-
-	//HRESULT hr = QueryControl(&m_spWebBrowser2);
 	HRESULT hr = E_FAIL;
 	if (m_spWebBrowser2){
 		m_spWebBrowser2.p->AddRef();
@@ -64,13 +44,13 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 		}
 		SetExternalUIHandler(NULL);
 
-		HWND hParent = ::GetParent(m_hWnd);
-		::PostMessage(hParent, WM_CHILD_WINDOW_CREATED,(WPARAM)m_hWnd, 0);
+		::PostMessage(m_hParent, WM_CHILD_WINDOW_CREATED,(WPARAM)m_hWnd, 0);
 		if (NULL == m_HostProxy){
-			m_HostProxy = new HostProxy(hParent);
+			m_HostProxy = new HostProxy(m_hParent);
 		}		
 	}
 	
+	CrossProcessRenderHelper::GetInstance()->Initialize(m_hParent);
 	return 0;
 } 
 
@@ -79,6 +59,7 @@ CoreView::CoreView()
 ,m_MouseGesture(this)
 ,m_bBeforeGesture(false)
 ,m_HostProxy(NULL)
+,m_CoreWindow(this)
 {
 
 }
@@ -294,6 +275,10 @@ LRESULT CoreView::OnEventDelegateMessage( UINT /*uMsg*/, WPARAM wParam, LPARAM l
 				delete pParam;
 				pParam = NULL;
 			}
+			if (FALSE == m_CoreWindow.IsWindow()){
+				HWND hWnd = GetChildWindow(m_hWnd, L"Internet Explorer_Server");
+				m_CoreWindow.Init(hWnd);
+			}
 		}
 		break;
 	case EDM_BEFORE_NAVIGATE:
@@ -342,18 +327,38 @@ LRESULT CoreView::OnForTest( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 
 BOOL CoreView::OnIdle()
 {
+
+	//PAINTSTRUCT ps;
+	//CRect updateRect;
+	//GetUpdateRect(&updateRect, TRUE);
+	//CStringW str;
+	//str.Format(L"---%d--%d--%d--%d\n", updateRect.left, updateRect.right, updateRect.top, updateRect.bottom);
+	//::OutputDebugString(str);
+
+	//BeginPaint(&ps);	
+
+	//HWND hParent = m_hParent;
+	//HDC hdcParent = ::GetDC(hParent);
+
+	//updateRect = ps.rcPaint;
+	//GetClientRect(&updateRect);
+
+	//BitBlt(hdcParent, updateRect.left, updateRect.top, updateRect.Width(), updateRect.Height(), ps.hdc, 0, 0, SRCCOPY);	
+
+	//::ReleaseDC(hParent, hdcParent);
+	//EndPaint(&ps);
 	return FALSE;
 }
 
 void CoreView::NotifyHotKey(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	HWND hParent = GetParent();
-	HWND hMainFrame = ::GetParent(hParent);
+	HWND hMainFrame = ::GetParent(m_hParent);
 	::PostMessage(hMainFrame, uMsg, wParam, lParam);
 }
 
-void CoreView::Initialize(const CString& strURL )
+void CoreView::Initialize(HWND hParent,const CString& strURL )
 {
+	m_hParent = hParent;
 	m_strURL = strURL;
 }
 

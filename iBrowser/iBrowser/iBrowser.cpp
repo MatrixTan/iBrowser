@@ -59,6 +59,12 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 		processMode = EPM_MULTIPLE;
 	}
 	GlobalSingleton::GetInstance()->SetProcessMode(processMode);
+
+	if (cl.GetSwitchValue(switches::kCrossProcessRender) == switches::kTrue){
+		GlobalSingleton::GetInstance()->SetCrossProcessRender(true);
+	}else{
+		GlobalSingleton::GetInstance()->SetCrossProcessRender(false);
+	}
 	
 	if (cl.GetSwitchValue(switches::kProcessType) == switches::kProcessTypeCore){
 		if (cl.GetSwitchValue(switches::kCoreWaitDebugger) == switches::kTrue){

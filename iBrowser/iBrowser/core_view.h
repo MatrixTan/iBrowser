@@ -15,6 +15,7 @@
 #include <Base/ipc_message.h>
 #include "mouse_gesture.h"
 #include "host_proxy.h"
+#include "core_window.h"
 
 
 class CoreView : public CWindowImpl<CoreView,CAxWindow>
@@ -68,7 +69,7 @@ public:
 	LRESULT OnForTest(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnCoreFocus(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
-	void Initialize(const CString& strURL);
+	void Initialize(HWND hParent, const CString& strURL);
 	void NotifyHotKey(UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	HRESULT _Navegate(LPCWSTR strURL);
@@ -80,6 +81,8 @@ protected:
 
 private:
 	friend class MouseGesture;
+	friend class CoreWindow;
+
 	CComPtr<IWebBrowser2> m_spWebBrowser2;
 	CComPtr<IIEEventDelegate> m_spIEEventDelegate;
 	CConsoleWindow m_wndConsole;
@@ -87,6 +90,8 @@ private:
 	MouseGesture m_MouseGesture;
 	bool m_bBeforeGesture;
 	HostProxy *m_HostProxy;
+	CoreWindow m_CoreWindow;
+	HWND m_hParent;
 
 	HRESULT _CreateCoreServer(void);
 	CComPtr<IOleObject>             m_spOleObject ;

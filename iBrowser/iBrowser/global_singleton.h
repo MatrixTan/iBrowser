@@ -39,6 +39,8 @@ public:
 	void SetProcessType(int nType);
 	int GetProcessMode(void);
 	void SetProcessMode(int nMode);
+	bool GetCrossProcessRender(void);
+	void SetCrossProcessRender(bool bEnable);
 
 	CoreProcessManager* GetCoreProcessManager(void);
 	Profile* GetProfile(void);
@@ -56,5 +58,6 @@ private:
 	CoreProcessManager* m_pCoreProcessManager;
 	Profile* m_pProfile;
 	BookmarkManager* m_pBookmarkManager;
+	bool m_bEnableCrossProcessRender;
 };
 #endif //_GLOBAL_SINGLETON_H__
