@@ -4,7 +4,7 @@
 
 #ifndef _GAME_MODE_ACCELERATOR_H__
 #define _GAME_MODE_ACCELERATOR_H__
-#include "..\APIHook.h"
+#include "..\api_hook.h"
 
 namespace GameMode
 {	

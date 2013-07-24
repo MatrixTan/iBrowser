@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #include "stdafx.h"
-#include "APIHook.h"
+#include "api_hook.h"
 #include <atlstr.h>
 #include "UtilDebug.h"
 #include "BrowserThreadManager.h"

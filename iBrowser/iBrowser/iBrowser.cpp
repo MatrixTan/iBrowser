@@ -16,7 +16,7 @@
 #include "MainFrm.h"
 #include "BrowserThreadManager.h"
 #include "ui_util.h"
-#include "APIHook.h"
+#include "api_hook.h"
 #include <Base/CommandLine.h>
 #include "switches.h"
 #include "global_singleton.h"

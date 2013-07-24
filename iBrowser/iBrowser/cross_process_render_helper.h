@@ -6,7 +6,7 @@
 #define _CROSS_PROCESS_RENDER_HELPER_H__
 
 #include "Base/t_thread_singleton.h"
-#include "APIHook.h"
+#include "api_hook.h"
 
 class CrossProcessRenderHelper 
 	: public TThreadSingleton<CrossProcessRenderHelper, ETTS_CrossProcessRenderHelper>
