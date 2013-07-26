@@ -24,13 +24,14 @@
 #include "core_container_manager.h"
 #include "global_singleton.h"
 #include "bookmark_manager.h"
+#include "cross_process_render_helper.h"
 
 #define CHECK_TIMER_ID 1843
 #define HEART_BEAT_TIME 100
 
 
 CXWindow::CXWindow()
-:m_hChildWindow(NULL)
+:m_hCoreViewWindow(NULL)
 ,m_hParentWindow(NULL)
 ,m_bFreezing(FALSE)
 ,m_nCreateFlag(ECCF_CreateNew)
@@ -89,8 +90,8 @@ LRESULT CXWindow::OnTimer( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& bH
 
 LRESULT CXWindow::OnChildWindowCreated( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/ )
 {
-	m_hChildWindow = (HWND)wParam;
-	m_spCoreProxy.Reset(new CoreProxy(m_hChildWindow, this, m_nCreateFlag));
+	m_hCoreViewWindow = (HWND)wParam;
+	m_spCoreProxy.Reset(new CoreProxy(m_hCoreViewWindow, this, m_nCreateFlag));
 	m_spCoreProxy->AddRef();
 	::SendMessage(m_hParentWindow,WM_CHILD_WINDOW_CREATED, wParam, (LPARAM)m_spCoreProxy.get());
 	m_spCoreProxy->Navigate(m_strURL);
@@ -101,7 +102,7 @@ LRESULT CXWindow::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 {
 	CRect rectClient;
 	GetClientRect(&rectClient);
-	::MoveWindow(m_hChildWindow, rectClient.left, rectClient.top, rectClient.Width(), rectClient.Height(), FALSE);
+	::MoveWindow(m_hCoreViewWindow, rectClient.left, rectClient.top, rectClient.Width(), rectClient.Height(), FALSE);
 	return 0;
 }
 
@@ -164,8 +165,12 @@ BOOL CXWindow::ShowWindow( int nCmd )
 {
 	if (nCmd == SW_SHOW){
 		ShowURL();
+	}
+	BOOL bRet = CWindow::ShowWindow(nCmd);
+	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+		m_spCoreProxy->RefreshCoreWindow();
 	}	
-	return CWindow::ShowWindow(nCmd);
+	return bRet;
 }
 
 void CXWindow::ShowURL( void ) const
@@ -225,7 +230,11 @@ LRESULT CXWindow::OnCoreDestroyed( UINT msg, WPARAM wParam, LPARAM lParam, BOOL&
 
 void CXWindow::Focus( void )
 {
-	m_spCoreProxy->Focus();
+	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+		SetFocus();
+	}else{
+		m_spCoreProxy->Focus();
+	}	
 }
 
 bool CXWindow::AddCurrentBookmark( void )
@@ -235,20 +244,81 @@ bool CXWindow::AddCurrentBookmark( void )
 
 LRESULT CXWindow::OnRenderBackStore( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
-	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
-		DWORD *pData = (DWORD*)wParam;
-		DWORD x = *pData;
-		DWORD y = *(pData+1);
-		DWORD cx = *(pData+2);
-		DWORD cy = *(pData+3);
-		HDC h = GetDC();
-		HBITMAP hBitmap = ::CreateCompatibleBitmap(h, cx, cy);
-		::SetBitmapBits(hBitmap, sizeof(DWORD)*cx*cy, (void*)(pData+4));
-		Gdiplus::Graphics g(h);
-		Gdiplus::Bitmap bitmap(hBitmap, NULL);
-		g.DrawImage(&bitmap, (INT)x, (INT)y, (INT)cx, (INT)cy);
-		::DeleteObject(hBitmap);
-		ReleaseDC(h);
+	CrossProcessRenderHelper::RenderOnHost(m_hWnd, (void*)wParam);
+	return 0;
+}
+
+BOOL CXWindow::PostToCoreForCPR( UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	if (!GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+		return FALSE;
 	}
+	//////////////////FOR TEST////////////////
+	if (msg == WM_MOUSEWHEEL){
+		{
+			int test = 0;
+			test = 1;
+		}
+	}
+	
+	//////////////////////////////////////////
+
+	switch (msg){
+	//case WM_NCHITTEST:
+	case WM_MOUSEMOVE:
+		{
+			CString str;
+			int xPos = LOWORD(lParam);
+			int yPos = HIWORD(lParam);
+			str.Format(L"Mouse: X-%x, Y-%x\n", xPos, yPos);
+			::OutputDebugString(str);
+			if (::IsWindow(m_hCoreWindow)){
+				::PostMessage(m_hCoreWindow, msg, wParam, lParam);
+			}
+			return TRUE;
+		}
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_LBUTTONDBLCLK:
+
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_RBUTTONDBLCLK:
+	case WM_MBUTTONDOWN:
+	case WM_MBUTTONUP:
+	case WM_MBUTTONDBLCLK:
+	case WM_MOUSEWHEEL:
+	case WM_XBUTTONDOWN:
+	case WM_XBUTTONUP:
+	case WM_XBUTTONDBLCLK:
+
+	case WM_KEYDOWN:
+	case WM_KEYUP:
+	case WM_CHAR:
+	case WM_DEADCHAR:
+	case WM_SYSKEYDOWN:
+	case WM_SYSKEYUP:
+	case WM_SYSCHAR:
+	case WM_SYSDEADCHAR:
+	case WM_UNICHAR:
+	//case WM_SETCURSOR:
+		{
+			CString str;
+			str.Format(L"Foucs: %x\n", msg);
+			::OutputDebugString(str);
+			if (::IsWindow(m_hCoreWindow)){
+				::PostMessage(m_hCoreWindow, msg, wParam, lParam);
+			}
+			return TRUE;
+		}
+	default:
+		return FALSE;
+	}
+	return FALSE;
+}
+
+LRESULT CXWindow::OnCoreWindowCreated( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+	m_hCoreWindow = (HWND)wParam;
 	return 0;
 }

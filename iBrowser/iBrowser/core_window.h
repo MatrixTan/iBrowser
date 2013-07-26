@@ -17,9 +17,11 @@ public:
 
 	BEGIN_MSG_MAP(CoreWindow)
 		MESSAGE_HANDLER(WM_PAINT, OnPaint)
+		MESSAGE_HANDLER(WM_SETCURSOR, OnSetCursor)
 	END_MSG_MAP()
 
 	LRESULT OnPaint(UINT msg, WPARAM wParam, LPARAM lParam, BOOL &bHandler);
+	LRESULT OnSetCursor(UINT msg, WPARAM wParam, LPARAM lParam, BOOL &bHandler);
 protected:
 private:
 	CoreView* m_pHost;

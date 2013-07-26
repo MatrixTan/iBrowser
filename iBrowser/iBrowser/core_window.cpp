@@ -31,3 +31,9 @@ void CoreWindow::Init( HWND hCore )
 {
 	SubclassWindow(hCore);
 }
+
+LRESULT CoreWindow::OnSetCursor( UINT msg, WPARAM wParam, LPARAM lParam, BOOL &bHandler )
+{
+	bHandler = FALSE;
+	return 0;
+}

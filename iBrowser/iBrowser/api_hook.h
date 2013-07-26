@@ -20,9 +20,6 @@ typedef LRESULT (CALLBACK *PFuncWindowProc)(HWND hWnd, UINT Msg, WPARAM wParam, 
 extern PFuncWindowProc g_DefWindowProcW;
 extern PFuncWindowProc g_DefWindowProcA;
 
-typedef BOOL (WINAPI *PFuncBitBlt)(HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop);
-extern PFuncBitBlt g_BitBlt;
-
 LONG HookLibAndProc(IN LPCSTR LibName, IN LPCSTR FunctionName, IN PVOID pCallbackProc, IN PVOID *ppRealFuncProc);
 LRESULT WINAPI HOOK_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 LRESULT WINAPI HOOK_SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);

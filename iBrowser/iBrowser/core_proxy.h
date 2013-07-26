@@ -16,7 +16,7 @@ public:
 	explicit CoreProxy(HWND hCoreView, CXWindow* pContainer, UINT flag);
 	~CoreProxy();
 
-	HWND GetCoreHWND(void);
+	HWND GetCoreView(void);
 	HWND GetContainerHWND(void);
 	UINT GetFlag(void);
 
@@ -28,6 +28,7 @@ public:
 	void Destroy();
 	void GetURL(CStringW& strURL);
 	bool AddCurrentBookmark(void);
+	void RefreshCoreWindow(void);
 
 protected:
 private:

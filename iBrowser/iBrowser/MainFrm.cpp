@@ -405,7 +405,7 @@ LRESULT CMainFrame::OnEventNotify(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, B
 	{
 	case EVENT_NewWindow3:
 		{
-			
+			_AddNewTab(ECCF_NewWindow, CStringW((BSTR)lParam));
 		}
 		break;
 	default:
@@ -482,4 +482,22 @@ LRESULT CMainFrame::OnCoreNewWindow( UINT /*uMsg*/, WPARAM wParam, LPARAM lParam
 		pStrURL = NULL;
 	}
 	return 0;
+}
+
+LRESULT CMainFrame::OnSetFocus( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+{
+	base::CScopedRefPtr<CXWindow> spXWindow = _GetCurrentContainer();
+	if (spXWindow.get() && spXWindow->IsWindow()){
+		spXWindow->Focus();
+	}
+	return 0;
+}
+
+CXWindow* CMainFrame::_GetCurrentContainer( void )
+{
+	TabPairMap::iterator iter = m_mapTabPairs.find(m_hCurrentTabButton);
+	if (iter != m_mapTabPairs.end()){
+		return iter->second.spContainerWindow.get();
+	}
+	return NULL;
 }

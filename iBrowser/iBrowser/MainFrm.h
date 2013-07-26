@@ -52,6 +52,7 @@ public:
 		MESSAGE_HANDLER(WM_IME_SETCONTEXT, OnSetContext)
 		MESSAGE_HANDLER(WM_COMMAND, OnCommand)
 		MESSAGE_HANDLER(WM_CORE_NEWWINDOW, OnCoreNewWindow)
+		MESSAGE_HANDLER(WM_SETFOCUS, OnSetFocus)
 		CHAIN_MSG_MAP(CUpdateUI<CMainFrame>)
 		CHAIN_MSG_MAP(CFrameWindowImpl<CMainFrame>)
 		//CHAIN_MSG_MAP_MEMBER(m_wndMaskWindow)
@@ -68,6 +69,7 @@ public:
 	LRESULT OnSysCommand(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnCommand(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+	LRESULT OnSetFocus(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 	LRESULT OnAddTab(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnClickTab(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
@@ -107,7 +109,7 @@ public:
 protected:
 	void _AddNewTab(E_CHILEWINDOW_CREATE_FLAG flag , const CString& strUrl);
 	void _CreateContainer(E_CHILEWINDOW_CREATE_FLAG flag, const CString& strURL);
-
+	CXWindow* _GetCurrentContainer(void);
 	void _ShowCurrentContainer(void);
 
 	HRESULT _ShowOprationPanel(void);

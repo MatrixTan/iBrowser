@@ -46,6 +46,7 @@ public:
 		MESSAGE_HANDLER(WM_CORE_GOFORWARD, OnGoForward);
 		MESSAGE_HANDLER(WM_CORE_DESTROY, OnCoreDestroy);
 		MESSAGE_HANDLER(WM_CORE_FOCUS, OnCoreFocus);
+		MESSAGE_HANDLER(WM_REFRESH_CORE_WINDOW, OnRefreshCoreWindow);
 
 		MESSAGE_HANDLER(WM_IE_FORTEST, OnForTest);
 		MESSAGE_HANDLER(WM_MOVE, OnMove)
@@ -68,6 +69,7 @@ public:
 	LRESULT OnCoreDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnForTest(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnCoreFocus(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+	LRESULT OnRefreshCoreWindow(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 	void Initialize(HWND hParent, const CString& strURL);
 	void NotifyHotKey(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -96,6 +98,8 @@ private:
 	HRESULT _CreateCoreServer(void);
 	CComPtr<IOleObject>             m_spOleObject ;
 	CComPtr<IOleInPlaceObjectWindowless> m_spWindowless ;
+
+	HWINEVENTHOOK m_hEventHook;
 
 public:
 	LRESULT OnMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

@@ -22,7 +22,7 @@ CoreProxy::~CoreProxy()
 
 }
 
-HWND CoreProxy::GetCoreHWND( void )
+HWND CoreProxy::GetCoreView( void )
 {
 	return m_hCoreView;
 }
@@ -84,4 +84,9 @@ void CoreProxy::GetURL( CStringW& strURL )
 bool CoreProxy::AddCurrentBookmark( void )
 {
 	return m_pContainer->AddCurrentBookmark();
+}
+
+void CoreProxy::RefreshCoreWindow( void )
+{
+	::PostMessage(m_hCoreView, WM_REFRESH_CORE_WINDOW, 0, 0);
 }

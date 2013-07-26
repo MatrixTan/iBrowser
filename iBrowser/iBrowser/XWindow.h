@@ -16,6 +16,12 @@
 #include <Base/RefCounted.h>
 #include "Base/ipc_message.h"
 
+#define HANDLE_MSG_FOR_CORE \
+	bHandled = TRUE; \
+	bHandled = PostToCoreForCPR(uMsg, wParam, lParam);\
+	if(bHandled) \
+	return TRUE;\
+
 
 class CoreProxy;
 class TabButton;
@@ -35,6 +41,7 @@ public:
 
 	BEGIN_MSG_MAP(CXWindow)
 		HANDLE_IPC_MSG(CXWindow)
+		HANDLE_MSG_FOR_CORE
 		MESSAGE_HANDLER(WM_CREATE, OnCreate)
 		MESSAGE_HANDLER(WM_DESTROY, OnDestory)
 		MESSAGE_HANDLER(WM_CLOSE, OnClose)
@@ -46,6 +53,7 @@ public:
 		MESSAGE_HANDLER(WM_TITLE_CHANGE, OnTitleChange);
 		MESSAGE_HANDLER(WM_NAVIGATE_COMPLETE, OnNavigateComplete)
 		MESSAGE_HANDLER(WM_CORE_DESTROYED, OnCoreDestroyed)
+		MESSAGE_HANDLER(WM_CORE_WINDOW_CREATED, OnCoreWindowCreated)
 		MESSAGE_HANDLER(WM_RENDER_BACK_STORE, OnRenderBackStore)
 	END_MSG_MAP()
 
@@ -61,7 +69,10 @@ public:
 	LRESULT OnTitleChange(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnNavigateComplete(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnCoreDestroyed(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+	LRESULT OnCoreWindowCreated(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnRenderBackStore(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+	BOOL PostToCoreForCPR(UINT msg, WPARAM wParam, LPARAM lParam);
 
 	CXWindow();
 	~CXWindow();
@@ -87,8 +98,9 @@ private:
 	void ReadStrFromIPC(void *pData, CStringW &str)const;
 	void UpdateTabColor(void);
 
-	HWND m_hChildWindow;
+	HWND m_hCoreViewWindow;
 	HWND m_hParentWindow;
+	HWND m_hCoreWindow;
 	//HWND m_hTabButton;
 	BOOL m_bFreezing;
 	CString m_strURL;

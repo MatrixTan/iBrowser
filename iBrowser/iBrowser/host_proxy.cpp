@@ -46,3 +46,10 @@ void HostProxy::PostStrToHost( UINT msg, const CString& str )
 		::PostMessage(m_hHostWindow, msg, (WPARAM)pData, 0);
 	}
 }
+
+void HostProxy::NotifyCoreWindowCreated( HWND hCoreWindow )
+{
+	::PostMessage(m_hHostWindow, WM_CORE_WINDOW_CREATED,(WPARAM)hCoreWindow, 0);
+}
+
+

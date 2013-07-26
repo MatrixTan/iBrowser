@@ -18,6 +18,7 @@ public:;
 	void NotifyBeforeNavigate(const CString& strURL);
 	void NotifyTitleChange(const CString& strTitle);
 	void NotifyNavigateComplete(const CString& strURL);
+	void NotifyCoreWindowCreated(HWND hCoreWindow);
 protected:
 
 	void PostStrToHost(UINT msg, const CString& str);

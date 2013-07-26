@@ -16,6 +16,23 @@
 #include "BrowserThreadManager.h"
 #include "cross_process_render_helper.h"
 
+void CALLBACK WinEventProc(HWINEVENTHOOK hHook
+	, DWORD event
+	, HWND hwnd
+	, LONG idObject
+	, LONG idChild
+	, DWORD dwEventThread
+	, DWORD dwmsEventTime)
+{
+	if (event == EVENT_OBJECT_CREATE){
+		WCHAR className[MAX_PATH];
+		::GetClassName(hwnd, className, MAX_PATH);
+		if (wcscmp(className, L"Internet Explorer_Server") == 0){
+			CrossProcessRenderHelper::GetInstance()->SetCore(hwnd);
+		}
+	}
+}
+
 LRESULT CoreView::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
 	bHandled = FALSE;
@@ -49,8 +66,20 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 			m_HostProxy = new HostProxy(m_hParent);
 		}		
 	}
+
+	DWORD dwProcessId = 0;
+	DWORD dwThreadId = ::GetWindowThreadProcessId(m_hWnd, &dwProcessId);
+
+	m_hEventHook = ::SetWinEventHook(EVENT_OBJECT_CREATE
+		, EVENT_OBJECT_CREATE
+		, NULL
+		, WinEventProc
+		, dwProcessId
+		, dwThreadId
+		, WINEVENT_OUTOFCONTEXT);
 	
-	CrossProcessRenderHelper::GetInstance()->Initialize(m_hParent);
+	CrossProcessRenderHelper::GetInstance()->SetHost(m_hParent);
+	
 	return 0;
 } 
 
@@ -60,6 +89,7 @@ CoreView::CoreView()
 ,m_bBeforeGesture(false)
 ,m_HostProxy(NULL)
 ,m_CoreWindow(this)
+,m_hEventHook(NULL)
 {
 
 }
@@ -278,6 +308,7 @@ LRESULT CoreView::OnEventDelegateMessage( UINT /*uMsg*/, WPARAM wParam, LPARAM l
 			if (FALSE == m_CoreWindow.IsWindow()){
 				HWND hWnd = GetChildWindow(m_hWnd, L"Internet Explorer_Server");
 				m_CoreWindow.Init(hWnd);
+				m_HostProxy->NotifyCoreWindowCreated(m_CoreWindow.m_hWnd);
 			}
 		}
 		break;
@@ -495,4 +526,12 @@ HRESULT CoreView::_CreateCoreServer( void )
 	m_spWindowless->SetObjectRects(&rc, &rc) ;
 	m_spWebBrowser2 = spWebBrowser2 ;
 	return S_OK;
+}
+
+LRESULT CoreView::OnRefreshCoreWindow( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+{
+	if (m_CoreWindow.IsWindow()){
+		m_CoreWindow.RedrawWindow();
+	}	
+	return 0;
 }

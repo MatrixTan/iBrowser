@@ -66,7 +66,7 @@ namespace IPC
 	{
 		if (NULL == pbSync || NULL == ppData || NULL == pSize){
 			return false;
-		}		
+		}
 
 		WCHAR strMapName[MAX_PATH] = {0};
 		wsprintf(strMapName, L"%s%d", kIPCMessage, nMsgId);
@@ -77,16 +77,19 @@ namespace IPC
 
 		LPVOID pData = ::MapViewOfFile(hMap, FILE_MAP_READ|FILE_MAP_WRITE, 0, 0, 0);
 		if (NULL == pData){
+			CloseHandle(hMap);
 			return false;
 		}
 		BYTE *pByteData = (BYTE*)pData;
 		*pSize = (unsigned)*(pByteData+8);
 		if (*pSize <= 0){
+			CloseHandle(hMap);
 			return false;
 		}
 		*pbSync = (BOOL)*(pByteData+12);
 		*ppData = (void*)(pByteData+16);
-		return true;		
+		CloseHandle(hMap);
+		return true;
 	}
 
 
