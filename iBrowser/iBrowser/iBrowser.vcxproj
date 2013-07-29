@@ -92,8 +92,7 @@
     </Link>
     <PreBuildEvent />
     <PreBuildEvent>
-      <Command>copy $(SolutionDir)\..\thirdParty\leveldb\lib\$(Configuration)\leveldb.lib $(SolutionDir)\..\Lib\$(Configuration)\leveldb.lib
-copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(SolutionDir)\..\Lib\$(Configuration)\jsoncpp.lib</Command>
+      <Command>copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(SolutionDir)\..\Lib\$(Configuration)\jsoncpp.lib</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
