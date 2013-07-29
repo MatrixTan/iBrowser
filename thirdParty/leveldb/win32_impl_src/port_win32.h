@@ -43,7 +43,7 @@ typedef INT64 int64;
 #endif 
 
 #if defined _WIN32_WINNT_VISTA 
-#define USE_VISTA_API
+//#define USE_VISTA_API
 #endif
 
 #pragma warning(disable:4996)
