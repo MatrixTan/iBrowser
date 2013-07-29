@@ -75,6 +75,9 @@ public:
 
 	///Main Process Method
 	static void RenderOnHost(HWND hHost, void* pScreenData);
+
+	static const int kCoreWindowOffsetX = -10000;
+	static const int kCoreWindowOffsetY = 0;
 protected:
 private:
 	HWND m_hHost;

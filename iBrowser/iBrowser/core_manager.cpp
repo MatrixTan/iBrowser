@@ -10,6 +10,7 @@
 #include "core_process_host.h"
 #include "global_singleton.h"
 #include "core_process_manager.h"
+#include "cross_process_render_helper.h"
 
 CoreManager* CoreManager::s_Instance = NULL;
 
@@ -58,6 +59,10 @@ DWORD CoreManager::StartCore_CoreThread( void *pParam )
 	//HWND hClient = view.Create(hParent, rect, _T("{8856F961-340A-11D0-A96B-00C04FD705A2}"), CoreView::kStyle , CoreView::kExStyle);
 	HWND hClient = NULL;
 	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+#ifndef _DEBUG
+		rect.left += CrossProcessRenderHelper::kCoreWindowOffsetX;
+		rect.right += CrossProcessRenderHelper::kCoreWindowOffsetX;		
+#endif	
 		hClient = view.Create(NULL, rect, _T("ie host"), WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_POPUP , CoreView::kExStyle);
 	}else{
 		hClient = view.Create(hParent, rect, _T("ie host"), CoreView::kStyle , CoreView::kExStyle);
