@@ -102,7 +102,10 @@ LRESULT CXWindow::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 {
 	CRect rectClient;
 	GetClientRect(&rectClient);
-	::MoveWindow(m_hCoreViewWindow, rectClient.left, rectClient.top, rectClient.Width(), rectClient.Height(), FALSE);
+	::SetWindowPos(m_hCoreViewWindow, NULL, rectClient.left, rectClient.top
+		, rectClient.Width()
+		, rectClient.Height()
+		, SWP_NOMOVE|SWP_ASYNCWINDOWPOS);
 	return 0;
 }
 
