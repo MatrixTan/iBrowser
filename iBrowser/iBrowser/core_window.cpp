@@ -37,3 +37,13 @@ LRESULT CoreWindow::OnSetCursor( UINT msg, WPARAM wParam, LPARAM lParam, BOOL &b
 	bHandler = FALSE;
 	return 0;
 }
+
+LRESULT CoreWindow::OnEraseBKGND( UINT msg, WPARAM wParam, LPARAM lParam, BOOL &bHandler )
+{
+	return 0;
+}
+
+LRESULT CoreWindow::OnSize( UINT msg, WPARAM wParam, LPARAM lParam, BOOL &bHandler )
+{
+	return 0;
+}

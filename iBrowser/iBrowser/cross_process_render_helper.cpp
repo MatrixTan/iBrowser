@@ -33,7 +33,14 @@ BOOL CrossProcessRenderHelper::CustomBitBlt( HDC hdc, int x, int y, int cx, int 
 	if (pfBitBlt == NULL){
 		return FALSE;
 	}
-	if (m_hHost != NULL){
+	/////////////////TEST/////////////////////////
+	//HDC hDCHost = ::GetDC(m_hHost);
+	//pfBitBlt(hDCHost, x, y, cx, cy, hdcSrc, x1,y1, rop);
+	//::ReleaseDC(m_hHost, hDCHost);
+	//return TRUE;
+	/////////////////////////////////////////////
+
+	if (m_hHost != NULL && m_hCore != NULL){
 
 		HWND hTarget = ::WindowFromDC(hdc);
 		if ( hTarget != m_hCore){
@@ -96,6 +103,11 @@ void CrossProcessRenderHelper::RenderOnHost( HWND hHost, void* pScreenData )
 		DWORD y = *(pData+1);
 		DWORD cx = *(pData+2);
 		DWORD cy = *(pData+3);
+///////////////////TEST/////////////////
+		CString strLog;
+		strLog.Format(L"back store: x:%d,y:%d,cx:%d,cy:%d\n", x, y, cx, cy);
+		::OutputDebugStringW(strLog);
+////////////////////////////////////////
 		HDC h = ::GetDC(hHost);
 		HBITMAP hBitmap = ::CreateCompatibleBitmap(h, cx, cy);
 		::SetBitmapBits(hBitmap, sizeof(DWORD)*cx*cy, (void*)(pData+4));
@@ -122,7 +134,7 @@ void CrossProcessRenderHelper::RenderOnHost( HWND hHost, void* pScreenData )
 BOOL WINAPI CrossProcessRenderHelper::HOOK_BitBlt( HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop )
 {
 	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
-		CrossProcessRenderHelper::GetInstance()->CustomBitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop, s_BitBlt);
+		return CrossProcessRenderHelper::GetInstance()->CustomBitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop, s_BitBlt);
 		return s_BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop); 
 	}else{
 		return s_BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop);
@@ -137,6 +149,7 @@ bool CrossProcessRenderHelper::StartHooksInCoreProcess( void )
 		HookLibAndProc("user32.dll", "SetCursor", (void*)HOOK_SetCursor, (void**)&s_SetCursor);
 		HookLibAndProc("msimg32.dll", "AlphaBlend", (void*)HOOK_AlphaBlend, (void**)&s_AlphaBlend);
 		HookLibAndProc("msimg32.dll", "TransparentBlt", (void*)HOOK_TransparentBlt, (void**)&s_TransparentBlt);
+		
 	}
 	return true;
 }

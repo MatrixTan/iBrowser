@@ -274,7 +274,7 @@ BOOL CXWindow::PostToCoreForCPR( UINT msg, WPARAM wParam, LPARAM lParam)
 			int xPos = LOWORD(lParam);
 			int yPos = HIWORD(lParam);
 			str.Format(L"Mouse: X-%x, Y-%x\n", xPos, yPos);
-			::OutputDebugString(str);
+			//::OutputDebugString(str);
 			if (::IsWindow(m_hCoreWindow)){
 				::PostMessage(m_hCoreWindow, msg, wParam, lParam);
 			}
@@ -323,5 +323,10 @@ BOOL CXWindow::PostToCoreForCPR( UINT msg, WPARAM wParam, LPARAM lParam)
 LRESULT CXWindow::OnCoreWindowCreated( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
 	m_hCoreWindow = (HWND)wParam;
+	return 0;
+}
+
+LRESULT CXWindow::OnEraseBKGnd( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+{
 	return 0;
 }
