@@ -55,6 +55,7 @@ public:
 	void SetContainer(HWND hContainer);
 	BOOL CustomBitBlt(HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop, PFuncBitBlt pfBitBlt);
 	void ResizeHost(int cx, int cy);
+	void SyncHostPos(HWND hCoreView);
 	void SyncCoreWinPos(HWND hHostContianer);
 	void OnCoreVisibleChange(bool bVisible);
 

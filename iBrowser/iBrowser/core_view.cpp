@@ -228,7 +228,8 @@ LRESULT CoreView::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 	{
 		m_wndConsole.SetWindowPos(HWND_TOP,&rectClient,SWP_NOACTIVATE);
 	}
-	CrossRender::CrossRenderHelper::GetInstance()->ResizeHost(size.cx, size.cy);
+	CrossRender::CrossRenderHelper::GetInstance()->SyncHostPos(m_hWnd);
+	CrossRender::CrossRenderHelper::GetInstance()->SyncCoreWinPos(m_hParent);
 	return 0;
 }
 LRESULT CoreView::OnMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)

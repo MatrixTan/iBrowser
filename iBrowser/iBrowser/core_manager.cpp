@@ -75,7 +75,10 @@ DWORD CoreManager::StartCore_CoreThread( void *pParam )
 	HWND hClient = NULL;
 	CrossRender::CrossRenderCoreContainer container;
 	if (GlobalSingleton::GetInstance()->IsCrossRender()){
-		HWND hContainer = container.Create(hParent, rect, L"ie container"
+		CRect rectContainer(rect);
+		::ClientToScreen(hParent, (LPPOINT)&rectContainer);
+		::ClientToScreen(hParent, ((LPPOINT)&rectContainer)+1);
+		HWND hContainer = container.Create(hParent, rectContainer, L"ie container"
 			, CrossRender::CrossRenderCoreContainer::kStyle
 			, CrossRender::CrossRenderCoreContainer::kExStyle);
 		SetLayeredWindowAttributes(hContainer,0,20,LWA_ALPHA);

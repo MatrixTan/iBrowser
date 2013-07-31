@@ -233,12 +233,6 @@ HDC WINAPI CrossRenderHelper::HOOK_GetDC( HWND hWnd )
 	return s_GetDC(hWnd);
 }
 
-void CrossRenderHelper::ResizeHost( int cx, int cy )
-{
-	::SetWindowPos(m_hHost, HWND_TOP, 0, 0, cx, cy
-		, SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOREDRAW|SWP_ASYNCWINDOWPOS);
-}
-
 void CrossRenderHelper::SetContainer( HWND hContainer )
 {
 	m_hContainer = hContainer;
@@ -267,6 +261,14 @@ void CrossRenderHelper::OnCoreVisibleChange( bool bVisible )
 	}
 
 	::ShowWindow(m_hContainer, bVisible?SW_SHOW:SW_HIDE );
+}
+
+void CrossRenderHelper::SyncHostPos( HWND hCoreView )
+{
+	RECT rc = {0};
+	::GetClientRect(hCoreView, &rc);
+	::SetWindowPos(m_hHost, HWND_TOP, 0, 0, rc.right-rc.left, rc.bottom-rc.top
+		, SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOREDRAW|SWP_ASYNCWINDOWPOS);
 }
 
 
