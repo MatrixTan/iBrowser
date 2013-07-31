@@ -24,7 +24,7 @@
 #include "core_container_manager.h"
 #include "global_singleton.h"
 #include "bookmark_manager.h"
-#include "cross_process_render_helper.h"
+#include "crossrender/cross_render_helper.h"
 
 #define CHECK_TIMER_ID 1843
 #define HEART_BEAT_TIME 100
@@ -247,7 +247,7 @@ bool CXWindow::AddCurrentBookmark( void )
 
 LRESULT CXWindow::OnRenderBackStore( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
-	CrossProcessRenderHelper::RenderOnHost(m_hWnd, (void*)wParam);
+	CrossRender::CrossRenderHelper::RenderOnHost(m_hWnd, (void*)wParam);
 	return 0;
 }
 

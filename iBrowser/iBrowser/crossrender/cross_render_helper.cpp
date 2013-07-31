@@ -3,32 +3,34 @@
 // found in the LICENSE file.
 
 #include "stdafx.h"
-#include "cross_process_render_helper.h"
-#include "MessageDef.h"
+#include "cross_render_helper.h"
+#include "../MessageDef.h"
 #include "Base/ipc_message.h"
-#include "global_singleton.h"
-#include "api_hook.h"
+#include "../global_singleton.h"
+#include "../api_hook.h"
 #include <GdiPlus.h>
 
-PFuncBitBlt CrossProcessRenderHelper::s_BitBlt = NULL;
-PFuncGetCursorPos CrossProcessRenderHelper::s_GetCursorPos = NULL;
-PFuncSetCursor CrossProcessRenderHelper::s_SetCursor = NULL;
-PFunAlphaBlend CrossProcessRenderHelper::s_AlphaBlend = NULL;
-PFunTransparentBlt CrossProcessRenderHelper::s_TransparentBlt = NULL;
+namespace CrossRender{
+
+PFuncBitBlt CrossRenderHelper::s_BitBlt = NULL;
+PFuncGetCursorPos CrossRenderHelper::s_GetCursorPos = NULL;
+PFuncSetCursor CrossRenderHelper::s_SetCursor = NULL;
+PFunAlphaBlend CrossRenderHelper::s_AlphaBlend = NULL;
+PFunTransparentBlt CrossRenderHelper::s_TransparentBlt = NULL;
 
 
-void CrossProcessRenderHelper::SetHost( HWND hHost )
+void CrossRenderHelper::SetHost( HWND hHost )
 {
 	m_hHost = hHost;
 }
 
-void CrossProcessRenderHelper::SetCore(HWND hCore)
+void CrossRenderHelper::SetCore(HWND hCore)
 {
 	m_hCore = hCore;
 }
 
 
-BOOL CrossProcessRenderHelper::CustomBitBlt( HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop, PFuncBitBlt pfBitBlt )
+BOOL CrossRenderHelper::CustomBitBlt( HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop, PFuncBitBlt pfBitBlt )
 {
 	if (pfBitBlt == NULL){
 		return FALSE;
@@ -91,7 +93,7 @@ Gdiplus::ARGB s_colors[]
 	0x2CFF0000, 0x2C00FF00, 0x2C0000FF, 0x2CFFFF00, 0x2C00FFFF
 };
 
-void CrossProcessRenderHelper::RenderOnHost( HWND hHost, void* pScreenData )
+void CrossRenderHelper::RenderOnHost( HWND hHost, void* pScreenData )
 {
 	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
 		if (pScreenData == NULL){
@@ -131,17 +133,17 @@ void CrossProcessRenderHelper::RenderOnHost( HWND hHost, void* pScreenData )
 	}
 }
 
-BOOL WINAPI CrossProcessRenderHelper::HOOK_BitBlt( HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop )
+BOOL WINAPI CrossRenderHelper::HOOK_BitBlt( HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop )
 {
 	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
-		return CrossProcessRenderHelper::GetInstance()->CustomBitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop, s_BitBlt);
+		return CrossRenderHelper::GetInstance()->CustomBitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop, s_BitBlt);
 		return s_BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop); 
 	}else{
 		return s_BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop);
 	}
 }
 
-bool CrossProcessRenderHelper::StartHooksInCoreProcess( void )
+bool CrossRenderHelper::StartHooksInCoreProcess( void )
 {
 	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
 		HookLibAndProc("gdi32.dll", "BitBlt", (void*)HOOK_BitBlt, (void**)&s_BitBlt);
@@ -154,12 +156,12 @@ bool CrossProcessRenderHelper::StartHooksInCoreProcess( void )
 	return true;
 }
 
-BOOL WINAPI CrossProcessRenderHelper::HOOK_GetCursorPos( LPPOINT lpPoint )
+BOOL WINAPI CrossRenderHelper::HOOK_GetCursorPos( LPPOINT lpPoint )
 {
 	BOOL bRet = s_GetCursorPos(lpPoint);
 	
-	HWND hHost = CrossProcessRenderHelper::GetInstance()->m_hHost;
-	HWND hCore = CrossProcessRenderHelper::GetInstance()->m_hCore;
+	HWND hHost = CrossRenderHelper::GetInstance()->m_hHost;
+	HWND hCore = CrossRenderHelper::GetInstance()->m_hCore;
 	if (::IsWindow(hHost) && ::IsWindow(hCore)){
 		RECT rectHost, rectCore;
 		::GetWindowRect(hHost,&rectHost);
@@ -170,12 +172,12 @@ BOOL WINAPI CrossProcessRenderHelper::HOOK_GetCursorPos( LPPOINT lpPoint )
 	return bRet;
 }
 
-HCURSOR WINAPI CrossProcessRenderHelper::HOOK_SetCursor( HCURSOR hCursor )
+HCURSOR WINAPI CrossRenderHelper::HOOK_SetCursor( HCURSOR hCursor )
 {
 	return s_SetCursor(hCursor);
 }
 
-BOOL WINAPI CrossProcessRenderHelper::HOOK_AlphaBlend( HDC hdcDest
+BOOL WINAPI CrossRenderHelper::HOOK_AlphaBlend( HDC hdcDest
 	, int xoriginDest
 	, int yoriginDest
 	, int wDest
@@ -200,7 +202,7 @@ BOOL WINAPI CrossProcessRenderHelper::HOOK_AlphaBlend( HDC hdcDest
 		,ftn);
 }
 
-BOOL WINAPI CrossProcessRenderHelper::HOOK_TransparentBlt( HDC hdcDest,
+BOOL WINAPI CrossRenderHelper::HOOK_TransparentBlt( HDC hdcDest,
 	int xoriginDest,
 	int yoriginDest,
 	int wDest,
@@ -225,6 +227,6 @@ BOOL WINAPI CrossProcessRenderHelper::HOOK_TransparentBlt( HDC hdcDest,
 		crTransparent);
 }
 
-
+}
 
 

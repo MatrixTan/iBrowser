@@ -6,7 +6,6 @@
 #define _CROSS_PROCESS_RENDER_HELPER_H__
 
 #include "Base/t_thread_singleton.h"
-#include "api_hook.h"
 #include <WinGDI.h>
 
 typedef BOOL (WINAPI *PFuncBitBlt)(HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop);
@@ -37,9 +36,11 @@ typedef BOOL (WINAPI *PFunTransparentBlt)(
 	int hSrc,
 	UINT crTransparent);
 
+namespace CrossRender
+{
 
-class CrossProcessRenderHelper 
-	: public TThreadSingleton<CrossProcessRenderHelper, ETTS_CrossProcessRenderHelper>
+class CrossRenderHelper 
+	: public TThreadSingleton<CrossRenderHelper, ETTS_CrossProcessRenderHelper>
 {
 public:
 	void SetHost(HWND hHost);
@@ -89,5 +90,6 @@ private:
 	static PFunTransparentBlt s_TransparentBlt;
 };
 
+}
 
 #endif //_CROSS_PROCESS_RENDER_HELPER_H__

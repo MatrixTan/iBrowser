@@ -12,7 +12,7 @@
 #include "MessageDef.h"
 #include "Base/ipc_message.h"
 #include "global_singleton.h"
-#include "cross_process_render_helper.h"
+#include "crossrender/cross_render_helper.h"
 
 PFuncSendMessage g_SendMessageA = NULL;
 PFuncSendMessage g_SendMessageW = NULL;
@@ -82,7 +82,7 @@ bool StartCoreProcessHooks( void ){
 	HookLibAndProc("Kernel32.dll", "GetTickCount", (void*)&GameMode::Accelerator::HOOK_GetTickCount, (void**)&GameMode::Accelerator::Real_GetTickCount);
 	HookLibAndProc("wininet.dll", "InternetSetCookieExW", (void*)CoreCookie::HOOK_InternetSetCookieExW, (void**)&CoreCookie::Real_InternetSetCookieExW);
 	HookLibAndProc("wininet.dll", "InternetSetCookieExA", (void*)CoreCookie::HOOK_InternetSetCookieExA, (void**)&CoreCookie::Real_InternetSetCookieExA);
-	CrossProcessRenderHelper::StartHooksInCoreProcess();
+	CrossRender::CrossRenderHelper::StartHooksInCoreProcess();
 	return true;
 }
 

@@ -14,7 +14,7 @@
 #include "custom_client_site.h"
 #include "ui_util.h"
 #include "BrowserThreadManager.h"
-#include "cross_process_render_helper.h"
+#include "crossrender/cross_render_helper.h"
 
 void CALLBACK WinEventProc(HWINEVENTHOOK hHook
 	, DWORD event
@@ -28,7 +28,7 @@ void CALLBACK WinEventProc(HWINEVENTHOOK hHook
 		WCHAR className[MAX_PATH];
 		::GetClassName(hwnd, className, MAX_PATH);
 		if (wcscmp(className, L"Internet Explorer_Server") == 0){
-			CrossProcessRenderHelper::GetInstance()->SetCore(hwnd);
+			CrossRender::CrossRenderHelper::GetInstance()->SetCore(hwnd);
 		}
 	}
 }
@@ -78,8 +78,7 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 		, dwThreadId
 		, WINEVENT_OUTOFCONTEXT);
 	
-	CrossProcessRenderHelper::GetInstance()->SetHost(m_hParent);
-	
+	CrossRender::CrossRenderHelper::GetInstance()->SetHost(m_hParent);	
 	return 0;
 } 
 
