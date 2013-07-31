@@ -39,7 +39,7 @@ public:
 	void SetProcessType(int nType);
 	int GetProcessMode(void);
 	void SetProcessMode(int nMode);
-	bool GetCrossProcessRender(void);
+	bool IsCrossRender(void);
 	void SetCrossProcessRender(bool bEnable);
 
 	CoreProcessManager* GetCoreProcessManager(void);

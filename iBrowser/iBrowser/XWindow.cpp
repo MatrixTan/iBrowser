@@ -170,7 +170,7 @@ BOOL CXWindow::ShowWindow( int nCmd )
 		ShowURL();
 	}
 	BOOL bRet = CWindow::ShowWindow(nCmd);
-	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+	if (GlobalSingleton::GetInstance()->IsCrossRender()){
 		m_spCoreProxy->RefreshCoreWindow();
 	}	
 	return bRet;
@@ -233,7 +233,7 @@ LRESULT CXWindow::OnCoreDestroyed( UINT msg, WPARAM wParam, LPARAM lParam, BOOL&
 
 void CXWindow::Focus( void )
 {
-	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+	if (GlobalSingleton::GetInstance()->IsCrossRender()){
 		SetFocus();
 	}else{
 		m_spCoreProxy->Focus();
@@ -253,7 +253,7 @@ LRESULT CXWindow::OnRenderBackStore( UINT msg, WPARAM wParam, LPARAM lParam, BOO
 
 BOOL CXWindow::PostToCoreForCPR( UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if (!GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+	if (!GlobalSingleton::GetInstance()->IsCrossRender()){
 		return FALSE;
 	}
 	//////////////////FOR TEST////////////////

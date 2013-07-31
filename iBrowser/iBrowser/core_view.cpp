@@ -76,9 +76,8 @@ LRESULT CoreView::OnCreate( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 		, WinEventProc
 		, dwProcessId
 		, dwThreadId
-		, WINEVENT_OUTOFCONTEXT);
+		, WINEVENT_OUTOFCONTEXT);	
 	
-	CrossRender::CrossRenderHelper::GetInstance()->SetHost(m_hParent);	
 	return 0;
 } 
 
@@ -229,6 +228,7 @@ LRESULT CoreView::OnSize( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, B
 	{
 		m_wndConsole.SetWindowPos(HWND_TOP,&rectClient,SWP_NOACTIVATE);
 	}
+	CrossRender::CrossRenderHelper::GetInstance()->ResizeHost(size.cx, size.cy);
 	return 0;
 }
 LRESULT CoreView::OnMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
@@ -533,4 +533,9 @@ LRESULT CoreView::OnRefreshCoreWindow( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 		m_CoreWindow.RedrawWindow();
 	}	
 	return 0;
+}
+
+void CoreView::SetCrossRenderHost( HWND hHost )
+{
+	CrossRender::CrossRenderHelper::GetInstance()->SetHost(hHost);	
 }

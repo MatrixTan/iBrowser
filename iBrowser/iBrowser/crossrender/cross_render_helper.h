@@ -36,6 +36,13 @@ typedef BOOL (WINAPI *PFunTransparentBlt)(
 	int hSrc,
 	UINT crTransparent);
 
+typedef HDC	(WINAPI *PFunGetDCEx)(
+	HWND hWnd,
+	HRGN hrgnClip,
+	DWORD flags);
+
+typedef HDC (WINAPI *PFunGetDC)(HWND hWnd);
+
 namespace CrossRender
 {
 
@@ -46,6 +53,7 @@ public:
 	void SetHost(HWND hHost);
 	void SetCore(HWND hCore);
 	BOOL CustomBitBlt(HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop, PFuncBitBlt pfBitBlt);
+	void ResizeHost(int cx, int cy);
 
 	static bool StartHooksInCoreProcess(void);
 	static BOOL WINAPI HOOK_BitBlt( HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop );
@@ -74,11 +82,17 @@ public:
 		int hSrc,
 		UINT crTransparent);
 
+	static HDC WINAPI HOOK_GetDCEx(HWND hWnd, HRGN hrgnClip, DWORD flags);
+	static HDC WINAPI HOOK_GetDC(HWND hWnd);
+
 	///Main Process Method
 	static void RenderOnHost(HWND hHost, void* pScreenData);
 
 	static const int kCoreWindowOffsetX = -10000;
 	static const int kCoreWindowOffsetY = 0;
+
+	CrossRenderHelper();
+	~CrossRenderHelper();
 protected:
 private:
 	HWND m_hHost;
@@ -88,6 +102,8 @@ private:
 	static PFuncSetCursor s_SetCursor;
 	static PFunAlphaBlend s_AlphaBlend;
 	static PFunTransparentBlt s_TransparentBlt;
+	static PFunGetDCEx s_GetDCEx;
+	static PFunGetDC s_GetDC;
 };
 
 }

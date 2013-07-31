@@ -88,11 +88,8 @@ public:
 	void Focus(void);
 	bool AddCurrentBookmark(void);
 
-	static const DWORD kNormalStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|0x4c;
-	static const DWORD kFreezingStyle = WS_POPUP|WS_CLIPSIBLINGS|WS_DISABLED;
-
+	static const DWORD kNormalStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN;
 	static const DWORD kNormalExStyle = WS_EX_LEFT|WS_EX_LTRREADING|WS_EX_RIGHTSCROLLBAR|WS_EX_TOOLWINDOW|WS_EX_NOPARENTNOTIFY;
-	static const DWORD kFreezingExStyle = kNormalExStyle;
 
 private:
 

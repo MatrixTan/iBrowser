@@ -11,6 +11,7 @@
 #include "global_singleton.h"
 #include "core_process_manager.h"
 #include "crossrender/cross_render_helper.h"
+#include "crossrender/cross_render_host.h"
 
 CoreManager* CoreManager::s_Instance = NULL;
 
@@ -34,9 +35,21 @@ CoreManager::CoreManager()
 
 void CoreManager::CreateCoreInProcess( HWND hParent ,const CString& strURL)
 {
+	
 	BrowserViewData *pData = new BrowserViewData();
 	pData->hParent = hParent;
 	pData->strURL = strURL;
+
+	if (GlobalSingleton::GetInstance()->IsCrossRender()){
+		CrossRender::CrossRenderHost * pRenderHost = new CrossRender::CrossRenderHost();
+		RECT hostRect ={0};
+		::GetClientRect(hParent, &hostRect);
+		HWND hHost = pRenderHost->Create(hParent, hostRect, NULL
+			, CrossRender::CrossRenderHost::kStyle
+			, CrossRender::CrossRenderHost::kExStyle);
+		pData->hCrossRenderHost = hHost;
+	}
+
 	CBrowserThreadManager::GetInstance()->AddThread(StartCore_CoreThread, (void*)pData);
 }
 
@@ -58,11 +71,12 @@ DWORD CoreManager::StartCore_CoreThread( void *pParam )
 	::GetClientRect(hParent, &rect);
 	//HWND hClient = view.Create(hParent, rect, _T("{8856F961-340A-11D0-A96B-00C04FD705A2}"), CoreView::kStyle , CoreView::kExStyle);
 	HWND hClient = NULL;
-	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+	if (GlobalSingleton::GetInstance()->IsCrossRender()){
 #ifndef _DEBUG
 		rect.left += CrossRenderHelper::kCoreWindowOffsetX;
 		rect.right += CrossRenderHelper::kCoreWindowOffsetX;		
 #endif	
+		view.SetCrossRenderHost(pData->hCrossRenderHost);
 		hClient = view.Create(NULL, rect, _T("ie host"), WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_POPUP , CoreView::kExStyle);
 	}else{
 		hClient = view.Create(hParent, rect, _T("ie host"), CoreView::kStyle , CoreView::kExStyle);

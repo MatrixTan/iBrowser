@@ -29,9 +29,11 @@ private:
 	public:
 		BrowserViewData()
 			:hParent(NULL)
+			,hCrossRenderHost(NULL)
 			{}
 		HWND hParent;
 		CString strURL;
+		HWND hCrossRenderHost;
 	};
 };
 

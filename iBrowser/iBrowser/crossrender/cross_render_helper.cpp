@@ -17,6 +17,8 @@ PFuncGetCursorPos CrossRenderHelper::s_GetCursorPos = NULL;
 PFuncSetCursor CrossRenderHelper::s_SetCursor = NULL;
 PFunAlphaBlend CrossRenderHelper::s_AlphaBlend = NULL;
 PFunTransparentBlt CrossRenderHelper::s_TransparentBlt = NULL;
+PFunGetDCEx CrossRenderHelper::s_GetDCEx = NULL;
+PFunGetDC CrossRenderHelper::s_GetDC = NULL;
 
 
 void CrossRenderHelper::SetHost( HWND hHost )
@@ -35,12 +37,7 @@ BOOL CrossRenderHelper::CustomBitBlt( HDC hdc, int x, int y, int cx, int cy, HDC
 	if (pfBitBlt == NULL){
 		return FALSE;
 	}
-	/////////////////TEST/////////////////////////
-	//HDC hDCHost = ::GetDC(m_hHost);
-	//pfBitBlt(hDCHost, x, y, cx, cy, hdcSrc, x1,y1, rop);
-	//::ReleaseDC(m_hHost, hDCHost);
-	//return TRUE;
-	/////////////////////////////////////////////
+	
 
 	if (m_hHost != NULL && m_hCore != NULL){
 
@@ -63,25 +60,10 @@ BOOL CrossRenderHelper::CustomBitBlt( HDC hdc, int x, int y, int cx, int cy, HDC
 			x += (rectTarget.left - rectCore.left);
 			y += (rectTarget.top - rectCore.top);
 		}
-		
 
-		HDC hdcMemory = ::CreateCompatibleDC(hdc);
-		HBITMAP hBmp = ::CreateCompatibleBitmap(hdc, cx, cy);
-		::SelectObject(hdcMemory, hBmp);
-		BOOL bRet = pfBitBlt(hdcMemory, 0, 0, cx, cy, hdcSrc, x1, y1, rop);
-		int nDWords = cx*cy+4;
-		DWORD* pDWordData = (DWORD*)new DWORD[nDWords];
-		*pDWordData = x;
-		*(pDWordData+1) = y;
-		*(pDWordData+2) = cx;
-		*(pDWordData+3) = cy;
-		int nBytes = sizeof(DWORD)*nDWords;
-		LONG bytes = ::GetBitmapBits(hBmp, nBytes, (void*)(pDWordData+4));
-		
-		IPC::PostIPCMessage(m_hHost, WM_RENDER_BACK_STORE, (void*)pDWordData, nBytes);
-		delete [] pDWordData;
-		::DeleteObject(hBmp);
-		::DeleteDC(hdcMemory);	
+		HDC hDCHost = ::GetDC(m_hHost);
+		BOOL bRet = pfBitBlt(hDCHost, x, y, cx, cy, hdcSrc, x1,y1, rop);
+		::ReleaseDC(m_hHost, hDCHost);		
 		return bRet;
 	}
 
@@ -95,7 +77,7 @@ Gdiplus::ARGB s_colors[]
 
 void CrossRenderHelper::RenderOnHost( HWND hHost, void* pScreenData )
 {
-	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+	if (GlobalSingleton::GetInstance()->IsCrossRender()){
 		if (pScreenData == NULL){
 			return;
 		}
@@ -135,8 +117,8 @@ void CrossRenderHelper::RenderOnHost( HWND hHost, void* pScreenData )
 
 BOOL WINAPI CrossRenderHelper::HOOK_BitBlt( HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop )
 {
-	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
-		return CrossRenderHelper::GetInstance()->CustomBitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop, s_BitBlt);
+	if (GlobalSingleton::GetInstance()->IsCrossRender()){
+		CrossRenderHelper::GetInstance()->CustomBitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop, s_BitBlt);
 		return s_BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop); 
 	}else{
 		return s_BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop);
@@ -145,13 +127,14 @@ BOOL WINAPI CrossRenderHelper::HOOK_BitBlt( HDC hdc, int x, int y, int cx, int c
 
 bool CrossRenderHelper::StartHooksInCoreProcess( void )
 {
-	if (GlobalSingleton::GetInstance()->GetCrossProcessRender()){
+	if (GlobalSingleton::GetInstance()->IsCrossRender()){
 		HookLibAndProc("gdi32.dll", "BitBlt", (void*)HOOK_BitBlt, (void**)&s_BitBlt);
 		HookLibAndProc("user32.dll", "GetCursorPos", (void*)HOOK_GetCursorPos, (void**)&s_GetCursorPos);
 		HookLibAndProc("user32.dll", "SetCursor", (void*)HOOK_SetCursor, (void**)&s_SetCursor);
 		HookLibAndProc("msimg32.dll", "AlphaBlend", (void*)HOOK_AlphaBlend, (void**)&s_AlphaBlend);
 		HookLibAndProc("msimg32.dll", "TransparentBlt", (void*)HOOK_TransparentBlt, (void**)&s_TransparentBlt);
-		
+		HookLibAndProc("user32.dll", "GetDCEx", (void*)HOOK_GetDCEx, (void**)&s_GetDCEx);
+		HookLibAndProc("user32.dll", "GetDC", (void*)HOOK_GetDC, (void**)&s_GetDC);
 	}
 	return true;
 }
@@ -226,6 +209,34 @@ BOOL WINAPI CrossRenderHelper::HOOK_TransparentBlt( HDC hdcDest,
 		hSrc,
 		crTransparent);
 }
+
+CrossRenderHelper::CrossRenderHelper()
+	:m_hCore(NULL)
+	,m_hHost(NULL)
+{}
+
+CrossRenderHelper::~CrossRenderHelper()
+{
+	m_hHost = NULL;
+	m_hCore = NULL;
+}
+
+HDC WINAPI CrossRenderHelper::HOOK_GetDCEx( HWND hWnd, HRGN hrgnClip, DWORD flags )
+{
+	return s_GetDCEx(hWnd, hrgnClip, flags);
+}
+
+HDC WINAPI CrossRenderHelper::HOOK_GetDC( HWND hWnd )
+{
+	return s_GetDC(hWnd);
+}
+
+void CrossRenderHelper::ResizeHost( int cx, int cy )
+{
+	::SetWindowPos(m_hHost, HWND_TOP, 0, 0, cx, cy
+		, SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOREDRAW|SWP_ASYNCWINDOWPOS);
+}
+
 
 }
 

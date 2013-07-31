@@ -102,7 +102,7 @@ BookmarkManager* GlobalSingleton::GetBookmarkManager( void )
 	return m_pBookmarkManager;
 }
 
-bool GlobalSingleton::GetCrossProcessRender( void )
+bool GlobalSingleton::IsCrossRender( void )
 {
 	return m_bEnableCrossProcessRender;
 }

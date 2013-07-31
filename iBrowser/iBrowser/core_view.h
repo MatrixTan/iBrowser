@@ -73,6 +73,7 @@ public:
 
 	void Initialize(HWND hParent, const CString& strURL);
 	void NotifyHotKey(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	void SetCrossRenderHost(HWND hHost);
 protected:
 	HRESULT _Navegate(LPCWSTR strURL);
 	HRESULT _Refresh(void);
