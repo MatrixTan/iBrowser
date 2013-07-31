@@ -150,11 +150,15 @@ LRESULT CMainFrame::OnMove(UINT uMsg, WPARAM /*wParam*/, LPARAM lParam, BOOL& bH
 	CRect rectClient;
 	GetClientRect(&rectClient);
 	ClientToScreen(&rectClient);
-	if (m_wndMaskWindow.IsWindow())
-	{
+	if (m_wndMaskWindow.IsWindow()){
 		m_wndMaskWindow.SetWindowPos(HWND_TOP,&rectClient,SWP_NOACTIVATE);
 	}
-	bHandled = TRUE;
+
+	rectClient.top += TabButton::kDefaultHeight;
+	TabPairMap::iterator iter = m_mapTabPairs.begin();
+	for (; iter != m_mapTabPairs.end(); ++iter){
+		iter->second.spContainerWindow->OnFrameMove(rectClient);
+	}
 	return 0;
 }
 

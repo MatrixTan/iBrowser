@@ -28,7 +28,9 @@ public:
 	void Destroy();
 	void GetURL(CStringW& strURL);
 	bool AddCurrentBookmark(void);
-	void RefreshCoreWindow(void);
+
+	void NotifyFrameMove(void);
+	void NotifyVisibleChange(BOOL bVisible);
 
 protected:
 private:

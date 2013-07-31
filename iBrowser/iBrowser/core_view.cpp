@@ -527,15 +527,18 @@ HRESULT CoreView::_CreateCoreServer( void )
 	return S_OK;
 }
 
-LRESULT CoreView::OnRefreshCoreWindow( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
+LRESULT CoreView::OnFrameMove( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
-	if (m_CoreWindow.IsWindow()){
-		m_CoreWindow.RedrawWindow();
-	}	
+	CrossRender::CrossRenderHelper::GetInstance()->SyncCoreWinPos(m_hParent);
 	return 0;
 }
 
-void CoreView::SetCrossRenderHost( HWND hHost )
+LRESULT CoreView::OnVisibleChange( UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
-	CrossRender::CrossRenderHelper::GetInstance()->SetHost(hHost);	
+	BOOL bVisible = (BOOL)wParam;
+	CrossRender::CrossRenderHelper::GetInstance()->OnCoreVisibleChange(bVisible==TRUE);
+	if (m_CoreWindow.IsWindow() && bVisible){
+		m_CoreWindow.RedrawWindow();
+	}
+	return 0;
 }

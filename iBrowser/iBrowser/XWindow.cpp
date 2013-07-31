@@ -170,9 +170,7 @@ BOOL CXWindow::ShowWindow( int nCmd )
 		ShowURL();
 	}
 	BOOL bRet = CWindow::ShowWindow(nCmd);
-	if (GlobalSingleton::GetInstance()->IsCrossRender()){
-		m_spCoreProxy->RefreshCoreWindow();
-	}	
+	m_spCoreProxy->NotifyVisibleChange(nCmd==SW_SHOW?TRUE:FALSE);
 	return bRet;
 }
 
@@ -251,74 +249,7 @@ LRESULT CXWindow::OnRenderBackStore( UINT msg, WPARAM wParam, LPARAM lParam, BOO
 	return 0;
 }
 
-BOOL CXWindow::PostToCoreForCPR( UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	if (!GlobalSingleton::GetInstance()->IsCrossRender()){
-		return FALSE;
-	}
-	//////////////////FOR TEST////////////////
-	if (msg == WM_MOUSEWHEEL){
-		{
-			int test = 0;
-			test = 1;
-		}
-	}
-	
-	//////////////////////////////////////////
 
-	switch (msg){
-	//case WM_NCHITTEST:
-	case WM_MOUSEMOVE:
-		{
-			CString str;
-			int xPos = LOWORD(lParam);
-			int yPos = HIWORD(lParam);
-			str.Format(L"Mouse: X-%x, Y-%x\n", xPos, yPos);
-			//::OutputDebugString(str);
-			if (::IsWindow(m_hCoreWindow)){
-				::PostMessage(m_hCoreWindow, msg, wParam, lParam);
-			}
-			return TRUE;
-		}
-	case WM_LBUTTONDOWN:
-	case WM_LBUTTONUP:
-	case WM_LBUTTONDBLCLK:
-
-	case WM_RBUTTONDOWN:
-	case WM_RBUTTONUP:
-	case WM_RBUTTONDBLCLK:
-	case WM_MBUTTONDOWN:
-	case WM_MBUTTONUP:
-	case WM_MBUTTONDBLCLK:
-	case WM_MOUSEWHEEL:
-	case WM_XBUTTONDOWN:
-	case WM_XBUTTONUP:
-	case WM_XBUTTONDBLCLK:
-
-	case WM_KEYDOWN:
-	case WM_KEYUP:
-	case WM_CHAR:
-	case WM_DEADCHAR:
-	case WM_SYSKEYDOWN:
-	case WM_SYSKEYUP:
-	case WM_SYSCHAR:
-	case WM_SYSDEADCHAR:
-	case WM_UNICHAR:
-	//case WM_SETCURSOR:
-		{
-			CString str;
-			str.Format(L"Foucs: %x\n", msg);
-			::OutputDebugString(str);
-			if (::IsWindow(m_hCoreWindow)){
-				::PostMessage(m_hCoreWindow, msg, wParam, lParam);
-			}
-			return TRUE;
-		}
-	default:
-		return FALSE;
-	}
-	return FALSE;
-}
 
 LRESULT CXWindow::OnCoreWindowCreated( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
 {
@@ -329,4 +260,9 @@ LRESULT CXWindow::OnCoreWindowCreated( UINT msg, WPARAM wParam, LPARAM lParam, B
 LRESULT CXWindow::OnEraseBKGnd( UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/ )
 {
 	return 0;
+}
+
+void CXWindow::OnFrameMove( RECT rect )
+{
+	m_spCoreProxy->NotifyFrameMove();
 }

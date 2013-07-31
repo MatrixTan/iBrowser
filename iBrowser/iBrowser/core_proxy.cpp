@@ -86,7 +86,12 @@ bool CoreProxy::AddCurrentBookmark( void )
 	return m_pContainer->AddCurrentBookmark();
 }
 
-void CoreProxy::RefreshCoreWindow( void )
+void CoreProxy::NotifyFrameMove( void )
 {
-	::PostMessage(m_hCoreView, WM_REFRESH_CORE_WINDOW, 0, 0);
+	::PostMessage(m_hCoreView, WM_NOTIFY_FRAME_MOVE, 0, 0);
+}
+
+void CoreProxy::NotifyVisibleChange( BOOL bVisible )
+{
+	::PostMessage(m_hCoreView, WM_NOTIFY_VISIBLE_CHANGE, (WPARAM)bVisible, 0);
 }

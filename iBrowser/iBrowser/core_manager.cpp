@@ -12,6 +12,7 @@
 #include "core_process_manager.h"
 #include "crossrender/cross_render_helper.h"
 #include "crossrender/cross_render_host.h"
+#include "crossrender/cross_render_core_container.h"
 
 CoreManager* CoreManager::s_Instance = NULL;
 
@@ -44,10 +45,11 @@ void CoreManager::CreateCoreInProcess( HWND hParent ,const CString& strURL)
 		CrossRender::CrossRenderHost * pRenderHost = new CrossRender::CrossRenderHost();
 		RECT hostRect ={0};
 		::GetClientRect(hParent, &hostRect);
-		HWND hHost = pRenderHost->Create(hParent, hostRect, NULL
+		pRenderHost->Create(hParent, hostRect, NULL
 			, CrossRender::CrossRenderHost::kStyle
 			, CrossRender::CrossRenderHost::kExStyle);
-		pData->hCrossRenderHost = hHost;
+		ATLASSERT(pRenderHost->IsWindow());
+		pData->pCrossRenderHost = pRenderHost;
 	}
 
 	CBrowserThreadManager::GetInstance()->AddThread(StartCore_CoreThread, (void*)pData);
@@ -69,16 +71,21 @@ DWORD CoreManager::StartCore_CoreThread( void *pParam )
 
 	RECT rect;
 	::GetClientRect(hParent, &rect);
-	//HWND hClient = view.Create(hParent, rect, _T("{8856F961-340A-11D0-A96B-00C04FD705A2}"), CoreView::kStyle , CoreView::kExStyle);
+	
 	HWND hClient = NULL;
+	CrossRender::CrossRenderCoreContainer container;
 	if (GlobalSingleton::GetInstance()->IsCrossRender()){
-#ifndef _DEBUG
-		rect.left += CrossRenderHelper::kCoreWindowOffsetX;
-		rect.right += CrossRenderHelper::kCoreWindowOffsetX;		
-#endif	
-		view.SetCrossRenderHost(pData->hCrossRenderHost);
-		hClient = view.Create(NULL, rect, _T("ie host"), WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_POPUP , CoreView::kExStyle);
+		HWND hContainer = container.Create(hParent, rect, L"ie container"
+			, CrossRender::CrossRenderCoreContainer::kStyle
+			, CrossRender::CrossRenderCoreContainer::kExStyle);
+		SetLayeredWindowAttributes(hContainer,0,20,LWA_ALPHA);
+
+		hClient = view.Create(hContainer, rect, _T("ie host"), CoreView::kStyle , CoreView::kExStyle);
+		pData->pCrossRenderHost->SetCoreWindow(hClient);
+		CrossRender::CrossRenderHelper::GetInstance()->SetHost(pData->pCrossRenderHost->m_hWnd);
+		CrossRender::CrossRenderHelper::GetInstance()->SetContainer(hContainer);
 	}else{
+		//HWND hClient = view.Create(hParent, rect, _T("{8856F961-340A-11D0-A96B-00C04FD705A2}"), CoreView::kStyle , CoreView::kExStyle);
 		hClient = view.Create(hParent, rect, _T("ie host"), CoreView::kStyle , CoreView::kExStyle);
 	}	
 	ATLASSERT(hClient);
@@ -89,6 +96,11 @@ DWORD CoreManager::StartCore_CoreThread( void *pParam )
 
 	::PostMessage(hParent, WM_CORE_DESTROYED, 0, 0);
 	_Module.RemoveMessageLoop();
+	delete pData;
+	pData = NULL;
+	if (container.IsWindow()){
+		container.DestroyWindow();
+	}
 	return 0;
 }
 

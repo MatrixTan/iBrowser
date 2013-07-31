@@ -16,11 +16,7 @@
 #include <Base/RefCounted.h>
 #include "Base/ipc_message.h"
 
-#define HANDLE_MSG_FOR_CORE \
-	bHandled = TRUE; \
-	bHandled = PostToCoreForCPR(uMsg, wParam, lParam);\
-	if(bHandled) \
-	return TRUE;\
+
 
 
 class CoreProxy;
@@ -40,8 +36,7 @@ public:
 	
 
 	BEGIN_MSG_MAP(CXWindow)
-		HANDLE_IPC_MSG(CXWindow)
-		HANDLE_MSG_FOR_CORE
+		HANDLE_IPC_MSG(CXWindow)		
 		MESSAGE_HANDLER(WM_CREATE, OnCreate)
 		MESSAGE_HANDLER(WM_DESTROY, OnDestory)
 		MESSAGE_HANDLER(WM_CLOSE, OnClose)
@@ -75,7 +70,6 @@ public:
 	LRESULT OnCoreWindowCreated(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnRenderBackStore(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-	BOOL PostToCoreForCPR(UINT msg, WPARAM wParam, LPARAM lParam);
 
 	CXWindow();
 	~CXWindow();
@@ -87,6 +81,7 @@ public:
 	BOOL ShowWindow(int nCmd);
 	void Focus(void);
 	bool AddCurrentBookmark(void);
+	void OnFrameMove(RECT rect);
 
 	static const DWORD kNormalStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN;
 	static const DWORD kNormalExStyle = WS_EX_LEFT|WS_EX_LTRREADING|WS_EX_RIGHTSCROLLBAR|WS_EX_TOOLWINDOW|WS_EX_NOPARENTNOTIFY;

@@ -143,15 +143,15 @@ BOOL WINAPI CrossRenderHelper::HOOK_GetCursorPos( LPPOINT lpPoint )
 {
 	BOOL bRet = s_GetCursorPos(lpPoint);
 	
-	HWND hHost = CrossRenderHelper::GetInstance()->m_hHost;
-	HWND hCore = CrossRenderHelper::GetInstance()->m_hCore;
-	if (::IsWindow(hHost) && ::IsWindow(hCore)){
-		RECT rectHost, rectCore;
-		::GetWindowRect(hHost,&rectHost);
-		::GetWindowRect(hCore, &rectCore);
-		lpPoint->x = lpPoint->x - rectHost.left + rectCore.left;
-		lpPoint->y = lpPoint->y - rectHost.top + rectCore.top;
-	}
+	//HWND hHost = CrossRenderHelper::GetInstance()->m_hHost;
+	//HWND hCore = CrossRenderHelper::GetInstance()->m_hCore;
+	//if (::IsWindow(hHost) && ::IsWindow(hCore)){
+	//	RECT rectHost, rectCore;
+	//	::GetWindowRect(hHost,&rectHost);
+	//	::GetWindowRect(hCore, &rectCore);
+	//	lpPoint->x = lpPoint->x - rectHost.left + rectCore.left;
+	//	lpPoint->y = lpPoint->y - rectHost.top + rectCore.top;
+	//}
 	return bRet;
 }
 
@@ -213,12 +213,14 @@ BOOL WINAPI CrossRenderHelper::HOOK_TransparentBlt( HDC hdcDest,
 CrossRenderHelper::CrossRenderHelper()
 	:m_hCore(NULL)
 	,m_hHost(NULL)
+	,m_hContainer(NULL)
 {}
 
 CrossRenderHelper::~CrossRenderHelper()
 {
 	m_hHost = NULL;
 	m_hCore = NULL;
+	m_hContainer = NULL;
 }
 
 HDC WINAPI CrossRenderHelper::HOOK_GetDCEx( HWND hWnd, HRGN hrgnClip, DWORD flags )
@@ -235,6 +237,36 @@ void CrossRenderHelper::ResizeHost( int cx, int cy )
 {
 	::SetWindowPos(m_hHost, HWND_TOP, 0, 0, cx, cy
 		, SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOREDRAW|SWP_ASYNCWINDOWPOS);
+}
+
+void CrossRenderHelper::SetContainer( HWND hContainer )
+{
+	m_hContainer = hContainer;
+}
+
+void CrossRenderHelper::SyncCoreWinPos( HWND hHostContianer )
+{
+	if (!GlobalSingleton::GetInstance()->IsCrossRender()){
+		return;
+	}
+	ATLASSERT(::IsWindow(hHostContianer));
+	RECT rect = {0};
+	::GetClientRect(hHostContianer, &rect);
+	if(!::ClientToScreen(hHostContianer, (LPPOINT)&rect))
+		return;
+	::ClientToScreen(hHostContianer, ((LPPOINT)&rect)+1);
+	::SetWindowPos(m_hContainer, HWND_TOP, rect.left, rect.top+3, rect.right-rect.left, rect.bottom-rect.top
+		, SWP_NOACTIVATE|SWP_ASYNCWINDOWPOS);
+	return;
+}
+
+void CrossRenderHelper::OnCoreVisibleChange( bool bVisible )
+{
+	if (!GlobalSingleton::GetInstance()->IsCrossRender()){
+		return;
+	}
+
+	::ShowWindow(m_hContainer, bVisible?SW_SHOW:SW_HIDE );
 }
 
 

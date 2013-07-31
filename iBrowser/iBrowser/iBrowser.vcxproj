@@ -152,6 +152,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClCompile Include="core_process_manager.cpp" />
     <ClCompile Include="core_proxy.cpp" />
     <ClCompile Include="core_window.cpp" />
+    <ClCompile Include="crossrender\cross_render_core_container.cpp" />
     <ClCompile Include="crossrender\cross_render_helper.cpp" />
     <ClCompile Include="crossrender\cross_render_host.cpp" />
     <ClCompile Include="custom_client_site.cpp" />
@@ -205,6 +206,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClInclude Include="core_process_manager.h" />
     <ClInclude Include="core_proxy.h" />
     <ClInclude Include="core_window.h" />
+    <ClInclude Include="crossrender\cross_render_core_container.h" />
     <ClInclude Include="crossrender\cross_render_helper.h" />
     <ClInclude Include="crossrender\cross_render_host.h" />
     <ClInclude Include="custom_client_site.h" />

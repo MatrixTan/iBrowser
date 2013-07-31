@@ -9,6 +9,10 @@
 #include <atlstr.h>
 #include "MessageDef.h"
 
+namespace CrossRender{
+	class CrossRenderHost;
+}
+
 class CoreManager
 {
 public:
@@ -29,11 +33,18 @@ private:
 	public:
 		BrowserViewData()
 			:hParent(NULL)
-			,hCrossRenderHost(NULL)
+			,pCrossRenderHost(NULL)
 			{}
+		~BrowserViewData()
+		{
+			if (pCrossRenderHost){
+				delete pCrossRenderHost;
+				pCrossRenderHost = NULL;
+			}
+		}
 		HWND hParent;
 		CString strURL;
-		HWND hCrossRenderHost;
+		CrossRender::CrossRenderHost* pCrossRenderHost;
 	};
 };
 

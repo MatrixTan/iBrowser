@@ -52,8 +52,11 @@ class CrossRenderHelper
 public:
 	void SetHost(HWND hHost);
 	void SetCore(HWND hCore);
+	void SetContainer(HWND hContainer);
 	BOOL CustomBitBlt(HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop, PFuncBitBlt pfBitBlt);
 	void ResizeHost(int cx, int cy);
+	void SyncCoreWinPos(HWND hHostContianer);
+	void OnCoreVisibleChange(bool bVisible);
 
 	static bool StartHooksInCoreProcess(void);
 	static BOOL WINAPI HOOK_BitBlt( HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop );
@@ -97,6 +100,7 @@ protected:
 private:
 	HWND m_hHost;
 	HWND m_hCore;
+	HWND m_hContainer;
 	static PFuncBitBlt s_BitBlt;
 	static PFuncGetCursorPos s_GetCursorPos;
 	static PFuncSetCursor s_SetCursor;
