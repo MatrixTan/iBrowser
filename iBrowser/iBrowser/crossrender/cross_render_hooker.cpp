@@ -25,7 +25,8 @@ PFunSetScrollInfo CrossRenderHooker::s_SetScrollInfo = NULL;
 PFunEndPaint CrossRenderHooker::s_EndPaint = NULL;
 PFuncGetCursorPos CrossRenderHooker::s_GetCursorPos = NULL;
 PFuncSetCursor CrossRenderHooker::s_SetCursor = NULL;
-PFunDrawText CrossRenderHooker::s_DrawText = NULL;
+PFunDrawTextW CrossRenderHooker::s_DrawTextW = NULL;
+PFunDrawTextExW CrossRenderHooker::s_DrawTextExW = NULL;
 
 bool CrossRenderHooker::StartHooksInCoreProcess( void )
 {
@@ -44,7 +45,8 @@ bool CrossRenderHooker::StartHooksInCoreProcess( void )
 		HookLibAndProc("user32.dll", "SetScrollInfo", (void*)HOOK_SetScrollInfo, (void**)&s_SetScrollInfo);
 		HookLibAndProc("user32.dll", "GetCursorPos", (void*)HOOK_GetCursorPos, (void**)&s_GetCursorPos);
 		HookLibAndProc("user32.dll", "SetCursor", (void*)HOOK_SetCursor, (void**)&s_SetCursor);
-		HookLibAndProc("user32.dll", "DrawText", (void*)HOOK_DrawText, (void**)&s_DrawText);
+		HookLibAndProc("user32.dll", "DrawTextW", (void*)HOOK_DrawTextW, (void**)&s_DrawTextW);
+		HookLibAndProc("user32.dll", "DrawTextExW", (void*)HOOK_DrawTextExW, (void**)&s_DrawTextExW);
 	}
 	return true;
 }
@@ -70,9 +72,9 @@ HCURSOR WINAPI CrossRenderHooker::HOOK_SetCursor( HCURSOR hCursor )
 	return s_SetCursor(hCursor);
 }
 
-HDC WINAPI CrossRenderHooker::HOOK_DrawText( HDC hDC, LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat )
+int WINAPI CrossRenderHooker::HOOK_DrawTextW( HDC hDC, LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat )
 {
-	return s_DrawText(hDC, lpchText, nCount, lpRect, uFormat);
+	return CrossRenderHelper::GetInstance()->CustomDrawTextW(hDC, lpchText, nCount, lpRect, uFormat);
 }
 
 
@@ -218,6 +220,11 @@ BOOL WINAPI CrossRenderHooker::HOOK_BitBlt( HDC hdc, int x, int y, int cx, int c
 	}else{
 		return s_BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop);
 	}
+}
+
+int WINAPI CrossRenderHooker::HOOK_DrawTextExW( HDC hdc,LPTSTR lpchText,int cchText,LPRECT lprc,UINT dwDTFormat,LPDRAWTEXTPARAMS lpDTParams )
+{
+	return s_DrawTextExW(hdc, lpchText, cchText, lprc, dwDTFormat, lpDTParams);
 }
 
 }

@@ -18,7 +18,8 @@ namespace CrossRender
 	typedef int	(WINAPI	*PFunSetScrollInfo)(HWND hwnd, int nBar, LPCSCROLLINFO lpsi,BOOL redraw);	
 	typedef BOOL (WINAPI *PFuncGetCursorPos)(LPPOINT lpPoint);
 	typedef HCURSOR (WINAPI *PFuncSetCursor)(HCURSOR hCursor);
-	typedef HDC (WINAPI *PFunDrawText)(HDC hDC, LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat);
+	typedef int (WINAPI *PFunDrawTextW)(HDC hDC, LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat);
+	typedef int (WINAPI *PFunDrawTextExW)(HDC hdc,LPTSTR lpchText,int cchText,LPRECT lprc,UINT dwDTFormat,LPDRAWTEXTPARAMS lpDTParams);
 
 	///gdi32.dll
 	typedef BOOL (WINAPI *PFuncBitBlt)(HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop);
@@ -123,8 +124,10 @@ namespace CrossRender
 		static HDC WINAPI HOOK_BeginPaint(HWND hWnd, LPPAINTSTRUCT lpPaint);
 		static PFunEndPaint s_EndPaint;
 		static HDC WINAPI HOOK_EndPaint(HWND hWnd, PAINTSTRUCT *lpPaint);
-		static PFunDrawText s_DrawText;
-		static HDC WINAPI HOOK_DrawText(HDC hDC, LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat);
+		static PFunDrawTextW s_DrawTextW;
+		static int WINAPI HOOK_DrawTextW(HDC hDC, LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat);
+		static PFunDrawTextExW s_DrawTextExW;
+		static int WINAPI HOOK_DrawTextExW(HDC hdc,LPTSTR lpchText,int cchText,LPRECT lprc,UINT dwDTFormat,LPDRAWTEXTPARAMS lpDTParams);
 
 		static PFuncGetCursorPos s_GetCursorPos;
 		static BOOL WINAPI HOOK_GetCursorPos(LPPOINT lpPoint);

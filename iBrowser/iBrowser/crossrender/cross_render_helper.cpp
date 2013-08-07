@@ -309,6 +309,24 @@ BOOL CrossRenderHelper::CustomStretchBlt( HDC hdcDest
 		, rop);
 }
 
+int CrossRenderHelper::CustomDrawTextW( HDC hDC, LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat )
+{
+	if (CrossRenderHooker::s_DrawTextW == NULL){
+		return 0;
+	}
+	int x = lpRect->left;
+	int y = lpRect->top;
+	if (CheckCustomDraw(hDC, x, y)){
+		HDC hHost = ::GetDC(m_hHost);
+		lpRect->left = x;
+		lpRect->top = y;
+		int nRet = CrossRenderHooker::s_DrawTextW(hHost, lpchText, nCount, lpRect, uFormat);
+		::ReleaseDC(m_hHost, hHost);
+		return nRet;
+	}
+	return CrossRenderHooker::s_DrawTextW(hDC, lpchText, nCount, lpRect, uFormat);
+}
+
 
 
 

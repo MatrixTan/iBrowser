@@ -59,6 +59,7 @@ public:
 
 	HDC CustomBeginPaint(HWND hWnd,	LPPAINTSTRUCT lpPaint);
 	HDC CustomEndPaint(HWND hWnd, LPPAINTSTRUCT lpPaint);
+	int CustomDrawTextW(HDC hDC, LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat);
 
 	void ResizeHost(int cx, int cy);
 	void SyncHostPos(HWND hCoreView);
