@@ -24,7 +24,7 @@ public:
 	~CrossRenderCoreContainer();
 
 	static const int kStyle = WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_POPUP;
-	static const int kExStyle = WS_EX_LAYERED|WS_EX_TOPMOST;
+	static const int kExStyle = WS_EX_LAYERED;
 
 protected:
 private:

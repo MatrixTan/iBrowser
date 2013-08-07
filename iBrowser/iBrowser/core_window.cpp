@@ -47,3 +47,9 @@ LRESULT CoreWindow::OnSize( UINT msg, WPARAM wParam, LPARAM lParam, BOOL &bHandl
 {
 	return 0;
 }
+
+LRESULT CoreWindow::OnNCPaint( UINT msg, WPARAM wParam, LPARAM lParam, BOOL &bHandler )
+{
+	bHandler = FALSE;
+	return 0;
+}

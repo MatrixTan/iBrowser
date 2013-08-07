@@ -67,7 +67,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\Include\WTL80;..\..\thirdParty;..\..\thirdParty\Detours2.1\src;..\..\thirdParty\icebreaker;..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Include\WTL80;..\..\thirdParty;..\..\thirdParty\Detours2.1\src;..\..\thirdParty\icebreaker;..\;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;_DEBUG;_WTL_NO_CSTRING;_CRT_RAND_S;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -109,7 +109,7 @@
       <ProxyFileName>iBrowser_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\Include\WTL80;..\..\thirdParty;..\..\thirdParty\Detours2.1\src;..\..\thirdParty\icebreaker;..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Include\WTL80;..\..\thirdParty;..\..\thirdParty\Detours2.1\src;..\..\thirdParty\icebreaker;..\;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;STRICT;NDEBUG;_CRT_RAND_S;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -154,6 +154,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClCompile Include="core_window.cpp" />
     <ClCompile Include="crossrender\cross_render_core_container.cpp" />
     <ClCompile Include="crossrender\cross_render_helper.cpp" />
+    <ClCompile Include="crossrender\cross_render_hooker.cpp" />
     <ClCompile Include="crossrender\cross_render_host.cpp" />
     <ClCompile Include="custom_client_site.cpp" />
     <ClCompile Include="gamemode\accelerator.cpp" />
@@ -208,6 +209,7 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClInclude Include="core_window.h" />
     <ClInclude Include="crossrender\cross_render_core_container.h" />
     <ClInclude Include="crossrender\cross_render_helper.h" />
+    <ClInclude Include="crossrender\cross_render_hooker.h" />
     <ClInclude Include="crossrender\cross_render_host.h" />
     <ClInclude Include="custom_client_site.h" />
     <ClInclude Include="gamemode\accelerator.h" />

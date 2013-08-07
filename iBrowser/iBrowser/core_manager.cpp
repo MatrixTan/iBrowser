@@ -81,7 +81,7 @@ DWORD CoreManager::StartCore_CoreThread( void *pParam )
 		HWND hContainer = container.Create(hParent, rectContainer, L"ie container"
 			, CrossRender::CrossRenderCoreContainer::kStyle
 			, CrossRender::CrossRenderCoreContainer::kExStyle);
-		SetLayeredWindowAttributes(hContainer,0,20,LWA_ALPHA);
+		SetLayeredWindowAttributes(hContainer,0,1,LWA_ALPHA);
 
 		hClient = view.Create(hContainer, rect, _T("ie host"), CoreView::kStyle , CoreView::kExStyle);
 		pData->pCrossRenderHost->SetCoreWindow(hClient);
