@@ -9,6 +9,7 @@
 #include "core_process_manager.h"
 #include "profile.h"
 #include "bookmark_manager.h"
+#include "version.h"
 
 GlobalSingleton* GlobalSingleton::s_Instance = NULL;
 
@@ -110,4 +111,11 @@ bool GlobalSingleton::IsCrossRender( void )
 void GlobalSingleton::SetCrossProcessRender( bool bEnable )
 {
 	m_bEnableCrossProcessRender = bEnable;
+}
+
+iVersion GlobalSingleton::GetCurrentVersion( void )
+{
+	iVersion version;
+	version.FromString(CUR_VERSION);
+	return version;
 }

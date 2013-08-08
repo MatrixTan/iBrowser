@@ -13,9 +13,6 @@
 namespace CrossRender
 {
 
-
-
-
 void CrossRenderHelper::SetHost( HWND hHost )
 {
 	m_hHost = hHost;

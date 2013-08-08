@@ -41,5 +41,14 @@ namespace Util
 		return "";
 	}
 
+	CStringW GetTempPath( void )
+	{
+		//WCHAR buffer[MAX_PATH] = {0};
+		//if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_TEMPLATES, NULL, 0, buffer))){
+		//	return buffer;
+		//}
+		return "";
+	}
+
 
 }

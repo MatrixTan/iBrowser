@@ -183,9 +183,12 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClCompile Include="tab_button_add.cpp" />
     <ClCompile Include="tab_color_manager.cpp" />
     <ClCompile Include="ui_util.cpp" />
+    <ClCompile Include="update_manager.cpp" />
     <ClCompile Include="url_util.cpp" />
     <ClCompile Include="util_common.cpp" />
+    <ClCompile Include="util_network.cpp" />
     <ClCompile Include="util_str.cpp" />
+    <ClCompile Include="version.cpp" />
     <ClCompile Include="XWindow.cpp" />
     <ClCompile Include="api_hook.cpp" />
     <ClCompile Include="UtilIECore.cpp" />
@@ -238,9 +241,12 @@ copy $(SolutionDir)\..\thirdParty\jsoncpp\lib\$(Configuration)\jsoncpp.lib $(Sol
     <ClInclude Include="tab_button_add.h" />
     <ClInclude Include="tab_color_manager.h" />
     <ClInclude Include="ui_util.h" />
+    <ClInclude Include="update_manager.h" />
     <ClInclude Include="url_util.h" />
     <ClInclude Include="util_common.h" />
+    <ClInclude Include="util_network.h" />
     <ClInclude Include="util_str.h" />
+    <ClInclude Include="version.h" />
     <ClInclude Include="XWindow.h" />
     <ClInclude Include="api_hook.h" />
     <ClInclude Include="UtilDebug.h" />

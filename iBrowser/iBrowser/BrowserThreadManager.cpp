@@ -11,6 +11,7 @@
 #include "switches.h"
 #include "global_singleton.h"
 #include "profile.h"
+#include "update_manager.h"
 
 DWORD WINAPI CBrowserThreadManager::CreateMainFrame(LPVOID lpData)
 {
@@ -125,6 +126,7 @@ int CBrowserThreadManager::Run(LPTSTR lpstrCmdLine, int nCmdShow)
 	MSG msg;
 	// force message queue to be created
 	::PeekMessage(&msg, NULL, WM_USER, WM_USER, PM_NOREMOVE);
+	UpdateManager::GetInstance()->StartCheck();
 
 	ProcessCmdLine(lpstrCmdLine);
 	return 0;

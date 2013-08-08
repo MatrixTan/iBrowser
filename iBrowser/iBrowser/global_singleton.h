@@ -22,6 +22,7 @@ class CoreProxy;
 class CoreProcessManager;
 class Profile;
 class BookmarkManager;
+class iVersion;
 
 class GlobalSingleton
 {
@@ -41,6 +42,7 @@ public:
 	void SetProcessMode(int nMode);
 	bool IsCrossRender(void);
 	void SetCrossProcessRender(bool bEnable);
+	iVersion GetCurrentVersion(void);
 
 	CoreProcessManager* GetCoreProcessManager(void);
 	Profile* GetProfile(void);

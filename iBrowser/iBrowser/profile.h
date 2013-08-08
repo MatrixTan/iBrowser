@@ -8,6 +8,7 @@
 #include <string>
 #include <atlstr.h>
 #include "storage.h"
+#include "version.h"
 
 class Profile
 	:public Storage
@@ -20,6 +21,13 @@ public:
 	bool GetMainFrameRect(RECT *pRect , bool* pIsMax);
 	bool SetMainFrameProfile(RECT rect , bool bIsMax);
 	bool GetHomeURL(CStringW &strURL);
+	bool GetVersion(iVersion& version);
+	bool SetVersion(const iVersion& strVersion);
+	CStringW GetInstallPath(void);
+	bool SetInstallPath(const CStringW& strPath);
+	bool SetInstallTempPath(const CStringW& strTemp);
+	bool GetInstallTempPath(CStringW& strTempPath);
+	void DeleteInstallTempPath(void);
 };
 
 

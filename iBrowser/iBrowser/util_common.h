@@ -15,6 +15,8 @@ namespace Util
 	bool IsCustomErrorPage(const CString& strURL);
 	CString GetAppDataPath(void);
 	CStringA GetAppDataPathA(void);
+
+	CStringW GetTempPath(void);
 }
 
 
