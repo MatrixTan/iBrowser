@@ -25,6 +25,7 @@ public:
 		//HANDLE_MSG_FOR_CORE
 		MESSAGE_HANDLER(WM_CREATE, OnCreate)
 		MESSAGE_HANDLER(WM_WINDOWPOSCHANGED, OnPosChanged)
+		MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBK)
 	END_MSG_MAP()
 	
 	static const DWORD kStyle = WS_CHILDWINDOW|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN;
@@ -39,6 +40,7 @@ private:
 	BOOL PostToCoreForCPR(UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT OnCreate(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnPosChanged(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+	LRESULT OnEraseBK(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 	HWND m_hCoreWindow;
 };

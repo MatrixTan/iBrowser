@@ -97,4 +97,9 @@ LRESULT CrossRenderHost::OnPosChanged( UINT msg, WPARAM wParam, LPARAM lParam, B
 	return 0;
 }
 
+LRESULT CrossRenderHost::OnEraseBK( UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled )
+{
+	return FALSE;
+}
+
 }

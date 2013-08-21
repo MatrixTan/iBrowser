@@ -6,6 +6,7 @@
 #define _CROSS_RENDER_HOOKER_H__
 
 #include "cross_render_helper.h"
+#include <GdiPlus.h>
 
 namespace CrossRender
 {
@@ -20,6 +21,9 @@ namespace CrossRender
 	typedef HCURSOR (WINAPI *PFuncSetCursor)(HCURSOR hCursor);
 	typedef int (WINAPI *PFunDrawTextW)(HDC hDC, LPCTSTR lpchText, int nCount, LPRECT lpRect, UINT uFormat);
 	typedef int (WINAPI *PFunDrawTextExW)(HDC hdc,LPTSTR lpchText,int cchText,LPRECT lprc,UINT dwDTFormat,LPDRAWTEXTPARAMS lpDTParams);
+	typedef BOOL (WINAPI *PFunInvalidateRect)(HWND hWnd, CONST RECT *lpRect, BOOL bErase); 
+	typedef BOOL (WINAPI *PFunInvalidateRgn)(HWND hWnd, HRGN hRgn, BOOL bErase);
+
 
 	///gdi32.dll
 	typedef BOOL (WINAPI *PFuncBitBlt)(HDC hdc, int x, int y, int cx, int cy, HDC hdcSrc, int x1, int y1, DWORD rop);
@@ -61,8 +65,14 @@ namespace CrossRender
 		int hSrc,
 		UINT crTransparent);
 	
-
-	
+	///gdiplus.dll
+	typedef Gdiplus::Status (WINAPI *PFunGraphicsDrawString)( 
+		const WCHAR *string,
+		INT  length,
+		const Gdiplus::Font         *font,
+		const Gdiplus::PointF       &origin,
+		const Gdiplus::StringFormat *stringFormat,
+		const Gdiplus::Brush        *brush);
 
 
 	class CrossRenderHooker
@@ -133,6 +143,17 @@ namespace CrossRender
 		static BOOL WINAPI HOOK_GetCursorPos(LPPOINT lpPoint);
 		static PFuncSetCursor s_SetCursor;
 		static HCURSOR WINAPI HOOK_SetCursor(HCURSOR hCursor);
+		static PFunGraphicsDrawString s_Graphics_DrawString;
+		static Gdiplus::Status HOOK_Graphics_DrawString(const WCHAR *string,
+			INT  length,
+			const Gdiplus::Font         *font,
+			const Gdiplus::PointF       &origin,
+			const Gdiplus::StringFormat *stringFormat,
+			const Gdiplus::Brush        *brush);
+		static PFunInvalidateRect s_InvalidateRect;
+		static BOOL WINAPI HOOK_InvalidateRect(HWND hWnd, const RECT *lpRect, BOOL bErase);
+		static PFunInvalidateRgn s_InvalidateRgn;
+		static BOOL WINAPI HOOK_InvalidateRgn(HWND hWnd, HRGN hRgn, BOOL bErase);
 
 	};
 }

@@ -27,6 +27,12 @@ PFuncGetCursorPos CrossRenderHooker::s_GetCursorPos = NULL;
 PFuncSetCursor CrossRenderHooker::s_SetCursor = NULL;
 PFunDrawTextW CrossRenderHooker::s_DrawTextW = NULL;
 PFunDrawTextExW CrossRenderHooker::s_DrawTextExW = NULL;
+PFunInvalidateRect CrossRenderHooker::s_InvalidateRect = NULL;
+PFunInvalidateRgn CrossRenderHooker::s_InvalidateRgn = NULL;
+
+
+///gdiplus.dll
+PFunGraphicsDrawString CrossRenderHooker::s_Graphics_DrawString = NULL;
 
 bool CrossRenderHooker::StartHooksInCoreProcess( void )
 {
@@ -47,6 +53,10 @@ bool CrossRenderHooker::StartHooksInCoreProcess( void )
 		HookLibAndProc("user32.dll", "SetCursor", (void*)HOOK_SetCursor, (void**)&s_SetCursor);
 		HookLibAndProc("user32.dll", "DrawTextW", (void*)HOOK_DrawTextW, (void**)&s_DrawTextW);
 		HookLibAndProc("user32.dll", "DrawTextExW", (void*)HOOK_DrawTextExW, (void**)&s_DrawTextExW);
+		HookLibAndProc("user32.dll", "InvalidateRect", (void*)HOOK_InvalidateRect, (void**)&s_InvalidateRect);
+		HookLibAndProc("user32.dll", "InvalidateRgn", (void*)HOOK_InvalidateRgn, (void**)&s_InvalidateRgn);
+
+		HookLibAndProc("gdiplus.dll", "Graphics::DrawString", (void*)HOOK_Graphics_DrawString, (void**)&s_Graphics_DrawString);
 	}
 	return true;
 }
@@ -225,6 +235,26 @@ BOOL WINAPI CrossRenderHooker::HOOK_BitBlt( HDC hdc, int x, int y, int cx, int c
 int WINAPI CrossRenderHooker::HOOK_DrawTextExW( HDC hdc,LPTSTR lpchText,int cchText,LPRECT lprc,UINT dwDTFormat,LPDRAWTEXTPARAMS lpDTParams )
 {
 	return s_DrawTextExW(hdc, lpchText, cchText, lprc, dwDTFormat, lpDTParams);
+}
+
+Gdiplus::Status CrossRenderHooker::HOOK_Graphics_DrawString( const WCHAR *string
+	, INT length
+	, const Gdiplus::Font *font
+	, const Gdiplus::PointF &origin
+	, const Gdiplus::StringFormat *stringFormat
+	, const Gdiplus::Brush *brush )
+{
+	return s_Graphics_DrawString(string, length, font, origin, stringFormat, brush);
+}
+
+BOOL WINAPI CrossRenderHooker::HOOK_InvalidateRect( HWND hWnd, const RECT *lpRect, BOOL bErase )
+{
+	return s_InvalidateRect(hWnd, lpRect, bErase);
+}
+
+BOOL WINAPI CrossRenderHooker::HOOK_InvalidateRgn( HWND hWnd, HRGN hRgn, BOOL bErase )
+{
+	return s_InvalidateRgn(hWnd, hRgn, bErase);
 }
 
 }

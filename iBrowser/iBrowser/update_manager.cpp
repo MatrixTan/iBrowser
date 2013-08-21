@@ -17,11 +17,8 @@ static const WCHAR* kCheckVersionURL = L"http://127.0.0.1/wantgame/1/ibrowser/ve
 
 void UpdateManager::StartCheck( void )
 {
-	::MessageBox(NULL, L"test", L"test" , MB_OK);
 	FirstRunCheck();
-
 	InstallCheck();
-
 	TempCheck();
 
 	CStringW strDownloadURL;
