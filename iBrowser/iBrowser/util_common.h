@@ -10,6 +10,7 @@
 
 namespace Util
 {
+	CStringW GetCurrentPath(void);
 	CString GetCurrentModuleFileName(void);
 	CString GetCustomErrorPage(void);
 	bool IsCustomErrorPage(const CString& strURL);

@@ -7,6 +7,12 @@
 
 namespace Util
 {
+	CStringW GetCurrentPath(void){
+		WCHAR buffer[MAX_PATH] = {0};
+		::GetCurrentDirectory(MAX_PATH, buffer);
+		return CString(buffer);
+	}
+
 	CString GetCurrentModuleFileName( void )
 	{
 		WCHAR buffer[MAX_PATH];
