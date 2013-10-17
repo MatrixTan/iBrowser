@@ -101,7 +101,7 @@
       <AdditionalIncludeDirectories>..\..\private_include\detours;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;DETOURS_X86;VC_WITHSDK;VC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeaderOutputFile>.\../Build/Intermediate2/DetoursLib.pch</PrecompiledHeaderOutputFile>
       <WarningLevel>Level3</WarningLevel>
